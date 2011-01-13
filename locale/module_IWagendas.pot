@@ -143,7 +143,7 @@ msgstr ""
 
 #: pninit.php:24 pninit.php:110
 msgid ""
-"Module iw_main is required. You have to install the iw_main module "
+"Module IWmain is required. You have to install the IWmain module "
 "previously to install it."
 msgstr ""
 

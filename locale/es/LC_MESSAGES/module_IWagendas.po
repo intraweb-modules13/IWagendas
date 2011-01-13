@@ -332,8 +332,8 @@ msgstr "Se ha producido un error al modificar la suscripción a la agenda."
 
 #: pninit.php:24
 #: pninit.php:110
-msgid "Module iw_main is required. You have to install the iw_main module previously to install it."
-msgstr "El módulo iw_main debe estar instalado. Instálalo antes de instalar este módulo."
+msgid "Module IWmain is required. You have to install the IWmain module previously to install it."
+msgstr "El módulo IWmain debe estar instalado. Instálalo antes de instalar este módulo."
 
 #: pninit.php:62
 msgid "You has been added to a new agenda as moderator. You can access the agenda throught the main menu. <br><br>The administrator"

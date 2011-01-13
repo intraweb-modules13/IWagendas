@@ -454,7 +454,7 @@ class IWagendas_Controller_Admin extends Zikula_Controller
             $sv = ModUtil::func('IWmain', 'user', 'genSecurityValue');
             $groups = ModUtil::func('IWmain', 'user', 'getAllGroups',
                                      array('sv' => $sv,
-                                           'less' => ModUtil::getVar('iw_myrole', 'rolegroup')));
+                                           'less' => ModUtil::getVar('IWmyrole', 'rolegroup')));
             
             
             //check if iwmessages module is active
@@ -543,7 +543,7 @@ class IWagendas_Controller_Admin extends Zikula_Controller
             $groups = ModUtil::func('IWmain', 'user', 'getAllGroups',
                                      array('sv' => $sv,
                                            'plus' => $this->__('Choose a group...'),
-                                           'less' => ModUtil::getVar('iw_myrole', 'rolegroup')));
+                                           'less' => ModUtil::getVar('IWmyrole', 'rolegroup')));
             $sv = ModUtil::func('IWmain', 'user', 'genSecurityValue');
             $groupMembers = ModUtil::func('IWmain', 'user', 'getMembersGroup',
                                            array('sv' => $sv,
