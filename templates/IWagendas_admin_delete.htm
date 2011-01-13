@@ -1,0 +1,15 @@
+{include file="IWagendas_admin_menu.htm"}
+<div class="z-admincontainer">
+    <div class="z-adminpageicon">{img modname='core' src='editdelete.gif' set='icons/large'}</div>
+    <h2>{gt text="Delete the agenda"}</h2>
+    <form class="z-form" action="{modurl modname="IWagendas" type="admin" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">
+          <input type="hidden" name="authid" value="{secgenauthkey module="IWagendas"}" />
+           <input type="hidden" name="daid" value="{$item.daid}" />
+        <input type="hidden" name="confirm" value="1" />
+		{gt text="Confirm deletion of the agenda"} <strong>{$item.nom_agenda}</strong>
+        <div class="z-formbuttons" style="text-align: center;">
+            {button src='button_ok.gif' set='icons/small' __alt="Delete" __title="Delete"}
+            <a href="{modurl modname="IWagendas" type="admin" func="main"}">{img modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel deletion" __title="Cancel deletion"}</a>
+        </div>
+    </form>
+</div>
