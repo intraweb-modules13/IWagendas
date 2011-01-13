@@ -7,8 +7,6 @@ class IWagendas_Block_Next extends Zikula_Block {
 
     public function info() {
         return array('text_type' => 'Next',
-                     'func_edit' => 'agendas_edit',
-                     'func_update' => 'agendas_update',
                      'module' => 'IWagendas',
                      'text_type_long' => $this->__('Notes for the next days'),
                      'allow_multiple' => false,
@@ -90,7 +88,7 @@ class IWagendas_Block_Next extends Zikula_Block {
         return BlockUtil::themesideblock($blockinfo);
     }
 
-    public function agendas_update($blockinfo) {
+    public function update($blockinfo) {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas:nextblock:', "$blockinfo[title]::", ACCESS_ADMIN)) return;
 
@@ -98,7 +96,7 @@ class IWagendas_Block_Next extends Zikula_Block {
         return $blockinfo;
     }
 
-    public function agendas_edit($blockinfo) {
+    public function modify($blockinfo) {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas:nextblock:', "$blockinfo[title]::", ACCESS_ADMIN))
             return;
