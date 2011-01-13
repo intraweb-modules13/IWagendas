@@ -3,8 +3,8 @@
 {* Show the options *}
 {userloggedin assign=userid}
 {if $userid neq ''}
-<div class="pn-menu">
-    <span class="pn-menuitem-title">
+<div class="z-menu">
+    <span class="z-menuitem-title">
         [
         {section name=option_menu loop=$user_menu}
             <a href="{$user_menu[option_menu].url}">{$user_menu[option_menu].text}</a>
