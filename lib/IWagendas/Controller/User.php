@@ -897,10 +897,6 @@ class IWagendas_Controller_User extends Zikula_Controller
         $today = array('month' => date('m'),
                        'year' => date('Y'));
         $this->view->assign('today', $today);
-        // If the module is being monitored, add the visit
-        if (ModUtil::available('iw_visits') && ModUtil::isHooked('iw_visits', 'IWagendas')) {
-            ModUtil::apiFunc('iw_visits', 'user', 'visit');
-        }
         return $this->view->fetch('IWagendas_user_menu.htm');
     }
 
@@ -1467,7 +1463,7 @@ class IWagendas_Controller_User extends Zikula_Controller
                                 $client = Zend_Gdata_ClientLogin::getHttpClient($userSettings['gUserName'], base64_decode($userSettings['gUserPass']), $service);
                             } catch (exception $e) {
                                 $authSubUrl = ModUtil::func('IWagendas', 'user', 'getAuthSubUrl');
-                                return System::redirect(ModUtil::url('iw_webbox', 'user', 'main',
+                                return System::redirect(ModUtil::url('IWwebbox', 'user', 'main',
                                                                       array('url' => str_replace('&', '*', str_replace('?', '**', $authSubUrl)))));
                             }
                         } else {
@@ -1989,7 +1985,7 @@ class IWagendas_Controller_User extends Zikula_Controller
                     $client = Zend_Gdata_ClientLogin::getHttpClient($userSettings['gUserName'], base64_decode($userSettings['gUserPass']), $service);
                 } catch (exception $e) {
                     $authSubUrl = ModUtil::func('IWagendas', 'user', 'getAuthSubUrl');
-                    return System::redirect(ModUtil::url('iw_webbox', 'user', 'main',
+                    return System::redirect(ModUtil::url('IWwebbox', 'user', 'main',
                                     array('url' => str_replace('&', '*', str_replace('?', '**', $authSubUrl)))));
                 }
             } else $client = ModUtil::func('IWagendas', 'user', 'getAuthSubHttpClient');
@@ -3262,7 +3258,7 @@ class IWagendas_Controller_User extends Zikula_Controller
                 $client = Zend_Gdata_ClientLogin::getHttpClient($userSettings['gUserName'], base64_decode($userSettings['gUserPass']), $service);
             } catch (exception $e) {
                 $authSubUrl = ModUtil::func('IWagendas', 'user', 'getAuthSubUrl');
-                return System::redirect(ModUtil::url('iw_webbox', 'user', 'main',
+                return System::redirect(ModUtil::url('IWwebbox', 'user', 'main',
                                 array('url' => str_replace('&', '*', str_replace('?', '**', $authSubUrl)))));
             }
         } else $client = ModUtil::func('IWagendas', 'user', 'getAuthSubHttpClient');

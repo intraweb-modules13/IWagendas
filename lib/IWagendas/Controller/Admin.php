@@ -458,7 +458,7 @@ class IWagendas_Controller_Admin extends Zikula_Controller
             
             
             //check if iwmessages module is active
-            $modid = ModUtil::getIdFromName('iw_messages');
+            $modid = ModUtil::getIdFromName('IWmessages');
             $modinfo = ModUtil::getInfo($modid);
             $messagesActive = ($modinfo['state'] == 3) ? true : false;
             $this->view->assign('messagesActive', $messagesActive);
@@ -493,7 +493,7 @@ class IWagendas_Controller_Admin extends Zikula_Controller
             //Success
             LogUtil::registerStatus($this->__('A group has been added'));
             //check if iwmessages module is active
-            $modid = ModUtil::getIdFromName('iw_messages');
+            $modid = ModUtil::getIdFromName('IWmessages');
             $modinfo = ModUtil::getInfo($modid);
             if ($modinfo['state'] == 3) {
                 //Send a private mail to users with access to the agenda
@@ -503,7 +503,7 @@ class IWagendas_Controller_Admin extends Zikula_Controller
                     $members = ModUtil::func('IWmain', 'user', 'getMembersGroup', array('sv' => $sv,
                                 'gid' => $group));
                     foreach ($members as $member) {
-                        ModUtil::apiFunc('iw_messages', 'user', 'create',
+                        ModUtil::apiFunc('IWmessages', 'user', 'create',
                                           array('to_userid' => $member['id'],
                                                 'subject' => $this->__('Agendas module - Automatic message'),
                                                 'message' => $msgUsers));
@@ -551,7 +551,7 @@ class IWagendas_Controller_Admin extends Zikula_Controller
             
             
             //check if iwmessages module is active
-            $modid = ModUtil::getIdFromName('iw_messages');
+            $modid = ModUtil::getIdFromName('IWmessages');
             $modinfo = ModUtil::getInfo($modid);
             $messagesActive = ($modinfo['state'] == 3) ? true : false;
             $this->view->assign('messagesActive', $messagesActive);
@@ -584,12 +584,12 @@ class IWagendas_Controller_Admin extends Zikula_Controller
             //Success
             LogUtil::registerStatus($this->__('A manager has been added'));
             //check if iwmessages module is active
-            $modid = ModUtil::getIdFromName('iw_messages');
+            $modid = ModUtil::getIdFromName('IWmessages');
             $modinfo = ModUtil::getInfo($modid);
             if ($modinfo['state'] == 3) {
                 //Send a private mail to users with access to the agenda
                 if ($msgUsersResp != '' && $item['activa']) {
-                    ModUtil::apiFunc('iw_messages', 'user', 'create',
+                    ModUtil::apiFunc('IWmessages', 'user', 'create',
                                       array('to_userid' => $uid,
                                             'subject' => $this->__('Agendas module - Automatic message'),
                                             'message' => $msgUsersResp));
