@@ -1,5 +1,5 @@
 <?php
-class IWagendas_Controller_User extends Zikula_Controller
+class IWagendas_Controller_User extends Zikula_AbstractController
 {
     /**
      * Scapes special chars: ', " and \n

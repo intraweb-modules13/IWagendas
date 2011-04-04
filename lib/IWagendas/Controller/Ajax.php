@@ -1,5 +1,5 @@
 <?php
-class IWagendas_Controller_Ajax extends Zikula_Controller {
+class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
     /**
      * Delete a note from an agenda
      * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)

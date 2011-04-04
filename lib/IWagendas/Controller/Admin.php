@@ -4,7 +4,7 @@
  * @author		Albert PÃ©rez Monfort (aperezm@xtec.cat)
  * @return		List of the agendas available
  */
-class IWagendas_Controller_Admin extends Zikula_Controller
+class IWagendas_Controller_Admin extends Zikula_AbstractController
 {
     public function main() {
         // Security check

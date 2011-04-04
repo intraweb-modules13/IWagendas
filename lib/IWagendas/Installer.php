@@ -4,7 +4,7 @@
  * @author Albert Pérez Monfort (aperezm@xtec.cat)
  * @return bool true if successful, false otherwise
  */
-class IWagendas_Installer extends Zikula_Installer {
+class IWagendas_Installer extends Zikula_AbstractInstaller {
     public function install() {
         // Checks if module IWmain is installed. If not returns error
         $modid = ModUtil::getIdFromName('IWmain');

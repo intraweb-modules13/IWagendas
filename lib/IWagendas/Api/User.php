@@ -6,7 +6,7 @@
  * @param:	form identity and values
  * @return:	true if success and false otherwise
  */
-class IWagendas_Api_User extends Zikula_Api
+class IWagendas_Api_User extends Zikula_AbstractApi
 {
     public function getAllAgendas($args) {
         $gAgendas = FormUtil::getPassedValue('gAgendas', isset($args['gAgendas']) ? $args['gAgendas'] : null, 'POST');
