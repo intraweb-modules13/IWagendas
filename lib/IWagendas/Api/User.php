@@ -20,13 +20,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function getAllAgendas($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $gAgendas = FormUtil::getPassedValue('gAgendas', isset($args['gAgendas']) ? $args['gAgendas'] : null, 'POST');
         $onlyShared = FormUtil::getPassedValue('onlyShared', isset($args['onlyShared']) ? $args['onlyShared'] : null, 'POST');
         $gCalendarsIdsArray = FormUtil::getPassedValue('gCalendarsIdsArray', isset($args['gCalendarsIdsArray']) ? $args['gCalendarsIdsArray'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         $pntable = DBUtil::getTables();
         $c = $pntable['IWagendas_definition_column'];
         $where = ($onlyShared == 1) ? "$c[gCalendarId] = ''" : "";
@@ -88,16 +88,16 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function getEvents($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         $month = FormUtil::getPassedValue('month', isset($args['month']) ? $args['month'] : null, 'POST');
         $year = FormUtil::getPassedValue('year', isset($args['year']) ? $args['year'] : null, 'POST');
         $day = FormUtil::getPassedValue('day', isset($args['day']) ? $args['day'] : null, 'POST');
         $inici = FormUtil::getPassedValue('inici', isset($args['inici']) ? $args['inici'] : null, 'POST');
         $final = FormUtil::getPassedValue('final', isset($args['final']) ? $args['final'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         if ($inici == null || $final == null || $inici == '' || $final == '') {
             $inici = mktime(0, 0, 0, $month, 1, $year);
             //Calc the number of days of the month
@@ -173,9 +173,8 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     public function getUserSubscriptions($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         if (!UserUtil::isLoggedIn()) {
             return $items;
         }
@@ -202,12 +201,12 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function vista($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         $vista = FormUtil::getPassedValue('vista', isset($args['vista']) ? $args['vista'] : -1, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         $pntable = DBUtil::getTables();
         $c = $pntable['IWagendas_subs_column'];
         $uid = UserUtil::getVar('uid');
@@ -244,12 +243,12 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function esborraantigues($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         $antigues = FormUtil::getPassedValue('antigues', isset($args['antigues']) ? $args['antigues'] : 0, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         // Check whether the user can access the agenda for this action
         $te_acces = ModUtil::func('IWagendas', 'user', 'te_acces',
                                    array('daid' => $items['daid']));
@@ -300,9 +299,8 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     public function esborra_caducades()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $caducadies = ModUtil::getVar('IWagendas', 'caducadies');
         $datacaducades = time() - $caducadies * 60 * 60 * 24;
         $pntable = DBUtil::getTables();
@@ -343,12 +341,12 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function novesa0($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         // Needed argument
         if (!isset($mes) || !is_numeric($mes) || !isset($any) || !is_numeric($any)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -385,12 +383,12 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function getalltasques($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         // Needed argument
         if (!isset($mes) || !is_numeric($mes) || !isset($any) || !is_numeric($any)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -420,9 +418,8 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     public function treuavis()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $pntable = DBUtil::getTables();
         $c = $pntable['IWagendas_subs_column'];
         $uid = UserUtil::getVar('uid');
@@ -443,11 +440,11 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function comptanotes($args)
     {
-        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
+        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
+
         $pntable = DBUtil::getTables();
         $c = $pntable['IWagendas_column'];
         $uid = UserUtil::getVar('uid');
@@ -471,12 +468,12 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function pujaavis($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $value = FormUtil::getPassedValue('value', isset($args['value']) ? $args['value'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         $pntable = DBUtil::getTables();
         $c = $pntable['IWagendas_subs_column'];
         $uid = UserUtil::getVar('uid');
@@ -497,11 +494,11 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function avislimits($args)
     {
-        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
+        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
+
         $pntable = DBUtil::getTables();
         $c = $pntable['IWagendas_subs_column'];
         $uid = UserUtil::getVar('uid');
@@ -529,11 +526,11 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function iosubs($args)
     {
-        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
+        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
+
         // Needed argument
         if (!isset($daid) || !is_numeric($daid)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -580,11 +577,11 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function getvista($args)
     {
-        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
+        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
+
         // Needed argument
         if (!isset($daid) || !is_numeric($daid)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -616,14 +613,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function editNote($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         $items = FormUtil::getPassedValue('items', isset($args['items']) ? $args['items'] : null, 'POST');
         $rid = FormUtil::getPassedValue('rid', isset($args['rid']) ? $args['rid'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         // Needed argument
         if (!isset($daid) || !is_numeric($daid) || !isset($aid) || !is_numeric($aid)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -658,11 +655,11 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function get($args)
     {
-        $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
+        $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
+
         // Needed argument
         if (!isset($aid) || !is_numeric($aid)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -705,11 +702,11 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function deleteRepesInUser($args)
     {
-        $rid = FormUtil::getPassedValue('rid', isset($args['rid']) ? $args['rid'] : null, 'POST');
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
+        $rid = FormUtil::getPassedValue('rid', isset($args['rid']) ? $args['rid'] : null, 'POST');
+
         // Needed argument
         if (!isset($rid) || !is_numeric($rid)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -747,11 +744,11 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function delete($args)
     {
-        $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
+        $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
+
         // Needed argument
         if (!isset($aid) || !is_numeric($aid)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -800,13 +797,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function gettenenacces($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         // Needed argument
         if (!isset($daid) || !is_numeric($daid) || $daid == 0) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -856,6 +853,9 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function crear($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $hora = FormUtil::getPassedValue('hora', isset($args['hora']) ? $args['hora'] : null, 'POST');
         $minut = FormUtil::getPassedValue('minut', isset($args['minut']) ? $args['minut'] : null, 'POST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
@@ -883,10 +883,7 @@ class IWagendas_Api_User extends Zikula_AbstractApi
         $origen = FormUtil::getPassedValue('origen', isset($args['origen']) ? $args['origen'] : null, 'POST');
         $gCalendarEventId = FormUtil::getPassedValue('gCalendarEventId', isset($args['gCalendarEventId']) ? $args['gCalendarEventId'] : null, 'POST');
         $protegida = FormUtil::getPassedValue('protegida', isset($args['protegida']) ? $args['protegida'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         // Needed argument
         if (!isset($c1)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -954,12 +951,12 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function meva($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         $adaid = FormUtil::getPassedValue('adaid', isset($args['adaid']) ? $args['adaid'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         // Needed argument
         if (!isset($aid)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -1063,12 +1060,12 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function deleterepes($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $rid = FormUtil::getPassedValue('rid', isset($args['rid']) ? $args['rid'] : null, 'POST');
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         // Needed argument
         if (!isset($aid) || !isset($rid)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -1108,12 +1105,12 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function getsubscrits($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $quins = FormUtil::getPassedValue('quins', isset($args['quins']) ? $args['quins'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         $pntable = DBUtil::getTables();
         $c = $pntable['IWagendas_subs_column'];
         $quins = (!isset($quins) || $quins == '-1') ? "$c[donadabaixa]=-1 OR $c[donadabaixa]=-2" : "$c[donadabaixa]=" . $quins;
@@ -1137,6 +1134,9 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function modificamulti($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $hora = FormUtil::getPassedValue('hora', isset($args['hora']) ? $args['hora'] : null, 'POST');
         $minut = FormUtil::getPassedValue('minut', isset($args['minut']) ? $args['minut'] : null, 'POST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
@@ -1152,10 +1152,7 @@ class IWagendas_Api_User extends Zikula_AbstractApi
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         $protegida = FormUtil::getPassedValue('protegida', isset($args['protegida']) ? $args['protegida'] : null, 'POST');
         $fitxer = FormUtil::getPassedValue('fitxer', isset($args['fitxer']) ? $args['fitxer'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         // Needed argument
         if (!isset($aid) || !isset($c1)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -1227,11 +1224,11 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function comptarepes($args)
     {
-        $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
+        $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
+
         // Needed argument
         if (!isset($aid)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -1264,11 +1261,11 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function subsbaixa($args)
     {
-        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
+        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
+
         // Needed argument
         if (!isset($daid) || $daid == 0) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -1305,11 +1302,11 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function subsalta($args)
     {
-        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
+        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
+
         // Needed argument
         if (!isset($daid) || $daid == 0) {
             return;
@@ -1356,12 +1353,12 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function subsAltaMulti($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $users = FormUtil::getPassedValue('users', isset($args['users']) ? $args['users'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         // Needed argument
         if (!isset($daid) || $daid == 0 || !isset($users)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -1412,11 +1409,11 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function n_fitxers($args)
     {
-        $fitxer = FormUtil::getPassedValue('fitxer', isset($args['fitxer']) ? $args['fitxer'] : null, 'POST');
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
+        $fitxer = FormUtil::getPassedValue('fitxer', isset($args['fitxer']) ? $args['fitxer'] : null, 'POST');
+
         $pntable = DBUtil::getTables();
         $c = $pntable['IWagendas_column'];
         $where = "$c[fitxer]='$fitxer'";
@@ -1437,9 +1434,8 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     public function avissubscripcio()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $uid = UserUtil::getVar('uid');
         $myJoin = array();
         $myJoin[] = array('join_table' => 'IWagendas_subs',
@@ -1475,10 +1471,7 @@ class IWagendas_Api_User extends Zikula_AbstractApi
         $uid = FormUtil::getPassedValue('uid', isset($args['uid']) ? $args['uid'] : UserUtil::getVar('uid'), 'POST');
         $sv = FormUtil::getPassedValue('sv', isset($args['sv']) ? $args['sv'] : null, 'POST');
         if (!ModUtil::func('IWmain', 'user', 'checkSecurityValue', array('sv' => $sv))) {
-            // Security check
-            if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-                return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-            }
+            $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
         } else {
             $requestByCron = true;
         }
@@ -1538,14 +1531,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
      */
     public function getAllGCalendarNotes($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $beginDate = FormUtil::getPassedValue('beginDate', isset($args['beginDate']) ? $args['beginDate'] : null, 'POST');
         $endDate = FormUtil::getPassedValue('endDate', isset($args['endDate']) ? $args['endDate'] : null, 'POST');
         $gIds = FormUtil::getPassedValue('gIds', isset($args['gIds']) ? $args['gIds'] : null, 'POST');
         $notInGCalendar = FormUtil::getPassedValue('notInGCalendar', isset($args['notInGCalendar']) ? $args['notInGCalendar'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         $pntable = DBUtil::getTables();
         $c = $pntable['IWagendas_column'];
         $where = "(";
@@ -1580,9 +1573,8 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     public function getGCalendarUserDefault()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $pntable = DBUtil::getTables();
         $c = $pntable['IWagendas_definition_column'];
         $uid = UserUtil::getVar('uid');

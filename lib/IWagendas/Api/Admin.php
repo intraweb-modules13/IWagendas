@@ -32,9 +32,7 @@ class IWagendas_Api_Admin extends Zikula_AbstractApi
         if (!ModUtil::func('IWmain', 'user', 'checkSecurityValue',
                             array('sv' => $sv)) || !SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             // Security check
-            if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-                return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-            }
+            $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
         }
         // Needed argument
         if (!isset($daid) || !is_numeric($daid)) {
@@ -89,15 +87,15 @@ class IWagendas_Api_Admin extends Zikula_AbstractApi
         if (!ModUtil::func('IWmain', 'user', 'checkSecurityValue',
                             array('sv' => $sv)) || !SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ) || $gCalendarId == '') {
             // Security check
-            if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-                return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-            }
+            $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
         }
+
         // Needed argument
         if (!isset($nom_agenda)) {
             return LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
         }
-        //optional arguments
+
+        // optional arguments
         if (!isset($descriu)) $descriu = '';
         $item = array('nom_agenda' => $nom_agenda,
                       'descriu' => $descriu,
@@ -153,9 +151,7 @@ class IWagendas_Api_Admin extends Zikula_AbstractApi
         if (!ModUtil::func('IWmain', 'user', 'checkSecurityValue',
                             array('sv' => $sv)) || !SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ) || $item['resp'] != '$$' . UserUtil::getVar('uid') . '$') {
             // Security check
-            if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-                return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-            }
+            $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
         }
         // Needed argument
         if (!isset($daid) || !is_numeric($daid)) {

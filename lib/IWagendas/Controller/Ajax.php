@@ -20,9 +20,9 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function deleteNote($args)
     {
-        if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
-            AjaxUtil::error(DataUtil::formatForDisplayHTML($this->$this->__('Sorry! No authorization to access this module.')));
-        }
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $aid = FormUtil::getPassedValue('aid', -1, 'GET');
         if ($aid == -1) AjaxUtil::error('no note id');
         $daid = FormUtil::getPassedValue('daid', -1, 'GET');
@@ -43,9 +43,9 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function protectNote($args)
     {
-        if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
-            AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
-        }
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $aid = FormUtil::getPassedValue('aid', -1, 'GET');
         if ($aid == -1) AjaxUtil::error('no note id');
         $daid = FormUtil::getPassedValue('daid', -1, 'GET');
@@ -102,9 +102,9 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function completeNote($args)
     {
-        if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
-            AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
-        }
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $aid = FormUtil::getPassedValue('aid', -1, 'GET');
         if ($aid == -1) {
             LogUtil::registerError('no note id');
@@ -198,9 +198,9 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function modifyAgenda($args)
     {
-        if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN)) {
-            AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
-        }
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $daid = FormUtil::getPassedValue('daid', -1, 'GET');
         if ($daid == -1) {
             LogUtil::registerError('no agenda id');
@@ -238,9 +238,9 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function changeContent($args)
     {
-        if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN)) {
-            AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
-        }
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $daid = FormUtil::getPassedValue('daid', -1, 'GET');
         if ($daid == -1) {
             LogUtil::registerError('no agenda id');
@@ -264,9 +264,9 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function chgUsers($args)
     {
-        if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN)) {
-            AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
-        }
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $gid = FormUtil::getPassedValue('gid', -1, 'GET');
         if ($gid == -1) {
             LogUtil::registerError('no group id');
@@ -296,9 +296,9 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function modifyColor($args)
     {
-        if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN)) {
-            AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
-        }
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $daid = FormUtil::getPassedValue('daid', -1, 'GET');
         if ($daid == -1) {
             LogUtil::registerError('no agenda id');
@@ -335,9 +335,9 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function changeMonth($args)
     {
-        if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
-            AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
-        }
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $daid = FormUtil::getPassedValue('daid', -1, 'GET');
         if ($daid == -1) {
             LogUtil::registerError('no agenda id');
@@ -369,9 +369,9 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function subs($args)
     {
-        if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
-            AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
-        }
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
+
         $daidSubs = FormUtil::getPassedValue('daidSubs', -1, 'GET');
         if ($daidSubs == -1) LogUtil::registerError('no agenda id');
         $mes = FormUtil::getPassedValue('mes', -1, 'GET');

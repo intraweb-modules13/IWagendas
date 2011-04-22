@@ -26,7 +26,7 @@ The attached files must to be updated to the server, so a folder with written pe
 //************************
 // Module installation
 //************************
-Locate the files of the modules IWmain and IWagendas into the modules directory, install and active them following the usual methods used in PostNuke modules:
+Locate the files of the modules IWmain and IWagendas into the modules directory, install and active them following the usual methods used in Zikula modules:
 
 	- Regenerate modules list
 	- Initialize modules or upgrade IWmain

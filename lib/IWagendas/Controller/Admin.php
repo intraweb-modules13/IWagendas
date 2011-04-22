@@ -19,9 +19,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
         // Get the info about the shared agendas
         $agendas = ModUtil::apiFunc('IWagendas', 'user', 'getAllAgendas',
@@ -82,9 +80,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
     public function module()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
         $module = ModUtil::func('IWmain', 'user', 'module_info',
                                  array('module_name' => 'IWagendas',
@@ -104,14 +100,12 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      */
     public function getCharsContent($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
 
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
-
-        //Get field information
+        // Get field information
         $item = ModUtil::apiFunc('IWagendas', 'user', 'getAgenda',
                                   array('daid' => $daid));
 
@@ -131,9 +125,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
     public function newItem()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
         $nomcamp = array($this->__('Nota name'),
                          $this->__('Secondary field') . ' 1',
@@ -179,6 +171,9 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      */
     public function create($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $nom_agenda = FormUtil::getPassedValue('nom_agenda', isset($args['nom_agenda']) ? $args['nom_agenda'] : null, 'POST');
         $descriu    = FormUtil::getPassedValue('descriu', isset($args['descriu']) ? $args['descriu'] : null, 'POST');
         $activa     = FormUtil::getPassedValue('activa', isset($args['activa']) ? $args['activa'] : null, 'POST');
@@ -205,11 +200,6 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $adjunts   = FormUtil::getPassedValue('adjunts', isset($args['adjunts']) ? $args['adjunts'] : null, 'POST');
         $protegida = FormUtil::getPassedValue('protegida', isset($args['protegida']) ? $args['protegida'] : null, 'POST');
         $color     = FormUtil::getPassedValue('color', isset($args['color']) ? $args['color'] : null, 'POST');
-
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
 
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
@@ -290,9 +280,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
 
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
         // Get item
         $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda',
@@ -332,9 +320,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'GET');
 
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
         //Get field information
         $item = ModUtil::apiFunc('IWagendas', 'user', 'getAgenda',
@@ -399,6 +385,9 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      */
     public function update($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $nom_agenda = FormUtil::getPassedValue('nom_agenda', isset($args['nom_agenda']) ? $args['nom_agenda'] : null, 'POST');
         $descriu = FormUtil::getPassedValue('descriu', isset($args['descriu']) ? $args['descriu'] : null, 'POST');
@@ -423,10 +412,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $adjunts = FormUtil::getPassedValue('adjunts', isset($args['adjunts']) ? $args['adjunts'] : null, 'POST');
         $protegida = FormUtil::getPassedValue('protegida', isset($args['protegida']) ? $args['protegida'] : null, 'POST');
         $color = FormUtil::getPassedValue('color', isset($args['color']) ? $args['color'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
             return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
@@ -496,16 +482,16 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      */
     public function addGroup($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
         $group = FormUtil::getPassedValue('group', isset($args['group']) ? $args['group'] : null, 'POST');
         $accessType = FormUtil::getPassedValue('accessType', isset($args['accessType']) ? $args['accessType'] : null, 'POST');
         $msgUsers = FormUtil::getPassedValue('msgUsers', isset($args['msgUsers']) ? $args['msgUsers'] : ModUtil::getVar('IWagendas', 'msgUsersDefault'), 'POST');
         $msgUsersDefault = FormUtil::getPassedValue('msgUsersDefault', isset($args['msgUsersDefault']) ? $args['msgUsersDefault'] : null, 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         //Get item
         $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda',
                                   array('daid' => $daid));
@@ -587,16 +573,14 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      */
     public function addManager($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $uid = FormUtil::getPassedValue('uid', isset($args['uid']) ? $args['uid'] : null, 'POST');
         $group = FormUtil::getPassedValue('group', isset($args['group']) ? $args['group'] : null, 'POST');
         $msgUsersResp = FormUtil::getPassedValue('msgUsersResp', isset($args['msgUsersResp']) ? $args['msgUsersResp'] : ModUtil::getVar('IWagendas', 'msgUsersRespDefault'), 'POST');
         $msgUsersRespDefault = FormUtil::getPassedValue('msgUsersRespDefault', isset($args['msgUsersRespDefault']) ? $args['msgUsersRespDefault'] : null, 'POST');
-
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
 
         //Get item
         $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda',
@@ -677,13 +661,13 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      */
     public function deleteGroup($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
         $id = FormUtil::getPassedValue('id', isset($args['id']) ? $args['id'] : null, 'REQUEST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         //Get item
         $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda',
                                   array('daid' => $daid));
@@ -735,13 +719,13 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      */
     public function deleteManager($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
         $id = FormUtil::getPassedValue('id', isset($args['id']) ? $args['id'] : null, 'REQUEST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         //Get item
         $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda',
                                   array('daid' => $daid));
@@ -789,9 +773,8 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
     public function configura()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         //memoritzem en un array els noms dels mesos de l'any
         $nom_mes = array($this->__('January'),
                          $this->__('February'),
@@ -1032,6 +1015,14 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      */
     public function conf_modifica($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
+        // Confirm authorisation code
+        if (!SecurityUtil::confirmAuthKey()) {
+            return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
+        }
+
         $inici = FormUtil::getPassedValue('inici', isset($args['inici']) ? $args['inici'] : null, 'POST');
         $ce = FormUtil::getPassedValue('ce', isset($args['ce']) ? $args['ce'] : null, 'POST');
         $comentaris = FormUtil::getPassedValue('comentaris', isset($args['comentaris']) ? $args['comentaris'] : null, 'POST');
@@ -1046,14 +1037,6 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $urladjunts = FormUtil::getPassedValue('urladjunts', isset($args['urladjunts']) ? $args['urladjunts'] : null, 'POST');
         $allowGCalendar = FormUtil::getPassedValue('allowGCalendar', isset($args['allowGCalendar']) ? $args['allowGCalendar'] : null, 'POST');
 
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
-        }
         if ($submit == $this->__('Restore')) {
             $posa_colors = "DBD4A6|555555|FFCC66|FFFFFF|E1EBFF|669ACC|FFFFFF|FFFFFF|FF8484|FFFFFF|DBD4A6|66FF66|3F6F3E|FFFFCC|BBBBBB|000000";
         } else {
@@ -1093,6 +1076,9 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      */
     public function nouallista($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $index = FormUtil::getPassedValue('index', isset($args['index']) ? $args['index'] : null, 'REQUEST');
         $dada = FormUtil::getPassedValue('dada', isset($args['dada']) ? $args['dada'] : null, 'REQUEST');
         $dia1 = FormUtil::getPassedValue('dia1', isset($args['dia1']) ? $args['dia1'] : null, 'POST');
@@ -1103,10 +1089,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $any2 = FormUtil::getPassedValue('any2', isset($args['any2']) ? $args['any2'] : null, 'POST');
         $text = FormUtil::getPassedValue('text', isset($args['text']) ? $args['text'] : null, 'POST');
         $color = FormUtil::getPassedValue('color', isset($args['color']) ? $args['color'] : "#", 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         if ($dia1 == null) {
             switch ($index) {
                 case '1':
@@ -1226,6 +1209,9 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      */
     public function modifica_llistes($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $index = FormUtil::getPassedValue('index', isset($args['index']) ? $args['index'] : null, 'REQUEST');
         $dada = FormUtil::getPassedValue('dada', isset($args['dada']) ? $args['dada'] : null, 'REQUEST');
         $dia1 = FormUtil::getPassedValue('dia1', isset($args['dia1']) ? $args['dia1'] : null, 'POST');
@@ -1236,10 +1222,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $any2 = FormUtil::getPassedValue('any2', isset($args['any2']) ? $args['any2'] : null, 'POST');
         $text = FormUtil::getPassedValue('text', isset($args['text']) ? $args['text'] : null, 'POST');
         $color = FormUtil::getPassedValue('color', isset($args['color']) ? $args['color'] : "#", 'POST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         //if the entry is from a edit action delete the parameters edited in the list
         if (isset($dada) && $dada != "") {
             $dada = str_replace('$', '#', $dada);
@@ -1436,12 +1419,12 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      */
     public function esborra($args)
     {
+        // Security check
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
+
         $index = FormUtil::getPassedValue('index', isset($args['index']) ? $args['index'] : null, 'REQUEST');
         $dada = FormUtil::getPassedValue('dada', isset($args['dada']) ? $args['dada'] : null, 'REQUEST');
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
-        }
+
         //Check that the value to delete has arrived
         if (empty($dada)) {
             LogUtil::registerError($this->__('Data not found'));
