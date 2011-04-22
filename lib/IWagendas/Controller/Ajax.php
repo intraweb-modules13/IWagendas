@@ -249,9 +249,10 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $item = ModUtil::func('IWagendas', 'admin', 'getCharsContent',
                                array('daid' => $daid));
 
+        Zikula_AbstractController::configureView();
         $this->view->assign('agenda', $item);
-        $content = $this->view->fetch('IWagendas_admin_mainChars.htm');
-        AjaxUtil::output(array('content' => $content,
+
+        AjaxUtil::output(array('content' => $this->view->fetch('IWagendas_admin_mainChars.htm'),
                                'daid' => $daid));
     }
 
@@ -281,10 +282,12 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
             asort($groupMembers);
         }
         if (empty($groupMembers)) LogUtil::registerError('unable to get group members or group is empty for gid=' . DataUtil::formatForDisplay($gid));
+
+        Zikula_AbstractController::configureView();
         $this->view->assign('groupMembers', $groupMembers);
         $this->view->assign('action', 'chgUsers');
-        $content = $this->view->fetch('IWagendas_admin_ajax.htm');
-        AjaxUtil::output(array('content' => $content));
+
+        AjaxUtil::output(array('content' => $this->view->fetch('IWagendas_admin_ajax.htm')));
     }
 
     /**
@@ -315,6 +318,7 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
         if ($item == false) {
             AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('The agenda was not found')));
         }
+
         //change value in database
         $items = array('color' => $color);
         if (!ModUtil::apiFunc('IWagendas', 'admin', 'editAgenda',
