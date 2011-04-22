@@ -1,12 +1,25 @@
 <?php
-class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
+/**
+ * Intraweb
+ *
+ * @copyright  (c) 2011, Intraweb Development Team
+ * @link       http://code.zikula.org/intraweb/
+ * @license    GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @package    Intraweb_Modules
+ * @subpackage IWAgendas
+ */
+
+class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax
+{
     /**
      * Delete a note from an agenda
-     * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param:	args   Array with the id of the note
-     * @return:	true if success
+     *
+     * @param array $args Array with the id of the note
+     *
+     * @return boolean true if success
      */
-    public function deleteNote($args) {
+    public function deleteNote($args)
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
             AjaxUtil::error(DataUtil::formatForDisplayHTML($this->$this->__('Sorry! No authorization to access this module.')));
         }
@@ -23,11 +36,13 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
 
     /**
      * Protect a note agains autotical deletion
-     * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param:	args   Array with the id of the note and the id of the agenda
-     * @return:	identity of the note and new state
+     *
+     * @param array $args Array with the id of the note and the id of the agenda
+     *
+     * @return Identity of the note and new state
      */
-    public function protectNote($args) {
+    public function protectNote($args)
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
             AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
         }
@@ -80,11 +95,13 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
 
     /**
      * Change the state of a note to complete or uncomplete
-     * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param:	args   Array with the id of the note and the id of the agenda
-     * @return:	identity of the note and new state
+     *
+     * @param array $args Array with the id of the note and the id of the agenda
+     *
+     * @return Identity of the note and new state
      */
-    public function completeNote($args) {
+    public function completeNote($args)
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
             AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
         }
@@ -174,11 +191,13 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
 
     /**
      * Change the characteristics of a agenda definition
-     * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param:	args   Array with the id of the agenda and the value to change
-     * @return:	the new value in database
+     *
+     * @param array $args Array with the id of the agenda and the value to change
+     *
+     * @return The new value in database
      */
-    public function modifyAgenda($args) {
+    public function modifyAgenda($args)
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN)) {
             AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
         }
@@ -212,11 +231,13 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
 
     /**
      * Change the characteristics of a agenda definition
-     * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param:	args   Array with the id of the agenda and the value to change
-     * @return:	the field row new value in database
+     *
+     * @param array $args Array with the id of the agenda and the value to change
+     *
+     * @return The field row new value in database
      */
-    public function changeContent($args) {
+    public function changeContent($args)
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN)) {
             AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
         }
@@ -227,6 +248,7 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
         }
         $item = ModUtil::func('IWagendas', 'admin', 'getCharsContent',
                                array('daid' => $daid));
+
         $this->view->assign('agenda', $item);
         $content = $this->view->fetch('IWagendas_admin_mainChars.htm');
         AjaxUtil::output(array('content' => $content,
@@ -235,11 +257,13 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
 
     /**
      * Change the users in select list
-     * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param:	args   Array with the id of the note
-     * @return:	Redirect to the user main page
+     *
+     * @param array $args Array with the id of the note
+     *
+     * @return Redirect to the user main page
      */
-    public function chgUsers($args) {
+    public function chgUsers($args)
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN)) {
             AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
         }
@@ -265,11 +289,13 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
 
     /**
      * Change the color for zn agenda definition
-     * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param:	args   Array with the id of the agenda and the color value
-     * @return:	the new value in database
+     *
+     * @param array $args Array with the id of the agenda and the color value
+     *
+     * @return The new value in database
      */
-    public function modifyColor($args) {
+    public function modifyColor($args)
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN)) {
             AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
         }
@@ -302,11 +328,13 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
 
     /**
      * Change the month information in calendar
-     * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param:	args   month, year and agenda identity
-     * @return:	the new month information
+     *
+     * @param array $args Month, year and agenda identity
+     *
+     * @return The new month information
      */
-    public function changeMonth($args) {
+    public function changeMonth($args)
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
             AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
         }
@@ -334,12 +362,13 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
 
     /**
      * Subscribe an user to an agenda
-     * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param:	args   month, year and agenda identity
-     * @return:	the new month information
+     *
+     * @param array $args Month, year and agenda identity
+     *
+     * @return The new month information
      */
-    public function subs($args) {
-        
+    public function subs($args)
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
             AjaxUtil::error(DataUtil::formatForDisplayHTML($this->__('Sorry! No authorization to access this module.')));
         }
@@ -361,11 +390,13 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
 
     /**
      * Change the content of the calendar block
-     * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param:	args   the month and year to show
-     * @return:	the calendar block content
+     *
+     * @param array $args The month and year to show
+     *
+     * @return The calendar block content
      */
-    public function calendarBlockMonth($args) {
+    public function calendarBlockMonth($args)
+    {
         $month = FormUtil::getPassedValue('month', -1, 'GET');
         if ($month == -1) LogUtil::registerError('no month defined');
         $year = FormUtil::getPassedValue('year', -1, 'GET');

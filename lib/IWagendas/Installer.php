@@ -1,28 +1,41 @@
 <?php
 /**
- * Initialise the IWagendas module creating module tables and module vars
- * @author Albert Pérez Monfort (aperezm@xtec.cat)
- * @return bool true if successful, false otherwise
+ * Intraweb
+ *
+ * @copyright  (c) 2011, Intraweb Development Team
+ * @link       http://code.zikula.org/intraweb/
+ * @license    GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @package    Intraweb_Modules
+ * @subpackage IWAgendas
  */
-class IWagendas_Installer extends Zikula_AbstractInstaller {
-    public function install() {
+
+class IWagendas_Installer extends Zikula_AbstractInstaller
+{
+    /**
+     * Initialise the IWagendas module creating module tables and module vars
+     *
+     * @return bool true if successful, false otherwise
+     */
+    public function install()
+    {
         // Checks if module IWmain is installed. If not returns error
-        $modid = ModUtil::getIdFromName('IWmain');
-        $modinfo = ModUtil::getInfo($modid);
-        if ($modinfo['state'] != 3) {
+        if (!ModUtil::available('IWmain')) {
             return LogUtil::registerError(__('Module IWmain is required. You have to install the IWmain module previously to install it.'));
         }
+
         // Check if the version needed is correct
         $versionNeeded = '3.0.0';
         if (!ModUtil::func('IWmain', 'admin', 'checkVersion',
                         array('version' => $versionNeeded))) {
             return false;
         }
+
         // Create module tables
         if (!DBUtil::createTable('IWagendas')) return false;
         if (!DBUtil::createTable('IWagendas_definition')) return false;
         if (!DBUtil::createTable('IWagendas_subs')) return false;
-        //Create indexes
+
+        // Create indexes
         $table = DBUtil::getTables();
         $c = $table['IWagendas_column'];
         if (!DBUtil::createIndex($c['usuari'], 'IWagendas', 'usuari')) return false;
@@ -33,7 +46,8 @@ class IWagendas_Installer extends Zikula_AbstractInstaller {
         if (!DBUtil::createIndex($c['gCalendarEventId'], 'IWagendas', 'gCalendarEventId')) return false;
         $c = $table['IWagendas_definition_column'];
         if (!DBUtil::createIndex($c['gCalendarId'], 'IWagendas_definition', 'gCalendarId')) return false;
-        //Set module vars
+
+        // Set module vars
         $this->setVar('inicicurs', date('Y'))
              ->setVar('calendariescolar', 0)
              ->setVar('comentaris', '')
@@ -52,48 +66,37 @@ class IWagendas_Installer extends Zikula_AbstractInstaller {
              ->setVar('msgUsersRespDefault', __('You has been added to a new agenda as moderator. You can access the agenda throught the main menu. <br><br>The administrator'))
              ->setVar('msgUsersDefault', __('You has been added to a new agenda. You can access the agenda throught the main menu. <br><br>The administrator'))
              ->setVar('allowGCalendar', '0');
-        //Successfull
+
+        // Successfull
         return true;
     }
 
     /**
      * Delete the IWagendas module
-     * @author Albert Pérez Monfort (aperezm@xtec.cat)
+     *
      * @return bool true if successful, false otherwise
      */
-    public function uninstall() {
+    public function uninstall()
+    {
         // Delete module table
         DBUtil::dropTable('IWagendas');
         DBUtil::dropTable('IWagendas_definition');
         DBUtil::dropTable('IWagendas_subs');
-        //Delete module vars
-        $this->delVar('inicicurs')
-                ->delVar('calendariescolar')
-                ->delVar('comentaris')
-                ->delVar('festiussempre')
-                ->delVar('altresfestius')
-                ->delVar('informacions')
-                ->delVar('periodes')
-                ->delVar('llegenda')
-                ->delVar('infos')
-                ->delVar('vista')
-                ->delVar('colors')
-                ->delVar('maxnotes')
-                ->delVar('adjuntspersonals')
-                ->delVar('caducadies')
-                ->delVar('urladjunts')
-                ->delVar('msgUsersRespDefault')
-                ->delVar('msgUsersDefault')
-                ->delVar('allowGCalendar');
-        //Deletion successfull
+
+        // Delete module vars
+        $this->delVars();
+
+        // Deletion successfull
         return true;
     }
 
-    public function upgrade($oldversion) {
+    public function upgrade($oldversion)
+    {
         if (!DBUtil::changeTable('IWagendas_definition')) return false;
         if (!DBUtil::changeTable('IWagendas')) return false;
+
         if ($oldversion < 1.3) {
-            //Create indexes
+            // Create indexes
             $table = DBUtil::getTables();
             $c = $table['IWagendas_column'];
             if (!DBUtil::createIndex($c['usuari'], 'IWagendas', 'usuari')) return false;
@@ -102,8 +105,9 @@ class IWagendas_Installer extends Zikula_AbstractInstaller {
             if (!DBUtil::createIndex($c['daid'], 'IWagendas', 'daid')) return false;
             if (!DBUtil::createIndex($c['origenid'], 'IWagendas', 'origenid')) return false;
         }
+
         if ($oldversion < 2.0) {
-            //Create indexes
+            // Create indexes
             $table = DBUtil::getTables();
             $c = $table['IWagendas_column'];
             DBUtil::createIndex($c['gCalendarEventId'], 'IWagendas', 'gCalendarEventId');
@@ -111,8 +115,8 @@ class IWagendas_Installer extends Zikula_AbstractInstaller {
             DBUtil::createIndex($c['gCalendarId'], 'IWagendas_definition', 'gCalendarId');
             $this->setVar('allowGCalendar', '0');
         }
+
         // Update successful
         return true;
     }
-
 }

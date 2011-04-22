@@ -1,13 +1,25 @@
 <?php
+/**
+ * Intraweb
+ *
+ * @copyright  (c) 2011, Intraweb Development Team
+ * @link       http://code.zikula.org/intraweb/
+ * @license    GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @package    Intraweb_Modules
+ * @subpackage IWAgendas
+ */
+
 class IWagendas_Controller_User extends Zikula_AbstractController
 {
     /**
      * Scapes special chars: ', " and \n
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat) i Toni Ginard Lladó (aginard@xtec.cat)
-     * @param:	string to scape
-     * @return:	the new string scaped
+     *
+     * @param array $args string to scape
+     *
+     * @return The new string scaped
      */
-    public function prepara_etiqueta($args) {
+    public function prepara_etiqueta($args)
+    {
         $text = FormUtil::getPassedValue('text', isset($args['text']) ? $args['text'] : date("m"), 'POST');
         // Replace apostrofe with &acute;
         $text = str_replace("\r", '', str_replace('\'', '&acute;', $text));
@@ -15,16 +27,19 @@ class IWagendas_Controller_User extends Zikula_AbstractController
         $text = str_replace('"', '&quot;', $text);
         // Replace returns with <br />
         $text = preg_replace('/(?<!>)\n/', "<br />", $text);
+
         return $text;
     }
 
     /**
      * User main entrance
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat) i Toni Ginard Lladó (aginard@xtec.cat)
-     * @param:	The main values of position in the agendas: month, year, agenda identity...
-     * @return:	Redirect to main page
+     *
+     * @param array $args The main values of position in the agendas: month, year, agenda identity...
+     *
+     * @return Redirect to main page
      */
-    public function main($args) {
+    public function main($args)
+    {
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : date("m"), 'REQUEST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : date("Y"), 'REQUEST');
         $llistat = FormUtil::getPassedValue('llistat', isset($args['llistat']) ? $args['llistat'] : null, 'REQUEST');
@@ -507,12 +522,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Get note icons for managment
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	The values that define a specific note
-     * @return:	A string with the icons images and links
+     *
+     * @param array $args The values that define a specific note
+     *
+     * @return A string with the icons images and links
      */
-    public function icons($args) {
-
+    public function icons($args)
+    {
         $agenda = FormUtil::getPassedValue('agenda', isset($args['agenda']) ? $args['agenda'] : null, 'POST');
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $accessLevel = FormUtil::getPassedValue('accessLevel', isset($args['accessLevel']) ? $args['accessLevel'] : null, 'POST');
@@ -553,16 +569,17 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Check the type of access of the user into the agenda
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	Array with the agenda identity, the groups string access, the managers stringf acces and the agenda state
-     * @return:	0 - No access
-      1 - Read only
-      2 - Write
-      3 - Manage own
-      4 - Manage all
+     *
+     * @param array $args Array with the agenda identity, the groups string access, the managers stringf acces and the agenda state
+     *
+     * @return Access type  0 - No access
+     *                      1 - Read only
+     *                      2 - Write
+     *                      3 - Manage own
+     *                      4 - Manage all
      */
-    public function te_acces($args) {
-
+    public function te_acces($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $grup = FormUtil::getPassedValue('grup', isset($args['grup']) ? $args['grup'] : null, 'POST');
         $resp = FormUtil::getPassedValue('resp', isset($args['resp']) ? $args['resp'] : null, 'POST');
@@ -611,10 +628,11 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Show the module information
-     * @author	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @return	The module information
+     *
+     * @return The module information
      */
-    public function module() {
+    public function module()
+    {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
@@ -628,11 +646,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Compose the user menu depending on which agendas can access
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat) i Toni Ginard Lladó (aginard@xtec.cat)
-     * @param	Agenda identity and mounht and year position
-     * @return	The user menu
+     *
+     * @param array $args Agenda identity and mounht and year position
+     *
+     * @return The user menu
      */
-    public function menu($args) {
+    public function menu($args)
+    {
         $dia = FormUtil::getPassedValue('dia', isset($args['dia']) ? $args['dia'] : date("d"), 'REQUEST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : date("m"), 'REQUEST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : date("Y"), 'REQUEST');
@@ -897,16 +917,17 @@ class IWagendas_Controller_User extends Zikula_AbstractController
         $today = array('month' => date('m'),
                        'year' => date('Y'));
         $this->view->assign('today', $today);
+
         return $this->view->fetch('IWagendas_user_menu.htm');
     }
 
     /**
-     * get all the agendas where the user can access
-     * @author	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @return	An array with the agendas identities and names where the user can access
+     * Get all the agendas where the user can access
+     *
+     * @return An array with the agendas identities and names where the user can access
      */
-    public function getUserAgendas() {
-
+    public function getUserAgendas()
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
@@ -954,12 +975,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * return the information associated to a holiday
-     * @author	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param	Information about the day requested
-     * @return	An array with the holiday information
+     *
+     * @param array $args Information about the day requested
+     *
+     * @return An array with the holiday information
      */
-    public function festiu($args) {
-
+    public function festiu($args)
+    {
         $dia = FormUtil::getPassedValue('dia', isset($args['dia']) ? $args['dia'] : date("d"), 'POST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : date("m"), 'POST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : date("Y"), 'POST');
@@ -995,12 +1017,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Creates the form for new annotations
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat) i Toni Ginard Lladó (aginard@xtec.cat)
-     * @param	Information about the day where to add the note and the agenda
-     * @return	The form fields
+     *
+     * @param array $args Information about the day where to add the note and the agenda
+     *
+     * @return The form fields
      */
-    public function nova($args) {
-
+    public function nova($args)
+    {
         $dia = FormUtil::getPassedValue('dia', isset($args['dia']) ? $args['dia'] : date("d"), 'REQUEST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : date("m"), 'REQUEST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : date("Y"), 'REQUEST');
@@ -1227,12 +1250,14 @@ class IWagendas_Controller_User extends Zikula_AbstractController
     }
 
     /**
-     * get the values recevied from the form to create a new agenda
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat) i Toni Ginard Lladó (aginard@xtec.cat)
-     * @param	Information about the agenda
-     * @return	True if success and false otherwise
+     * Get the values recevied from the form to create a new agenda
+     *
+     * @param array $args Information about the agenda
+     *
+     * @return True if success and false otherwise
      */
-    public function crear($args) {
+    public function crear($args)
+    {
         $diatriat = FormUtil::getPassedValue('diatriat', isset($args['diatriat']) ? $args['diatriat'] : null, 'REQUEST');
         $mestriat = FormUtil::getPassedValue('mestriat', isset($args['mestriat']) ? $args['mestriat'] : null, 'REQUEST');
         $anytriat = FormUtil::getPassedValue('anytriat', isset($args['anytriat']) ? $args['anytriat'] : null, 'REQUEST');
@@ -1574,12 +1599,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * set a note as complete or incomplete
-     * @author	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param	Information about the anotation
-     * @return	True if success and false otherwise
+     *
+     * @param array $args Information about the anotation
+     *
+     * @return True if success and false otherwise
      */
-    public function completa($args) {
-
+    public function completa($args)
+    {
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'REQUEST');
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'REQUEST');
@@ -1665,12 +1691,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Delete a note
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat) i Toni Ginard Lladó (aginard@xtec.cat)
-     * @param	Information about the anotation
-     * @return	True if success and false otherwise
+     *
+     * @param array $args Information about the anotation
+     *
+     * @return True if success and false otherwise
      */
-    public function esborra($args) {
-
+    public function esborra($args)
+    {
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'REQUEST');
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'REQUEST');
@@ -1864,12 +1891,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Delete a note
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat) i Toni Ginard Lladó (aginard@xtec.cat)
-     * @param	Information about the anotation
-     * @return	True if success and false otherwise
+     *
+     * @param array $args Information about the anotation
+     *
+     * @return True if success and false otherwise
      */
-    public function deleteNote($args) {
-
+    public function deleteNote($args)
+    {
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'REQUEST');
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
@@ -2010,12 +2038,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Builds and shows the schoolar calendar
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat) i Toni Ginard Lladó (aginard@xtec.cat)
-     * @param	Information about the current date
-     * @return	The schoolar calendar
+     *
+     * @param array $args Information about the current date
+     *
+     * @return The schoolar calendar
      */
-    public function cescolar($args) {
-
+    public function cescolar($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'REQUEST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'REQUEST');
@@ -2184,12 +2213,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Edit an agenda event
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat) i Toni Ginard Lladó (aginard@xtec.cat)
-     * @param	Information about the current event
-     * @return	return user to the agenda
+     *
+     * @param array $args Information about the current event
+     *
+     * @return Return user to the agenda
      */
-    public function editar($args) {
-
+    public function editar($args)
+    {
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'GET');
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'GET');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'GET');
@@ -2417,12 +2447,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * get the values of the information icon
-     * @author	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param	Information about needed day
-     * @return	return the icon information values
+     *
+     * @param array $args Information about needed day
+     *
+     * @return Return the icon information values
      */
-    public function info($args) {
-
+    public function info($args)
+    {
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'POST');
         $dia = FormUtil::getPassedValue('dia', isset($args['dia']) ? $args['dia'] : null, 'POST');
@@ -2446,11 +2477,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * update values
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat) i Toni Ginard Lladó (aginard@xtec.cat)
-     * @param	Information about the note
-     * @return	return true if success and false otherwise
+     *
+     * @param array $args Information about the note
+     *
+     * @return Return true if success and false otherwise
      */
-    public function modifica($args) {
+    public function modifica($args)
+    {
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         $diatriat = FormUtil::getPassedValue('diatriat', isset($args['diatriat']) ? $args['diatriat'] : null, 'POST');
         $mestriat = FormUtil::getPassedValue('mestriat', isset($args['mestriat']) ? $args['mestriat'] : null, 'POST');
@@ -2686,12 +2719,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * set a note as protected by auto deletion or set off the protection
-     * @author	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param	Information about the note to change
-     * @return	return true if success and false otherwise
+     *
+     * @param array $args Information about the note to change
+     *
+     * @return Return true if success and false otherwise
      */
-    public function protegida($args) {
-
+    public function protegida($args)
+    {
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'GET');
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'GET');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'GET');
@@ -2756,12 +2790,14 @@ class IWagendas_Controller_User extends Zikula_AbstractController
     }
 
     /**
-     * send a copy to the user personal agenda
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat) i Toni Ginard Lladó (aginard@xtec.cat)
-     * @param	Information about the note to copy
-     * @return	return true if success and false otherwise
+     * Send a copy to the user personal agenda
+     *
+     * @param array $args Information about the note to copy
+     *
+     * @return Return true if success and false otherwise
      */
-    public function meva($args) {
+    public function meva($args)
+    {
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'REQUEST');
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'REQUEST');
@@ -2881,12 +2917,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * get the period for a specific day
-     * @author	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param	Information about the day
-     * @return	return the period information
+     *
+     * @param array $args Information about the day
+     *
+     * @return Return the period information
      */
-    public function periode($args) {
-
+    public function periode($args)
+    {
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'POST');
         $dia = FormUtil::getPassedValue('dia', isset($args['dia']) ? $args['dia'] : null, 'POST');
@@ -2918,11 +2955,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * change user subscription into a aganda
-     * @author	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param	Information about the agenda
-     * @return	return true if success and false otherwise
+     *
+     * @param array $args Information about the agenda
+     *
+     * @return Return true if success and false otherwise
      */
-    public function subs($args) {
+    public function subs($args)
+    {
         $agenda = FormUtil::getPassedValue('agenda', isset($args['agenda']) ? $args['agenda'] : 0, 'POST');
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
@@ -2956,12 +2995,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Download a file
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	name of the file that have to be downloaded
-     * @return:	The file required
+     *
+     * @param array $args Name of the file that have to be downloaded
+     *
+     * @return The file required
      */
-    public function download($args) {
-
+    public function download($args)
+    {
         // Get the parameters
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'GET');
         $fileName = FormUtil::getPassedValue('fileName', isset($args['fileName']) ? $args['fileName'] : 0, 'GET');
@@ -3010,12 +3050,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Subscribe automatically to agenda to all users who can access the agenda
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat) i Toni Ginard Lladó (aginard@xtec.cat)
-     * @param	Information about the agenda
-     * @return	return the form needed to subscribe users
+     *
+     * @param array $args Information about the agenda
+     *
+     * @return Return the form needed to subscribe users
      */
-    public function substots($args) {
-
+    public function substots($args)
+    {
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'REQUEST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'REQUEST');
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'REQUEST');
@@ -3091,12 +3132,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Delete the notes older than a given date
-     * @author	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param	Date needed
-     * @return	true if success and false otherwise
+     *
+     * @param array $args Date needed
+     *
+     * @return True if success and false otherwise
      */
-    public function esborraantigues($args) {
-
+    public function esborraantigues($args)
+    {
         $dia = FormUtil::getPassedValue('dia', isset($args['dia']) ? $args['dia'] : null, 'POST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'POST');
@@ -3166,12 +3208,13 @@ class IWagendas_Controller_User extends Zikula_AbstractController
 
     /**
      * Create the subscription to a group of users into the agenda
-     * @author	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param	agenda identity and user to subscribe
-     * @return	true if success and false otherwise
+     *
+     * @param array $args Agenda identity and user to subscribe
+     *
+     * @return True if success and false otherwise
      */
-    public function subscriuauto($args) {
-
+    public function subscriuauto($args)
+    {
         $dia = FormUtil::getPassedValue('dia', isset($args['dia']) ? $args['dia'] : null, 'POST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'POST');
@@ -3224,13 +3267,10 @@ class IWagendas_Controller_User extends Zikula_AbstractController
     }
 
     /**
-     * get the user notes from Google calendar (Gdata Zend functions are necessary)
-     * @author	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param
-     * @return
+     * Get the user notes from Google calendar (Gdata Zend functions are necessary)
      */
-    public function gCalendar() {
-
+    public function gCalendar()
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
@@ -3574,8 +3614,8 @@ class IWagendas_Controller_User extends Zikula_AbstractController
         return true;
     }
 
-    public function getAuthSubUrl($args) {
-
+    public function getAuthSubUrl($args)
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
@@ -3598,8 +3638,8 @@ class IWagendas_Controller_User extends Zikula_AbstractController
      *
      * @return string Current URL
      */
-    public function getCurrentUrl() {
-
+    public function getCurrentUrl()
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
@@ -3611,8 +3651,8 @@ class IWagendas_Controller_User extends Zikula_AbstractController
         return $protocol . $host . $port . $php_request_uri;
     }
 
-    public function getAuthSubHttpClient() {
-
+    public function getAuthSubHttpClient()
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
@@ -3629,8 +3669,8 @@ class IWagendas_Controller_User extends Zikula_AbstractController
         return $client;
     }
 
-    public function getUserGCalendarSettings() {
-
+    public function getUserGCalendarSettings()
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
@@ -3678,21 +3718,20 @@ class IWagendas_Controller_User extends Zikula_AbstractController
         return $userGCalendarSettings;
     }
 
-    public function getGdataFunctionsAvailability() {
-        //return false;
-
+    public function getGdataFunctionsAvailability()
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
         $zendGdataFuncAvailable = false;
-        if (include_once 'Zend/Loader.php') {
-            if (include_once('Zend/Gdata/App.php')) $zendGdataFuncAvailable = true;
+        if (file_exists('lib/vendor/Zend/Gdata/App.php')) {
+            $zendGdataFuncAvailable = true;
         }
         return $zendGdataFuncAvailable;
     }
 
-    public function getGdataFunctionsUsability() {
-
+    public function getGdataFunctionsUsability()
+    {
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
@@ -3709,8 +3748,8 @@ class IWagendas_Controller_User extends Zikula_AbstractController
         return (boolean) $usability;
     }
 
-    public function removeGCalendarUseVar($args) {
-
+    public function removeGCalendarUseVar($args)
+    {
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : date("m"), 'GET');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : date("Y"), 'GET');
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'GET');
@@ -3729,8 +3768,8 @@ class IWagendas_Controller_User extends Zikula_AbstractController
                                                     'daid' => $daid)));
     }
 
-    public function getCalendarContent($args) {
-
+    public function getCalendarContent($args)
+    {
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'REQUEST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'REQUEST');
         $user = (UserUtil::isLoggedIn()) ? UserUtil::getVar('uid') : '-1';
@@ -3893,25 +3932,25 @@ class IWagendas_Controller_User extends Zikula_AbstractController
         $this->view->assign('month_name', $month_names[(int) $month - 1]);
         $this->view->assign('day_names_abbr', $day_names_abbr);
         $this->view->assign('days', $days);
+
         return $this->view->fetch('IWagendas_block_Calendar.htm');
     }
 
     /**
-     * get the notes of a user for a vcalendar format
-     * @author	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param	totes for all the notes or only future notes
-     * @return	a file for vcalendar format
-     */
-    /*
-      public function vcalendar($args)
-      {
+     * Get the notes of a user for a vcalendar format
+     *
+     * @param array $argsTotes for all the notes or only future notes
+     * @return A file for vcalendar format
+     * /
+    public function vcalendar($args)
+    {
       $dia = FormUtil::getPassedValue('dia', isset($args['dia']) ? $args['dia'] : null, 'GET');
       $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'GET');
       $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'GET');
       $totes = FormUtil::getPassedValue('totes', isset($args['totes']) ? $args['totes'] : null, 'GET');
 
       if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
-      return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
+        return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
       }
 
       // Get all the notes for a user

@@ -1,23 +1,37 @@
 <?php
+/**
+ * Intraweb
+ *
+ * @copyright  (c) 2011, Intraweb Development Team
+ * @link       http://code.zikula.org/intraweb/
+ * @license    GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @package    Intraweb_Modules
+ * @subpackage IWAgendas
+ */
 
-class IWagendas_Block_Next extends Zikula_Block {
-    public function init() {
+class IWagendas_Block_Next extends Zikula_Controller_AbstractBlock
+{
+    public function init()
+    {
         SecurityUtil::registerPermissionSchema('IWagendas:nextblock:', 'Block title::');
     }
 
-    public function info() {
-        return array('text_type' => 'Next',
-                     'module' => 'IWagendas',
+    public function info()
+    {
+        return array('text_type'      => 'Next',
+                     'module'         => 'IWagendas',
                      'text_type_long' => $this->__('Notes for the next days'),
                      'allow_multiple' => false,
-                     'form_content' => false,
-                     'form_refresh' => false,
-                     'show_preview' => true);
+                     'form_content'   => false,
+                     'form_refresh'   => false,
+                     'show_preview'   => true);
     }
 
-    public function display($blockinfo) {
+    public function display($blockinfo)
+    {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas:nextblock:', $blockinfo['title'] . "::", ACCESS_READ)) return;
+
         // Check if the module is available
         if (!ModUtil::available('IWagendas')) return;
         $user = (UserUtil::isLoggedIn()) ? UserUtil::getVar('uid') : '-1';
@@ -85,21 +99,18 @@ class IWagendas_Block_Next extends Zikula_Block {
                              'lifetime' => '700'));
 
         $blockinfo['content'] = $s;
+
         return BlockUtil::themesideblock($blockinfo);
     }
 
-    public function update($blockinfo) {
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas:nextblock:', "$blockinfo[title]::", ACCESS_ADMIN)) return;
-
+    public function update($blockinfo)
+    {
         $blockinfo['url'] = "$blockinfo[dies]";
         return $blockinfo;
     }
 
-    public function modify($blockinfo) {
-        // Security check
-        if (!SecurityUtil::checkPermission('IWagendas:nextblock:', "$blockinfo[title]::", ACCESS_ADMIN))
-            return;
+    public function modify($blockinfo)
+    {
         $diesvalor = (!empty($blockinfo['url'])) ? $blockinfo['url'] : '7';
         $sortida = '<tr><td valign="top">' . $this->__('Number of days to show in the block') . '</td><td>' . "<input type=\"text\" name=\"dies\" size=\"5\" maxlength=\"255\" value=\"$diesvalor\" />" . "</td></tr>\n";
         return $sortida;

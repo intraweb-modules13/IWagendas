@@ -1,16 +1,28 @@
 <?php
 /**
- * Admin main page
- * @author		Albert PÃ©rez Monfort (aperezm@xtec.cat)
- * @return		List of the agendas available
+ * Intraweb
+ *
+ * @copyright  (c) 2011, Intraweb Development Team
+ * @link       http://code.zikula.org/intraweb/
+ * @license    GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @package    Intraweb_Modules
+ * @subpackage IWAgendas
  */
+
 class IWagendas_Controller_Admin extends Zikula_AbstractController
 {
-    public function main() {
+    /**
+     * Admin main page
+     *
+     * @return string List of the agendas available
+     */
+    public function main()
+    {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
+
         // Get the info about the shared agendas
         $agendas = ModUtil::apiFunc('IWagendas', 'user', 'getAllAgendas',
                                      array('onlyShared' => 1));
@@ -19,11 +31,13 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $sv = ModUtil::func('IWmain', 'user', 'genSecurityValue');
         $groupsInfo = ModUtil::func('IWmain', 'user', 'getAllGroupsInfo',
                                      array('sv' => $sv));
+
         //get all users information
         $sv = ModUtil::func('IWmain', 'user', 'genSecurityValue');
         $usersInfo = ModUtil::func('IWmain', 'user', 'getAllUsersInfo',
                                     array('sv' => $sv,
                                           'info' => 'ncc'));
+
         $agendasArray = array();
         foreach ($agendas as $agenda) {
             $groupsArray = array();
@@ -54,66 +68,81 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
                                     'protegida' => $agenda['protegida'],
                                     'color' => $agenda['color']);
         }
+
         $this->view->assign('agendas', $agendasArray);
+
         return $this->view->fetch('IWagendas_admin_main.htm');
     }
     
     /**
      * Show the module information
-     * @author	Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @return	The module information
+     *
+     * @return The module information
      */
-    public function module() {
+    public function module()
+    {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
+
         $module = ModUtil::func('IWmain', 'user', 'module_info',
                                  array('module_name' => 'IWagendas',
                                        'type' => 'admin'));
+
         $this->view->assign('module', $module);
+
         return $this->view->fetch('IWagendas_admin_module.htm');
     }
 
     /**
      * get the characteristics content of an agenda
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @param	The agenda identity
-     * @return	The agenda information
+     *
+     * @param array $args The agenda identity
+     *
+     * @return The agenda information
      */
-    public function getCharsContent($args) {
+    public function getCharsContent($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
+
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
+
         //Get field information
         $item = ModUtil::apiFunc('IWagendas', 'user', 'getAgenda',
                                   array('daid' => $daid));
+
         if ($item == false) {
             LogUtil::registerError($this->__('The agenda was not found'));
             return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
         }
+
         return $item;
     }
 
     /**
      * Show the form needed to create a new agenda
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @return	The creation form
+     *
+     * @return The creation form
      */
-    public function newItem() {
+    public function newItem()
+    {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
+
         $nomcamp = array($this->__('Nota name'),
                          $this->__('Secondary field') . ' 1',
                          $this->__('Secondary field') . ' 2',
                          $this->__('Secondary field') . ' 3',
                          $this->__('Secondary field') . ' 4',
                          $this->__('Secondary field') . ' 5');
-        //Define the possible types of fields
+
+        // Define the possible types of fields
         $camps0 = array(array('id' => 1,
                               'name' => $this->__('Text')),
                         array('id' => 2,
@@ -135,26 +164,32 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
                                   'camps' => $camps,
                                   'order' => $i + 1);
         }
+
         $this->view->assign('fields', $fielsArray);
+
         return $this->view->fetch('IWagendas_admin_newItem.htm');
     }
 
     /**
      * Get the information from the form of creation of an agenda
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @param	Array with the information from the form
-     * @return	redirect the user to main page
+     *
+     * @param  array $args Array with the information from the form
+     *
+     * @return Redirect the user to main page
      */
-    public function create($args) {
+    public function create($args)
+    {
         $nom_agenda = FormUtil::getPassedValue('nom_agenda', isset($args['nom_agenda']) ? $args['nom_agenda'] : null, 'POST');
-        $descriu = FormUtil::getPassedValue('descriu', isset($args['descriu']) ? $args['descriu'] : null, 'POST');
-        $activa = FormUtil::getPassedValue('activa', isset($args['activa']) ? $args['activa'] : null, 'POST');
+        $descriu    = FormUtil::getPassedValue('descriu', isset($args['descriu']) ? $args['descriu'] : null, 'POST');
+        $activa     = FormUtil::getPassedValue('activa', isset($args['activa']) ? $args['activa'] : null, 'POST');
+
         $c1 = FormUtil::getPassedValue('c1', isset($args['c1']) ? $args['c1'] : null, 'POST');
         $c2 = FormUtil::getPassedValue('c2', isset($args['c2']) ? $args['c2'] : null, 'POST');
         $c3 = FormUtil::getPassedValue('c3', isset($args['c3']) ? $args['c3'] : null, 'POST');
         $c4 = FormUtil::getPassedValue('c4', isset($args['c4']) ? $args['c4'] : null, 'POST');
         $c5 = FormUtil::getPassedValue('c5', isset($args['c5']) ? $args['c5'] : null, 'POST');
         $c6 = FormUtil::getPassedValue('c6', isset($args['c6']) ? $args['c6'] : null, 'POST');
+
         $tc1 = FormUtil::getPassedValue('tc1', isset($args['tc1']) ? $args['tc1'] : null, 'POST');
         $tc2 = FormUtil::getPassedValue('tc2', isset($args['tc2']) ? $args['tc2'] : null, 'POST');
         $tc3 = FormUtil::getPassedValue('tc3', isset($args['tc3']) ? $args['tc3'] : null, 'POST');
@@ -166,28 +201,34 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $op4 = FormUtil::getPassedValue('op4', isset($args['op4']) ? $args['op4'] : null, 'POST');
         $op5 = FormUtil::getPassedValue('op5', isset($args['op5']) ? $args['op5'] : null, 'POST');
         $op6 = FormUtil::getPassedValue('op6', isset($args['op6']) ? $args['op6'] : null, 'POST');
-        $adjunts = FormUtil::getPassedValue('adjunts', isset($args['adjunts']) ? $args['adjunts'] : null, 'POST');
+
+        $adjunts   = FormUtil::getPassedValue('adjunts', isset($args['adjunts']) ? $args['adjunts'] : null, 'POST');
         $protegida = FormUtil::getPassedValue('protegida', isset($args['protegida']) ? $args['protegida'] : null, 'POST');
-        $color = FormUtil::getPassedValue('color', isset($args['color']) ? $args['color'] : null, 'POST');
+        $color     = FormUtil::getPassedValue('color', isset($args['color']) ? $args['color'] : null, 'POST');
+
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
+
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
             return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
         }
+
         // Needed argument
         if (!isset($nom_agenda) || $nom_agenda == '') {
             LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
             return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
         }
+
         //if field type is different to list set list options as ''
         if ($tc2 != 5) $op2 = '';
         if ($tc3 != 5) $op3 = '';
         if ($tc4 != 5) $op4 = '';
         if ($tc5 != 5) $op5 = '';
         if ($tc6 != 5) $op6 = '';
+
         //Check if defined agenda's field are consecutive
         for ($i = 1; $i < 7; $i++) {
             $c = 'c' . $i;
@@ -201,6 +242,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
                 $buit = false;
             }
         }
+
         //Update the agenda
         $lid = ModUtil::apiFunc('IWagendas', 'admin', 'create',
                                  array('nom_agenda' => $nom_agenda,
@@ -230,58 +272,70 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             //success
             LogUtil::registerStatus($this->__('New agenda created'));
         }
+
         //redirect the user to main page
         return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
     }
 
     /**
-     * delete an agenda
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @param	Array with the identity of the agenda
-     * @return	redirect the user to main page
+     * Delete an agenda
+     *
+     * @param array $args Array with the identity of the agenda
+     *
+     * @return Redirect the user to main page
      */
-    public function delete($args) {
-        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
+    public function delete($args)
+    {
+        $daid    = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
+
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
-        //Get item
+
+        // Get item
         $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda',
                                   array('daid' => $daid));
         if ($item == false) {
             LogUtil::registerError($this->__('The agenda was not found'));
             return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
         }
+
         if (!$confirm) {
             $this->view->assign('item', $item);
             return $this->view->fetch('IWagendas_admin_delete.htm');
         }
+
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
             return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
         }
-        if (ModUtil::apiFunc('IWagendas', 'admin', 'delete',
-                              array('daid' => $daid))) {
-            //Success
+
+        if (ModUtil::apiFunc('IWagendas', 'admin', 'delete', array('daid' => $daid))) {
+            // Success
             LogUtil::registerStatus($this->__('The agenda has been deleted'));
         }
+
         return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
     }
 
     /**
      * Show the form needed to edit an agenda
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @param	array with the identity of the agenda
-     * @return	The creation form
+     *
+     * @param array $args Array with the identity of the agenda
+     *
+     * @return The creation form
      */
-    public function edit($args) {
+    public function edit($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'GET');
+
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
+
         //Get field information
         $item = ModUtil::apiFunc('IWagendas', 'user', 'getAgenda',
                                   array('daid' => $daid));
@@ -289,12 +343,14 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerError($this->__('The agenda was not found'));
             return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
         }
+
         $nomcamp = array($this->__('Nota name'),
                          $this->__('Secondary field') . ' 1',
                          $this->__('Secondary field') . ' 2',
                          $this->__('Secondary field') . ' 3',
                          $this->__('Secondary field') . ' 4',
                          $this->__('Secondary field') . ' 5');
+
         //Define the possible types of fields
         $camps0 = array(array('id' => 1,
                               'name' => $this->__('Text')),
@@ -310,8 +366,10 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
                               'name' => $this->__('Event date')),
                         array('id' => 5,
                               'name' => $this->__('Selection')));
-        $msgUsers = ModUtil::getVar('IWagendas', 'msgUsersDefault');
+
+        $msgUsers     = ModUtil::getVar('IWagendas', 'msgUsersDefault');
         $msgUsersResp = ModUtil::getVar('IWagendas', 'msgUsersRespDefault');
+
         $this->view->assign('msgUsers', $msgUsers);
         $this->view->assign('msgUsersResp', $msgUsersResp);
         for ($i = 0; $i < 6; $i++) {
@@ -328,16 +386,19 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         }
         $this->view->assign('fields', $fielsArray);
         $this->view->assign('item', $item);
+
         return $this->view->fetch('IWagendas_admin_edit.htm');
     }
 
     /**
      * Check the information of an edited agenda
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @param	array with the information of the agenda
-     * @return	Redirect user to main admin page
+     *
+     * @param array $args Array with the information of the agenda
+     *
+     * @return Redirect user to main admin page
      */
-    public function update($args) {
+    public function update($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $nom_agenda = FormUtil::getPassedValue('nom_agenda', isset($args['nom_agenda']) ? $args['nom_agenda'] : null, 'POST');
         $descriu = FormUtil::getPassedValue('descriu', isset($args['descriu']) ? $args['descriu'] : null, 'POST');
@@ -428,11 +489,13 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
 
     /**
      * Add a group with access to the agenda
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @param	array with the group identity
-     * @return	Redirect user to main admin page
+     *
+     * @param array $args Array with the group identity
+     *
+     * @return Redirect user to main admin page
      */
-    public function addGroup($args) {
+    public function addGroup($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
         $group = FormUtil::getPassedValue('group', isset($args['group']) ? $args['group'] : null, 'POST');
@@ -511,25 +574,30 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
                 }
             }
         }
+
         return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
     }
 
     /**
      * Add a manager in the agenda
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @param	array with the manager identity
-     * @return	Redirect user to main admin page
+     *
+     * @param array $args Array with the manager identity
+     *
+     * @return Redirect user to main admin page
      */
-    public function addManager($args) {
+    public function addManager($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $uid = FormUtil::getPassedValue('uid', isset($args['uid']) ? $args['uid'] : null, 'POST');
         $group = FormUtil::getPassedValue('group', isset($args['group']) ? $args['group'] : null, 'POST');
         $msgUsersResp = FormUtil::getPassedValue('msgUsersResp', isset($args['msgUsersResp']) ? $args['msgUsersResp'] : ModUtil::getVar('IWagendas', 'msgUsersRespDefault'), 'POST');
         $msgUsersRespDefault = FormUtil::getPassedValue('msgUsersRespDefault', isset($args['msgUsersRespDefault']) ? $args['msgUsersRespDefault'] : null, 'POST');
+
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
         }
+
         //Get item
         $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda',
                                   array('daid' => $daid));
@@ -596,16 +664,19 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
                 }
             }
         }
+
         return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
     }
 
     /**
      * Delete a group with access to the agenda
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @param	the information of the group that have to be deleted
-     * @return	Redirect user to main admin page
+     *
+     * @param array $args The information of the group that have to be deleted
+     *
+     * @return Redirect user to main admin page
      */
-    public function deleteGroup($args) {
+    public function deleteGroup($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
         $id = FormUtil::getPassedValue('id', isset($args['id']) ? $args['id'] : null, 'REQUEST');
@@ -657,11 +728,13 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
 
     /**
      * Delete a manager of the agenda
-     * @author	Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param	the information of the manager who is going to be deleted
-     * @return	Redirect user to main admin page
+     *
+     * @param array $args The information of the manager who is going to be deleted
+     *
+     * @return Redirect user to main admin page
      */
-    public function deleteManager($args) {
+    public function deleteManager($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
         $id = FormUtil::getPassedValue('id', isset($args['id']) ? $args['id'] : null, 'REQUEST');
@@ -704,15 +777,17 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             //Success
             LogUtil::registerStatus($this->__('A manager has been deleted'));
         }
+
         return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
     }
 
     /**
      * Modify the configuration of the agenda
-     * @author	Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @return	page settings
+     *
+     * @return Page settings
      */
-    public function configura() {
+    public function configura()
+    {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
@@ -944,16 +1019,19 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $this->view->assign('comentaris', $comentaris);
         $this->view->assign('llegenda', $llegenda);
         $this->view->assign('infos', $infos);
+
         return $this->view->fetch('IWagendas_admin_conf.htm');
     }
 
     /**
      * Update the module vars
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @param	Module vars values
-     * @return	Redirect user to configuration page
+     *
+     * @param array $args Module vars values
+     *
+     * @return Redirect user to configuration page
      */
-    public function conf_modifica($args) {
+    public function conf_modifica($args)
+    {
         $inici = FormUtil::getPassedValue('inici', isset($args['inici']) ? $args['inici'] : null, 'POST');
         $ce = FormUtil::getPassedValue('ce', isset($args['ce']) ? $args['ce'] : null, 'POST');
         $comentaris = FormUtil::getPassedValue('comentaris', isset($args['comentaris']) ? $args['comentaris'] : null, 'POST');
@@ -967,6 +1045,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $caducadies = FormUtil::getPassedValue('caducadies', isset($args['caducadies']) ? $args['caducadies'] : null, 'POST');
         $urladjunts = FormUtil::getPassedValue('urladjunts', isset($args['urladjunts']) ? $args['urladjunts'] : null, 'POST');
         $allowGCalendar = FormUtil::getPassedValue('allowGCalendar', isset($args['allowGCalendar']) ? $args['allowGCalendar'] : null, 'POST');
+
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
@@ -1001,16 +1080,19 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         ModUtil::setVar('IWagendas', 'urladjunts', $urladjunts);
         ModUtil::setVar('IWagendas', 'allowGCalendar', $allowGCalendar);
         LogUtil::registerStatus($this->__('Agenda configuration updated'));
+
         return System::redirect(ModUtil::url('IWagendas', 'admin', 'configura'));
     }
 
     /**
      * Output a form necessary to create a new element
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @param	index of the element to create
-     * @return	Redirect user to form page
+     *
+     * @param array $args Index of the element to create
+     *
+     * @return Redirect user to form page
      */
-    public function nouallista($args) {
+    public function nouallista($args)
+    {
         $index = FormUtil::getPassedValue('index', isset($args['index']) ? $args['index'] : null, 'REQUEST');
         $dada = FormUtil::getPassedValue('dada', isset($args['dada']) ? $args['dada'] : null, 'REQUEST');
         $dia1 = FormUtil::getPassedValue('dia1', isset($args['dia1']) ? $args['dia1'] : null, 'POST');
@@ -1131,16 +1213,19 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $this->view->assign('any2', $any2);
         $this->view->assign('text', $text);
         $this->view->assign('color', $color);
+
         return $this->view->fetch('IWagendas_admin_newElement.htm');
     }
 
     /**
      * Get the values from the form and chenge them
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @param	index of the element to create
-     * @return	Redirect user to configuration page
+     *
+     * @param array $args Index of the element to create
+     *
+     * @return Redirect user to configuration page
      */
-    public function modifica_llistes($args) {
+    public function modifica_llistes($args)
+    {
         $index = FormUtil::getPassedValue('index', isset($args['index']) ? $args['index'] : null, 'REQUEST');
         $dada = FormUtil::getPassedValue('dada', isset($args['dada']) ? $args['dada'] : null, 'REQUEST');
         $dia1 = FormUtil::getPassedValue('dia1', isset($args['dia1']) ? $args['dia1'] : null, 'POST');
@@ -1344,11 +1429,13 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
 
     /**
      * Delete a value
-     * @author	Albert Pï¿œrez Monfort (aperezm@xtec.cat)
-     * @param	value that have to be deleted
-     * @return	Redirect user to configuration page
+     *
+     * @param array $args Value that have to be deleted
+     *
+     * @return Redirect user to configuration page
      */
-    public function esborra($args) {
+    public function esborra($args)
+    {
         $index = FormUtil::getPassedValue('index', isset($args['index']) ? $args['index'] : null, 'REQUEST');
         $dada = FormUtil::getPassedValue('dada', isset($args['dada']) ? $args['dada'] : null, 'REQUEST');
         // Security check
@@ -1441,7 +1528,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
                 ModUtil::setVar('IWagendas', 'informacions', $dada);
                 break;
         }
+
         return System::redirect(ModUtil::url('IWagendas', 'admin', 'configura'));
     }
-
 }

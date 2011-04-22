@@ -1,28 +1,41 @@
 <?php
-class IWagendas_Block_Calendar extends Zikula_Block
+/**
+ * Intraweb
+ *
+ * @copyright  (c) 2011, Intraweb Development Team
+ * @link       http://code.zikula.org/intraweb/
+ * @license    GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @package    Intraweb_Modules
+ * @subpackage IWAgendas
+ */
+
+class IWagendas_Block_Calendar extends Zikula_Controller_AbstractBlock
 {
-    public function init() {
+    public function init()
+    {
         SecurityUtil::registerPermissionSchema("IWagendas:calendarblock:", "Block title::");
     }
 
-    public function info() {
-        return array('text_type' => 'Calendar',
-                     'module' => 'IWagendas',
+    public function info()
+    {
+        return array('text_type'      => 'Calendar',
+                     'module'         => 'IWagendas',
                      'text_type_long' => __('Calendar'),
                      'allow_multiple' => true,
-                     'form_content' => false,
-                     'form_refresh' => false,
-                     'show_preview' => true);
+                     'form_content'   => false,
+                     'form_refresh'   => false,
+                     'show_preview'   => true);
     }
 
     /**
      * Show the month calendar into a bloc
-     * @autor:	Albert Pérez Monfort
-     * @autor:	Toni Ginard Lladó
-     * param:	The month and the year to show
-     * return:	The calendar content
+     *
+     * @param array $blockinfo The month and the year to show
+     *
+     * @return The calendar content
      */
-    public function display($blockinfo) {
+    public function display($blockinfo)
+    {
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : 0, 'REQUEST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : 0, 'REQUEST');
         // Security check

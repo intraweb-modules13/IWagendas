@@ -1,14 +1,25 @@
 <?php
-
 /**
- * get all agendas information
- * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
- * @param:	form identity and values
- * @return:	true if success and false otherwise
+ * Intraweb
+ *
+ * @copyright  (c) 2011, Intraweb Development Team
+ * @link       http://code.zikula.org/intraweb/
+ * @license    GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @package    Intraweb_Modules
+ * @subpackage IWAgendas
  */
+
 class IWagendas_Api_User extends Zikula_AbstractApi
 {
-    public function getAllAgendas($args) {
+    /**
+     * Get all agendas information
+     *
+     * @param array $args Form identity and values
+     *
+     * @return True if success and false otherwise
+     */
+    public function getAllAgendas($args)
+    {
         $gAgendas = FormUtil::getPassedValue('gAgendas', isset($args['gAgendas']) ? $args['gAgendas'] : null, 'POST');
         $onlyShared = FormUtil::getPassedValue('onlyShared', isset($args['onlyShared']) ? $args['onlyShared'] : null, 'POST');
         $gCalendarsIdsArray = FormUtil::getPassedValue('gCalendarsIdsArray', isset($args['gCalendarsIdsArray']) ? $args['gCalendarsIdsArray'] : null, 'POST');
@@ -42,11 +53,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * get an agenda information
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	agenda identity
-     * @return:	And array with the agenda information
+     *
+     * @param array $args Agenda identity
+     *
+     * @return An array with the agenda information
      */
-    public function getAgenda($args) {
+    public function getAgenda($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
@@ -67,12 +80,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get all the notes in the agenda for a specific period
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	events for the month
-     * @return:	And array with the agenda notations information for the month
+     * Get all the notes in the agenda for a specific period
+     *
+     * @param array $args Events for the month
+     *
+     * @return An array with the agenda notations information for the month
      */
-    public function getEvents($args) {
+    public function getEvents($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         $month = FormUtil::getPassedValue('month', isset($args['month']) ? $args['month'] : null, 'POST');
         $year = FormUtil::getPassedValue('year', isset($args['year']) ? $args['year'] : null, 'POST');
@@ -151,11 +166,12 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get all the agendas where the user is subscribed
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @return:	And array with agendas where the user is subscribed
+     * Get all the agendas where the user is subscribed
+     *
+     * @return An array with agendas where the user is subscribed
      */
-    public function getUserSubscriptions($args) {
+    public function getUserSubscriptions($args)
+    {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
@@ -179,11 +195,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * set the last visit type to the user in the agenda
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	agenda identity
-     * @return:	true if success and false otherwise
+     *
+     * @param array $args Agenda identity
+     *
+     * @return True if success and false otherwise
      */
-    public function vista($args) {
+    public function vista($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         $vista = FormUtil::getPassedValue('vista', isset($args['vista']) ? $args['vista'] : -1, 'POST');
         // Security check
@@ -219,11 +237,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * delete the notes older than a specific date
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	agenda identity
-     * @return:	true if success and false otherwise
+     *
+     * @param array $args Agenda identity
+     *
+     * @return True if success and false otherwise
      */
-    public function esborraantigues($args) {
+    public function esborraantigues($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         $antigues = FormUtil::getPassedValue('antigues', isset($args['antigues']) ? $args['antigues'] : 0, 'POST');
         // Security check
@@ -268,15 +288,17 @@ class IWagendas_Api_User extends Zikula_AbstractApi
                                                'fileName' => $note['fitxer']));
             }
         }
+
         return true;
     }
 
     /**
-     * delete the caducied anotations of the agendas
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @return:	true if success and false otherwise
+     * Delete the caducied anotations of the agendas
+     *
+     * @return True if success and false otherwise
      */
-    public function esborra_caducades() {
+    public function esborra_caducades()
+    {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
@@ -308,16 +330,19 @@ class IWagendas_Api_User extends Zikula_AbstractApi
                                                'fileName' => $note['fitxer']));
             }
         }
+
         return true;
     }
 
     /**
-     * set new anotations to 0
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	mounth and year visited
-     * @return:	true if success and false otherwise
+     * Set new anotations to 0
+     *
+     * @param array $args Mounth and year visited
+     *
+     * @return True if success and false otherwise
      */
-    public function novesa0($args) {
+    public function novesa0($args)
+    {
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'POST');
         // Security check
@@ -352,12 +377,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get user tasks
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	mounth and year visited
-     * @return:	An array with all the tasks
+     * Get user tasks
+     *
+     * @param array $args Mounth and year visited
+     *
+     * @return An array with all the tasks
      */
-    public function getalltasques($args) {
+    public function getalltasques($args)
+    {
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'POST');
         // Security check
@@ -387,10 +414,11 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * set the avertisement about automatic subscriptions
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @return:	An array with all the tasks
+     *
+     * @return An array with all the tasks
      */
-    public function treuavis() {
+    public function treuavis()
+    {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
@@ -408,11 +436,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * get the number of anotacions in an agenda
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	The agenda identity
-     * @return:	The number of anotations
+     *
+     * @param array $args The agenda identity
+     *
+     * @return The number of anotations
      */
-    public function comptanotes($args) {
+    public function comptanotes($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
@@ -434,11 +464,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * Increase the number of advertisements of that there are too much anotations in the agenda
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	The agenda identity and the avertissements now
-     * @return:	true if success and false otherwise
+     *
+     * @param array $args The agenda identity and the avertissements now
+     *
+     * @return True if success and false otherwise
      */
-    public function pujaavis($args) {
+    public function pujaavis($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $value = FormUtil::getPassedValue('value', isset($args['value']) ? $args['value'] : null, 'POST');
         // Security check
@@ -457,12 +489,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get the number of times that the user has been advertised about that there are too much anotations in the agenda
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	The agenda identity
-     * @return:	The number of times
+     * Get the number of times that the user has been advertised about that there are too much anotations in the agenda
+     *
+     * @param array $args The agenda identity
+     *
+     * @return The number of times
      */
-    public function avislimits($args) {
+    public function avislimits($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
@@ -488,11 +522,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * get the subscription status into an agenda
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	The agenda identity
-     * @return:	True if the user is subscribed and false otherwise
+     *
+     * @param array $args The agenda identity
+     *
+     * @return True if the user is subscribed and false otherwise
      */
-    public function iosubs($args) {
+    public function iosubs($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
@@ -536,12 +572,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get the visualitation type for the user in the agenda
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	The agenda identity
-     * @return:	The visual method
+     * Get the visualitation type for the user in the agenda
+     *
+     * @param array $args The agenda identity
+     *
+     * @return The visual method
      */
-    public function getvista($args) {
+    public function getvista($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : 0, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
@@ -570,12 +608,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * edit a note information
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	agenda identity
-     * @return:	true if success and false otherwise
+     * Edit a note information
+     *
+     * @param array $args Agenda identity
+     *
+     * @return True if success and false otherwise
      */
-    public function editNote($args) {
+    public function editNote($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         $items = FormUtil::getPassedValue('items', isset($args['items']) ? $args['items'] : null, 'POST');
@@ -610,12 +650,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get the information of a note
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	note identity
-     * @return:	Array with the note information
+     * Get the information of a note
+     *
+     * @param array $args Note identity
+     *
+     * @return Array with the note information
      */
-    public function get($args) {
+    public function get($args)
+    {
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
@@ -655,12 +697,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * set new anotations to 0
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	mounth and year visited
-     * @return:	true if success and false otherwise
+     * Set new anotations to 0
+     *
+     * @param array $args Month and year visited
+     *
+     * @return True if success and false otherwise
      */
-    public function deleteRepesInUser($args) {
+    public function deleteRepesInUser($args)
+    {
         $rid = FormUtil::getPassedValue('rid', isset($args['rid']) ? $args['rid'] : null, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
@@ -695,12 +739,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * delete a note
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	identity of the note
-     * @return:	true if success and false otherwise
+     * Delete a note
+     *
+     * @param array $args Identity of the note
+     *
+     * @return True if success and false otherwise
      */
-    public function delete($args) {
+    public function delete($args)
+    {
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
@@ -746,12 +792,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get users who can access the agenda
-     * @author:  	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	identity of the agenda
-     * @return:	and array with the users identity
+     * Get users who can access the agenda
+     *
+     * @param array $args Identity of the agenda
+     *
+     * @return An array with the users identity
      */
-    public function gettenenacces($args) {
+    public function gettenenacces($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
         $any = FormUtil::getPassedValue('any', isset($args['any']) ? $args['any'] : null, 'POST');
@@ -801,11 +849,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * Create a new item into an agenda
-     * @author:  	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	agenda information
-     * @return:	true if success and false otherwise
+     *
+     * @param array $args Agenda information
+     *
+     * @return True if success and false otherwise
      */
-    public function crear($args) {
+    public function crear($args)
+    {
         $hora = FormUtil::getPassedValue('hora', isset($args['hora']) ? $args['hora'] : null, 'POST');
         $minut = FormUtil::getPassedValue('minut', isset($args['minut']) ? $args['minut'] : null, 'POST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
@@ -897,11 +947,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * Copy a note to another agenda
-     * @author:  	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	agenda information
-     * @return:	true if success and false otherwise
+     *
+     * @param array $args Agenda information
+     *
+     * @return True if success and false otherwise
      */
-    public function meva($args) {
+    public function meva($args)
+    {
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         $adaid = FormUtil::getPassedValue('adaid', isset($args['adaid']) ? $args['adaid'] : null, 'POST');
         // Security check
@@ -1004,11 +1056,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * Delete the repeated notes
-     * @author:  	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	note to delete and its repetitions
-     * @return:	true if success and false otherwise
+     *
+     * @param array $args Note to delete and its repetitions
+     *
+     * @return True if success and false otherwise
      */
-    public function deleterepes($args) {
+    public function deleterepes($args)
+    {
         $rid = FormUtil::getPassedValue('rid', isset($args['rid']) ? $args['rid'] : null, 'POST');
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         // Security check
@@ -1040,17 +1094,20 @@ class IWagendas_Api_User extends Zikula_AbstractApi
         if (!DBUtil::deleteObjectByID('IWagendas', $rid, 'rid')) {
             return LogUtil::registerError($this->__('Error! Sorry! Deletion attempt failed.'));
         }
+
         //Retornem true ja que el procï¿œs ha finalitzat amb ï¿œxit
         return true;
     }
 
     /**
-     * get the users subscribed to an agenda
-     * @author:  	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	identity to the agenda
-     * @return:	An array with the users identities
+     * Get the users subscribed to an agenda
+     *
+     * @param array $args Identity to the agenda
+     *
+     * @return An array with the users identities
      */
-    public function getsubscrits($args) {
+    public function getsubscrits($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $quins = FormUtil::getPassedValue('quins', isset($args['quins']) ? $args['quins'] : null, 'POST');
         // Security check
@@ -1073,11 +1130,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * Update multiple notes
-     * @author:  	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	the note information
-     * @return:	true if success and false otherwise
+     *
+     * @param array $args The note information
+     *
+     * @return True if success and false otherwise
      */
-    public function modificamulti($args) {
+    public function modificamulti($args)
+    {
         $hora = FormUtil::getPassedValue('hora', isset($args['hora']) ? $args['hora'] : null, 'POST');
         $minut = FormUtil::getPassedValue('minut', isset($args['minut']) ? $args['minut'] : null, 'POST');
         $mes = FormUtil::getPassedValue('mes', isset($args['mes']) ? $args['mes'] : null, 'POST');
@@ -1161,11 +1220,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * Count the number of notes multiple
-     * @author:  	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	the note identity
-     * @return:	The number of repeated notes
+     *
+     * @param array $args The note identity
+     *
+     * @return The number of repeated notes
      */
-    public function comptarepes($args) {
+    public function comptarepes($args)
+    {
         $aid = FormUtil::getPassedValue('aid', isset($args['aid']) ? $args['aid'] : null, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
@@ -1196,11 +1257,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * Set an user as unsubscribed to an agenda
-     * @author:  	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	the agenda  identity
-     * @return:	True if success and false otherwise
+     *
+     * @param array $args The agenda  identity
+     *
+     * @return True if success and false otherwise
      */
-    public function subsbaixa($args) {
+    public function subsbaixa($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
@@ -1235,11 +1298,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * Set an user as subscribed into an agenda
-     * @author:  	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	the agenda  identity
-     * @return:	True if success and false otherwise
+     *
+     * @param array $args The agenda  identity
+     *
+     * @return True if success and false otherwise
      */
-    public function subsalta($args) {
+    public function subsalta($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
@@ -1284,11 +1349,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
 
     /**
      * Subscribe multiple users into an agenda
-     * @author:  	Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	the agenda identity and the users array to subscribe
-     * @return:	True if success and false otherwise
+     *
+     * @param array $args The agenda identity and the users array to subscribe
+     *
+     * @return True if success and false otherwise
      */
-    public function subsAltaMulti($args) {
+    public function subsAltaMulti($args)
+    {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $users = FormUtil::getPassedValue('users', isset($args['users']) ? $args['users'] : null, 'POST');
         // Security check
@@ -1337,12 +1404,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get the number of notes that needs an attached file
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	the file name
-     * @return:	the number of notes that needs the attached file
+     * Get the number of notes that needs an attached file
+     *
+     * @param array $args The file name
+     *
+     * @return The number of notes that needs the attached file
      */
-    public function n_fitxers($args) {
+    public function n_fitxers($args)
+    {
         $fitxer = FormUtil::getPassedValue('fitxer', isset($args['fitxer']) ? $args['fitxer'] : null, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
@@ -1361,11 +1430,12 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get the agendas where the user has been subscribed
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @return:	And array with the agendas where the user has been subscribed
+     * Get the agendas where the user has been subscribed
+     *
+     * @return An array with the agendas where the user has been subscribed
      */
-    public function avissubscripcio() {
+    public function avissubscripcio()
+    {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
@@ -1396,11 +1466,12 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get the number of new note for an user
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @return:	The number of not seen notes
+     * Get the number of new note for an user
+     *
+     * @return The number of not seen notes
      */
-    public function newItem($args) {
+    public function newItem($args)
+    {
         $uid = FormUtil::getPassedValue('uid', isset($args['uid']) ? $args['uid'] : UserUtil::getVar('uid'), 'POST');
         $sv = FormUtil::getPassedValue('sv', isset($args['sv']) ? $args['sv'] : null, 'POST');
         if (!ModUtil::func('IWmain', 'user', 'checkSecurityValue', array('sv' => $sv))) {
@@ -1431,12 +1502,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get an agenda note that have google identity
-     * @author:     Albert Pérez Monfort (aperezm@xtec.cat)
-     * @param:	note Google identity
-     * @return:	And array with the note information
+     * Get an agenda note that have google identity
+     *
+     * @param array $args Note Google identity
+     *
+     * @return An array with the note information
      */
-     public function getGoogleNote($args) {
+    public function getGoogleNote($args)
+    {
         $gCalendarEventId = FormUtil::getPassedValue('gCalendarEventId', isset($args['gCalendarEventId']) ? $args['gCalendarEventId'] : null, 'POST');
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
@@ -1457,12 +1530,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get all Google notes
-     * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param:	future for only future notes
-     * @return:	And array with the notes information
+     * Get all Google notes
+     *
+     * @param array $args Future for only future notes
+     *
+     * @return An array with the notes information
      */
-    public function getAllGCalendarNotes($args) {
+    public function getAllGCalendarNotes($args)
+    {
         $beginDate = FormUtil::getPassedValue('beginDate', isset($args['beginDate']) ? $args['beginDate'] : null, 'POST');
         $endDate = FormUtil::getPassedValue('endDate', isset($args['endDate']) ? $args['endDate'] : null, 'POST');
         $gIds = FormUtil::getPassedValue('gIds', isset($args['gIds']) ? $args['gIds'] : null, 'POST');
@@ -1496,12 +1571,14 @@ class IWagendas_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get user Google Default Calendar
-     * @author:     Albert PÃ©rez Monfort (aperezm@xtec.cat)
-     * @param:	future for only future notes
-     * @return:	And array with the calendar information
+     * Get user Google Default Calendar
+     *
+     * @param array $args Future for only future notes
+     *
+     * @return An array with the calendar information
      */
-    public function getGCalendarUserDefault() {
+    public function getGCalendarUserDefault()
+    {
         // Security check
         if (!SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             return LogUtil::registerError($this->__('Sorry! No authorization to access this module.'), 403);
