@@ -1,18 +1,24 @@
-{include file="IWagendas_admin_menu.htm"}
+{include file='IWagendas_admin_menu.htm'}
+
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='IWagendas' src='delete_group_large.gif' set='images'}</div>
-    <h2>{gt text="Delete the access to group"} -> {$item.nom_agenda}</h2>
-    <form class="z-form" action="{modurl modname="IWagendas" type="admin" func="deleteGroup"}" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="hidden" name="authid" value="{insert name="generateauthkey" module="IWagendas"}" />
-        <input type="hidden" name="daid" value="{$item.daid}" />
-        <input type="hidden" name="id" value="{$id}" />
-        <input type="hidden" name="confirm" value="1" />
+    <h2>{gt text='Delete access to Group'}</h2>
+
+    <p class="z-warningmsg">{gt text='Do you really want to remove the access of the group "%1$s" to the Agenda "%2$s"?' tag1=$groupName|safetext tag2=$item.nom_agenda|safetext}</p>
+
+    <form class="z-form" action="{modurl modname='IWagendas' type='admin' func='deleteGroup'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            {gt text="Confirm the deletion of the access to the group"} <strong>{$groupName}</strong>
-        </div>
-        <div class="z-formbuttons" align="center">
-            {button src='button_ok.gif' set='icons/small' __alt="Add" __title="Add"}
-            <a href="{modurl modname="IWagendas" type="admin" func="main"}">{img modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"}</a>
+            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='IWagendas'}" />
+            <input type="hidden" name="daid" value="{$item.daid|safetext}" />
+            <input type="hidden" name="id" value="{$id|safetext}" />
+            <input type="hidden" name="confirm" value="1" />
+            <fieldset>
+                <legend>{gt text='Confirmation prompt'}</legend>
+                <div class="z-buttons z-formbuttons">
+                    {button class='z-btgreen' src='button_ok.png' set='icons/extrasmall' __alt='Remove' __title='Remove' __text='Remove'}
+                    <a class="z-btred" href="{modurl modname='IWagendas' type='admin' func='main'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                </div>
+            </fieldset>
         </div>
     </form>
 </div>

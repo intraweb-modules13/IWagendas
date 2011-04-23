@@ -5,7 +5,7 @@
 // The agendas can include attached files. It is possible to define the role that different users or groups have 
 // when their members access an agenda. 
 // 
-// This module works in 0.8 PN version.
+// This module works in Zikula
 //
 // @autor: Albert Pérez Monfort
 // @autor: Toni Ginard Lladó
@@ -28,9 +28,9 @@ The attached files must to be updated to the server, so a folder with written pe
 //************************
 Locate the files of the modules IWmain and IWagendas into the modules directory, install and active them following the usual methods used in Zikula modules:
 
-	- Regenerate modules list
-	- Initialize modules or upgrade IWmain
-	- Active modules
+    - Regenerate modules list
+    - Initialize modules or upgrade IWmain
+    - Active modules
 
 //************************
 // Module configuration

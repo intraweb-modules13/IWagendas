@@ -54,7 +54,7 @@
                     <span style="float: left;">
                         {if $mes eq 1}
                         <a href="javascript:changeMonth(12,{$any-1},{$daid})">{img src="mesmenys.gif" __alt="Previous month"  __title="Previous month" }</a>
-                       	{else}
+                           {else}
                         <a href="javascript:changeMonth({$mes-1},{$any},{$daid})">{img src="mesmenys.gif" __alt="Previous month"  __title="Previous month" }</a>
                         {/if}
                         <select name="mes" id="month" onchange="javascript:changeMonth(this.value,{$any},{$daid})">
@@ -130,7 +130,7 @@
             </tr>
         </table>
     </div>
-	{else}
+    {else}
     <!-- list view -->
     <div class="opentable1">
         <table style="width:99%; border:2px solid #{$colors[7]}; clear:both;" cellspacing="0">
@@ -168,14 +168,14 @@
                             <br /><strong>{gt text="Deleted"}</strong>
                         {/if}
                 </td>
-		{section name=field loop=$row}
+                {section name=field loop=$row}
                     {if isset($row[field])}
                     <td valign="top" style="padding: 2px; border-bottom:2px solid #DDDDDD; background:#{$row.bgcolor}; color:#{$rows[row].linkcolor};">
                         {$row[field]}
                     </td>
                     {/if}
                 {/section}
-		{if $userid neq ''}
+                {if $userid neq ''}
                 <td valign="top" style="padding: 2px; border-bottom:2px solid #DDDDDD; text-align:right; background:#{$row.bgcolor}; color:#{$row.linkcolor}; width: 90px;">
                     {if $row.filename neq ''}
                     <a href="{modurl modname="IWagendas" func="download" fileName=$row.filename aid=$row.aid}">
@@ -206,7 +206,7 @@
                 {/if}
                 <div style="display:block;">
                 {if $agenda.daid neq 0}
-                    <input type="checkbox" onclick="javascript:subs({$mes},{$any},{$agenda.daid});" {if $agenda.subs eq 1}checked{/if} />
+                    <input type="checkbox" onclick="javascript:subs({$mes},{$any},{$agenda.daid});" {if $agenda.subs eq 1}checked="checked"{/if} />
                     <span style="background-color: {$agenda.color};">&nbsp;&nbsp;&nbsp;</span>
                 {/if}
                 {if $agenda.gCalendar}
@@ -256,9 +256,6 @@
         </div>
     {/if}
     <div style="height: 10px;">&nbsp;</div>
-    <div class="opentable1">
-        <a href="{modurl modname=IWagendas type=user func=module}">{gt text="About this module"}</a>
-    </div>
     <script type="text/javascript">
         var confirmDeletion = "{{gt text='Confirm deletion of the agenda'}}";
     </script>

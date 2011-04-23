@@ -1,9 +1,11 @@
-{include file="IWagendas_admin_menu.htm"}
+{include file='IWagendas_admin_menu.htm'}
+
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='IWagendas' src='add_user_large.gif' set='images'}</div>
     <h2>{gt text="Add a manager"}</h2>
-    <form class="z-form" action="{modurl modname="IWagendas" type="admin" func="addManager"}" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="hidden" name="authid" value="{insert name="generateauthkey" module="IWagendas"}" />
+
+    <form class="z-form" action="{modurl modname='IWagendas' type='admin' func='addManager'}" method="post" enctype="application/x-www-form-urlencoded">
+        <input type="hidden" name="authid" value="{insert name='generateauthkey' module='IWagendas'}" />
         <input type="hidden" name="daid" value="{$item.daid}" />
         <div class="z-formrow">
             <label for="group">{gt text="Group"}</label>
@@ -17,9 +19,9 @@
             <label for="uid">{gt text="Choose a manager"}</label>
             <select name="uid" id="uid" style="float:left;">
                 <option value="0"></option>
-				{foreach item=member from=$groupMembers}
+                {foreach item=member from=$groupMembers}
                 <option value="{$member.id}">{$member.name}</option>
-				{/foreach}
+                {/foreach}
             </select>
             <div id="chgInfo" class="z-hide z-noteinfo" style="float:left; margin-left:20px;">&nbsp;</div>
         </div>
@@ -35,7 +37,7 @@
         {/if}
         <div class="z-formbuttons" align="center">
             {button src='button_ok.gif' set='icons/small' __alt="Add" __title="Add"}
-            <a href="{modurl modname="IWagendas" type="admin" func="main"}">{img modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"}</a>
+            <a href="{modurl modname='IWagendas' type='admin' func='main'}">{img modname='core' src='button_cancel.gif' set='icons/small' __alt="Cancel" __title="Cancel"}</a>
         </div>
     </form>
 </div>

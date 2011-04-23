@@ -35,16 +35,16 @@
             var error=true;
         }
         {{/if}}
-		
-        if(!error && f.diatriat.value==0){
+
+        if (!error && f.diatriat.value==0){
             alert("{{gt text="Incorrect date"}}");
             var error=true;
         }
 
-        if(!error && !checkDate(f.diatriat.value+'/'+f.mestriat.value+'/'+f.anytriat.value)){
+        if (!error && !checkDate(f.diatriat.value+'/'+f.mestriat.value+'/'+f.anytriat.value)){
             var error=true;
         }
-		
+
         if(f.gCalendar.value == 1){
             if(!error && !checkDate(f.diatriat1.value+'/'+f.mestriat1.value+'/'+f.anytriat1.value)){
                 var error=true;
@@ -58,7 +58,7 @@
                 var error=true;
             }
         }
-	
+
         if(!error && f.daid.value > 0 && f.gCalendar.value != 1){
             var resp=confirm("{{gt text="You are going to send an event to a shared agenda where there can be subscribed users. Proceed?"}}");
             if(!resp){var error=true;}
@@ -66,7 +66,7 @@
 
         if(!error){f.submit();}
     }
-	
+
     function treumarca(){
         document.new_nota.totdia.checked=false;
     }
@@ -108,11 +108,18 @@
 </script>
 
 <div>{$menu}</div>
-<div class="usercontainer">	
+<div class="usercontainer">
     <div class="userpageicon">{img modname='core' src='filenew.gif' set='icons/large'}</div>
     <h2>{$title}</h2>
-    <div style="height:15px;">&nbsp;</div>
-    <form method="post" enctype="multipart/form-data" name="new_nota" action="{modurl modname=IWagendas func=crear}">
+
+    <form class="z-form" method="post" enctype="multipart/form-data" name="new_nota" action="{modurl modname='IWagendas' func='crear'}">
+        <input type="hidden" name="authid" value="{insert name='generateauthkey' module='IWagendas'}" />
+        <input type="hidden" name="daid" value="{$daid|safetext}" />
+        <input type="hidden" name="odaid" value="{$odaid|safetext}" />
+        <input type="hidden" name="tasca" value="{$task|safetext}" />
+        <input type="hidden" name="gCalendar" value="{if isset($gCalendar)}{$gCalendar}{else}0{/if}" />
+
+        <fieldset>
         <table border="0" width="99%">
             <tr>
                 <td align="left" width="40%">{$date}</td>
@@ -230,7 +237,7 @@
                     <td align="left" style="vertical-align:top;">{$fields[field].desc}</td>
                     <td align="left" style="vertical-align:top;">{$fields[field].value}</td>
                 </tr>
-		{/if}
+                {/if}
             {/section}
             {if $attachpermitted}
             <tr>
@@ -277,15 +284,15 @@
             </tr>
             {/if}
         </table>
-        <input type="hidden" name="authid" value="{insert name="generateauthkey" module="IWagendas"}" />
-        <input type="hidden" name="daid" value="{$daid}" />
-        <input type="hidden" name="odaid" value="{$odaid}" />
-        <input type="hidden" name="tasca" value="{$task}" />
-        <input type="hidden" name="gCalendar" value="{if isset($gCalendar)}{$gCalendar}{else}0{/if}" />
-        <div style="height:15px;">&nbsp;</div>
-        <div class="formOptions" style="text-align:center;">
-            <a href="javascript:send()">{img modname='core' src='button_ok.gif' set='icons/small'   __alt="Create" __title="Create"}</a>{$acciosubmit}
-            <a href="{modurl modname="IWagendas" type="user" func="main" daid=$odaid}">{img modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"}</a>
+        </fieldset>
+
+        <div class="z-buttons z-formbuttons formOptions">
+            <a href="javascript:send()">
+                {img modname='core' src='button_ok.gif' set='icons/small'   __alt="Create" __title="Create"}{$acciosubmit}
+            </a>
+            <a href="{modurl modname='IWagendas' type='user' func='main' daid=$odaid}">
+                {img modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"}{gt text='Cancel'}
+            </a>
         </div>
     </form>
 </div>

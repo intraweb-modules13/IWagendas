@@ -1126,7 +1126,7 @@ class IWagendas_Controller_User extends Zikula_AbstractController
             // Not a task
             $acciosubmit = $this->__('Create event');
             $msg_no_nota = $this->__("You haven't written the event");
-            $title = ($daid == 0) ? $this->__('Insert a new event') . " => <em>" . $this->__('Personal') . "</em>" : $this->__('Insert a new event') . " => <em>" . $agendadef['nom_agenda'] . "</em>";
+            $title = ($daid == 0) ? $this->__('Insert a new event') . " &raquo; " . $this->__('Personal') . "</em>" : $this->__('Insert a new event') . " => <em>" . $agendadef['nom_agenda'];
             $date = $this->__('Date');
         } else {
             // It's a task
