@@ -15,7 +15,7 @@
             {/if}
         </div>
     </fieldset>
-    <form name="subs" method="post" action="{modurl modname='IWagendas' func='subscriuauto'}">
+    <form name="subs" method="post" action="{modurl modname='IWagendas' type='user' func='subscriuauto'}">
         <fieldset style="margin:15px;">
             <legend style="padding-left:5px; padding-right:5px;">{gt text="Users to be subscribed to the agenda:"}</legend>
             <div style="margin:10px;">
@@ -47,7 +47,7 @@
                 {/if}
             </div>
         </fieldset>
-        <input name="authid" value="{insert name='generateauthkey' module='IWagendas'}" type="hidden" />
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input name="daid" value="{$daid|safetext}" type="hidden" />
         <input name="mes" value="{$mes|safetext}" type="hidden" />
         <input name="any" value="{$any|safetext}" type="hidden" />

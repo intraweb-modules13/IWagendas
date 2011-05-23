@@ -1,4 +1,4 @@
-{getstatusmsg}
+{insert name="getstatusmsg"}
 <h1>{gt text="Agenda administration"}</h1>
 {* Show the options *}
 {userloggedin assign=userid}
@@ -7,8 +7,8 @@
     <span class="z-menuitem-title">
         [
         {section name=option_menu loop=$user_menu}
-            <a href="{$user_menu[option_menu].url}">{$user_menu[option_menu].text}</a>
-            {if not $smarty.section.option_menu.last} | {/if}
+        <a href="{$user_menu[option_menu].url}">{$user_menu[option_menu].text}</a>
+        {if not $smarty.section.option_menu.last} | {/if}
         {/section}
         ]
     </span>
@@ -18,9 +18,9 @@
 {* If necessary, show a warning inviting to delete notes because of a quota exceed *}
 {if isset($purga) && $purga}
 <div class="opentable1" style="padding: 10px; margin-top:2em; background-color: #FFE1DA;">
-    <form action="{modurl modname='IWagendas' func='esborraantigues'}" method="post">
-        <input type="hidden" name="authid" value="{insert name='generateauthkey' module='IWagendas'}" />
-         <input type="hidden" name="daid" value="{$daid|safetext}" />
+    <form action="{modurl modname='IWagendas' type='user' func='esborraantigues'}" method="post">
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input type="hidden" name="daid" value="{$daid|safetext}" />
         <input type="hidden" name="mes" value="{$mes|safetext}" />
         <input type="hidden" name="any" value="{$any|safetext}" />
         <input type="hidden" name="dia" value="{$dia|safetext}" />
@@ -30,7 +30,7 @@
             &nbsp;
             <input type="text" name="esborraanterior" id="esborraanterior" value="{$delete_previous|safetext}" size="10" maxlength="10" />
             &nbsp;&nbsp;&nbsp;
-            {button src='button_ok.gif' set='icons/small' __alt="Delete" __title="Delete"}
+            {button src='button_ok.png' set='icons/small' __alt="Delete" __title="Delete"}
         </div>
     </form>
 </div>

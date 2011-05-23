@@ -23,12 +23,11 @@
 {include file='IWagendas_admin_menu.htm'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='package_settings.gif' set='icons/large'}</div>
+    <div class="z-adminpageicon">{img modname='core' src='configure.png' set='icons/large'}</div>
     <h2>{gt text="Agenda configuration"}</h2>
 
     <form name="conf" id="conf" class="z-form" action="{modurl modname='IWagendas' type='admin' func='conf_modifica'}" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="hidden" name="authid" value="{insert name='generateauthkey' module='IWagendas'}" />
-
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
             <legend>{gt text="Agenda colour configuration"}</legend>
 
@@ -231,10 +230,10 @@
                         </td>
                         <td align="right" valign="top" width="80">
                             <a href="{modurl modname='IWagendas' type='admin' func='nouallista' index=1 dada=$festiu.festiu}">
-                                {img modname='core' src='edit.gif' set='icons/extrasmall' __alt="Modify" __title="Edit"}
+                                {img modname='core' src='edit.png' set='icons/extrasmall' __alt="Modify" __title="Edit"}
                             </a>
                             <a href="{modurl modname='IWagendas' type='admin' func='esborra' index=1 dada=$festiu.optionText}">
-                                {img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete" __title="Delete"}
+                                {img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt="Delete" __title="Delete"}
                             </a>
                         </td>
                     </tr>
@@ -275,10 +274,10 @@
                         </td>
                         <td align="right" valign="top" width="80">
                             <a href="{modurl modname='IWagendas' type='admin' func='nouallista' index=2 dada=$altrefestiu.festiu}">
-                                {img modname='core' src='edit.gif' set='icons/extrasmall'   __alt="Modify" __title="Edit"}
+                                {img modname='core' src='edit.png' set='icons/extrasmall'   __alt="Modify" __title="Edit"}
                             </a>
                             <a href="{modurl modname='IWagendas' type='admin' func='esborra' index=2 dada=$altrefestiu.optionText}">
-                                {img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall'   __alt="Delete" __title="Delete"}
+                                {img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall'   __alt="Delete" __title="Delete"}
                             </a>
                         </td>
                     </tr>
@@ -312,7 +311,7 @@
             {if !$inicicurs}
                 <div>{gt text="The rest of the parameters of the school calendar cannot be configured until there is a valid initial year introduced"}</div>
                 <div class="z-formbuttons" style="text-align:center;">
-                    {button src='button_ok.gif' set='icons/small' __alt="Modify configuration" __title="Modify configuration"}{gt text="Modify configuration"}
+                    {button src='button_ok.png' set='icons/small' __alt="Modify configuration" __title="Modify configuration"}{gt text="Modify configuration"}
                 </div>
             {/if}
             <div class="z-formrow">
@@ -350,10 +349,10 @@
                         </td>
                         <td align="right" valign="top" width="80">
                             <a href="{modurl modname='IWagendas' type='admin' func='nouallista' index=3 dada=$periode.festiu}">
-                                {img modname='core' src='edit.gif' set='icons/extrasmall'   __alt="Modify" __title="Edit"}
+                                {img modname='core' src='edit.png' set='icons/extrasmall'   __alt="Modify" __title="Edit"}
                             </a>
                             <a href="{modurl modname='IWagendas' type='admin' func='esborra' index=3 dada=$periode.optionText}">
-                                {img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall'   __alt="Delete" __title="Delete"}
+                                {img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall'   __alt="Delete" __title="Delete"}
                             </a>
                         </td>
                     </tr>
@@ -398,10 +397,10 @@
                         </td>
                         <td align="right" valign="top" width="80">
                             <a href="{modurl modname='IWagendas' type='admin' func='nouallista' index=4 dada=$informacio.festiu}">
-                                {img modname='core' src='edit.gif' set='icons/extrasmall'   __alt="Modify" __title="Edit"}
+                                {img modname='core' src='edit.png' set='icons/extrasmall'   __alt="Modify" __title="Edit"}
                             </a>
                             <a href="{modurl modname='IWagendas' type='admin' func='esborra' index=4 dada=$informacio.optionText}">
-                                {img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall'   __alt="Delete" __title="Delete"}
+                                {img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall'   __alt="Delete" __title="Delete"}
                             </a>
                         </td>
                     </tr>
@@ -435,7 +434,7 @@
         </fieldset>
 
         <div class="z-buttons z-formbuttons">
-            {button src='button_ok.gif' set='icons/small' __text="Modify configuration" __alt="Modify configuration" __title="Modify configuration"}
+            {button src='button_ok.png' set='icons/small' __text="Modify configuration" __alt="Modify configuration" __title="Modify configuration"}
         </div>
     </form>
 </div>

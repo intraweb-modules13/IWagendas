@@ -178,4 +178,17 @@ class IWagendas_Api_Admin extends Zikula_AbstractApi
         }
         return true;
     }
+    
+    
+    
+        public function getlinks($args) {
+        $links = array();
+        if (SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN)) {
+            $links[] = array('url' => ModUtil::url('IWagendas', 'admin', 'newItem'), 'text' => $this->__('Add a new agenda'), 'id' => 'iwforums_newItem', 'class' => 'z-icon-es-new');
+            $links[] = array('url' => ModUtil::url('IWagendas', 'admin', 'main'), 'text' => $this->__('Show existing agendas'), 'id' => 'iwforums_main', 'class' => 'z-icon-es-view');
+            $links[] = array('url' => ModUtil::url('IWagendas', 'admin', 'configura'), 'text' => $this->__('Module configuration'), 'id' => 'iwforums_conf', 'class' => 'z-icon-es-config');
+        }
+        return $links;
+    } 
+    
 }

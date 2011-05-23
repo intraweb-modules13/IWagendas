@@ -20,12 +20,12 @@
 {include file="IWagendas_admin_menu.htm"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">
-        {img modname='core' src='package_settings.gif' set='icons/large'}
+        {img modname='core' src='package_settings.png' set='icons/large'}
     </div>
     <div style="height:20px;">&nbsp;</div>
     <h2>{$title}</h2>
     <form id="periode" class="z-form" action="{modurl modname="IWagendas" type="admin" func="modifica_llistes"}" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="hidden" name="authid" value="{insert name="generateauthkey" module="IWagendas"}" />
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="index" value="{$index}" />
         <input type="hidden" name="dada" value="{$dada}" />
 
@@ -88,7 +88,7 @@
             <input type="text" name="text" size="50" maxlength="255" value="{$text}"/>
         </div>
         <div class="z-formbuttons" style="text-align:center;">
-            {button src='button_ok.gif' set='icons/small' __alt="Add to the list" __title="Add to the list"}{gt text="Add to the list"}
+            {button src='button_ok.png' set='icons/small' __alt="Add to the list" __title="Add to the list"}{gt text="Add to the list"}
         </div>
     </form>
 </div>

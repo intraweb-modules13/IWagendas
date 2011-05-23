@@ -98,6 +98,8 @@ class IWagendas_Api_User extends Zikula_AbstractApi
         $inici = FormUtil::getPassedValue('inici', isset($args['inici']) ? $args['inici'] : null, 'POST');
         $final = FormUtil::getPassedValue('final', isset($args['final']) ? $args['final'] : null, 'POST');
 
+        $notlogedin = '';
+        
         if ($inici == null || $final == null || $inici == '' || $final == '') {
             $inici = mktime(0, 0, 0, $month, 1, $year);
             //Calc the number of days of the month

@@ -5,11 +5,11 @@
 {include file='IWagendas_admin_menu.htm'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='edit.gif' set='icons/large'}</div>
+    <div class="z-adminpageicon">{img modname='core' src='edit.png' set='icons/large'}</div>
     <h2>{gt text='Edit'}</h2>
 
     <form name="edit" id="edit" class="z-form" action="{modurl modname='IWagendas' type='admin' func='update'}" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="hidden" name="authid" value="{insert name='generateauthkey' module='IWagendas'}" />
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="daid" value="{$item.daid|safetext}" />
 
         <fieldset>
@@ -54,7 +54,7 @@
                 <label for="tcx">{gt text="Type"}</label>
                 <select name="tc{$field.order}">
                     {foreach item=camp from=$field.camps}
-                            <option value="{$camp.id}" {if $field.type eq $camp.id}selected="selected"{/if}>{$camp.name}</option>
+                    <option value="{$camp.id}" {if $field.type eq $camp.id}selected="selected"{/if}>{$camp.name}</option>
                     {/foreach}
                 </select>
             </div>
@@ -67,19 +67,19 @@
         </fieldset>
         {/foreach}
 
-        <div class="z-buttons z-formbuttons">
-            <a href="javascript:editAgenda()">
-                {img modname='core' src='button_ok.gif' set='icons/small' __alt="Update" __title="Update"}{gt text='Update'}
-            </a>
-            <a href="{modurl modname='IWagendas' type='admin' func='main'}">
-               {img modname='core' src='button_cancel.gif' set='icons/small' __alt="Cancel" __title="Cancel"}{gt text='Cancel'}
-            </a>
+        <div class="z-center">
+            <span class="z-buttons">
+                <a href="javascript:editAgenda()">
+                    {img modname='core' src='button_ok.png' set='icons/small' __alt="Update" __title="Update"}{gt text='Update'}
+                </a>
+            </span>
+            <span class="z-buttons">
+                <a href="{modurl modname='IWagendas' type='admin' func='main'}">
+                    {img modname='core' src='button_cancel.png' set='icons/small' __alt="Cancel" __title="Cancel"}{gt text='Cancel'}
+                </a>
+            </span>
         </div>
     </form>
-
-    <div class="z-center">
-        <a href="{modurl modname='IWagendas' type='admin' func='module'}">{gt text='About this module'}</a>
-    </div>
 </div>
 
 <script type="text/javascript">

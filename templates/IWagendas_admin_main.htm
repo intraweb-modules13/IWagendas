@@ -6,7 +6,7 @@
 {include file='IWagendas_admin_menu.htm'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='windowlist.gif' set='icons/large'}</div>
+    <div class="z-adminpageicon">{img modname='core' src='windowlist.png' set='icons/large'}</div>
     <h2>{gt text='List of defined agendas'}</h2>
 
     <table class="z-admintable">
@@ -46,13 +46,13 @@
                             {gt text="Read only"}
                         {/if}
                         <a href="{modurl modname='IWagendas' type='admin' func='deleteGroup' id=$group.id daid=$agenda.daid}">
-                            {img modname='core' src='delete_group.gif' set='icons/extrasmall'   __alt="Delete" __title="Delete"}
+                            {img modname='core' src='delete_group.png' set='icons/extrasmall'   __alt="Delete" __title="Delete"}
                         </a>
                         <br />
                     {/foreach}
                     <div class="formOptions">
                         <a href="{modurl modname='IWagendas' type='admin' func='addGroup' daid=$agenda.daid}">
-                            {img modname='core' src='add_group.gif' set='icons/extrasmall'   __alt="Add a group" __title="Add a group"}
+                            {img modname='core' src='add_group.png' set='icons/extrasmall'   __alt="Add a group" __title="Add a group"}
                         </a>
                     </div>
                 </td>
@@ -60,13 +60,13 @@
                     {foreach item=manager from=$agenda.managers}
                         {$manager.userName}
                         <a href="{modurl modname='IWagendas' type='admin' func='deleteManager' daid=$agenda.daid id=$manager.uid}">
-                            {img modname='core' src='delete_user.gif' set='icons/extrasmall'   __alt="Delete" __title="Delete"}
+                            {img modname='core' src='delete_user.png' set='icons/extrasmall'   __alt="Delete" __title="Delete"}
                         </a>
                         <br />
                     {/foreach}
                     <div class="formOptions">
                         <a href="{modurl modname='IWagendas' type='admin' func='addManager' daid=$agenda.daid}">
-                            {img modname='core' src='add_user.gif' set='icons/extrasmall'   __alt="Add a manager" __title="Add a manager"}
+                            {img modname='core' src='add_user.png' set='icons/extrasmall'   __alt="Add a manager" __title="Add a manager"}
                         </a>
                     </div>
                 </td>
@@ -77,10 +77,10 @@
                 </td>
                 <td align="right" valign="top" width="80">
                     <a href="{modurl modname='IWagendas' type='admin' func='edit' daid=$agenda.daid}">
-                        {img modname='core' src='edit.gif' set='icons/extrasmall'   __alt="Edit" __title="Edit"}
+                        {img modname='core' src='edit.png' set='icons/extrasmall'   __alt="Edit" __title="Edit"}
                     </a>
                     <a href="{modurl modname='IWagendas' type='admin' func='delete' daid=$agenda.daid}">
-                        {img modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __alt="Delete" __title="Delete"}
+                        {img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt="Delete" __title="Delete"}
                     </a>
                 </td>
             {foreachelse}
@@ -92,10 +92,6 @@
             {/foreach}
         </tbody>
     </table>
-
-    <div class="z-center">
-        <a href="{modurl modname='IWagendas' type='admin' func='module'}">{gt text='About this module'}</a>
-    </div>
 </div>
 
 <script type="text/javascript">

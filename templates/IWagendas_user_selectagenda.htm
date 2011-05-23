@@ -2,7 +2,7 @@
 <div>{$menu}</div>
 
 <div class="opentable1">
-    <form method="post" name="delete_nota" action="{modurl modname='IWagendas' func='meva'}">
+    <form method="post" name="delete_nota" action="{modurl modname='IWagendas' type='user' func='meva'}">
         <input name="authid" value="{$authid}" type="hidden" />
         <input name="aid" value="{$aid|safetext}" type="hidden" />
         <input name="mes" value="{$mes|safetext}" type="hidden" />

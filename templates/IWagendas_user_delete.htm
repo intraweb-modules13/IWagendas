@@ -18,13 +18,13 @@
     </fieldset>
     <div style="margin:30px; text-align:center;">
     <form method="post" name="delete_nota" action="{modurl modname='IWagendas' type='user' func='esborra' aid=$registre.aid mes=$mes any=$any dia=$dia daid=$daid}" style="display:inline;">
-        <input name="authid" value="{insert name='generateauthkey' module='IWagendas'}" type="hidden" />
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input name="confirmation" value="1" type="hidden" />
         <input name="repes" value="0" type="hidden" />
         <input value="{gt text='Confirm deletion of the agenda'}" type="submit" />
     </form>
     <form method="post" name="delete_nota" action="{modurl modname='IWagendas' type='user' func='esborra' aid=$registre.aid mes=$mes any=$any dia=$dia daid=$daid}" style="display:inline;">
-        <input name="authid" value="{insert name='generateauthkey' module='IWagendas'}" type="hidden" />
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input name="confirmation" value="1" type="hidden" />
         <input name="repes" value="1" type="hidden" />
         <input name="rid" value="{$registre.rid}" type="hidden" />

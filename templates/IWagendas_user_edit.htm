@@ -71,7 +71,7 @@
 
 <div class="opentable1">
     <h2 style="clear:both;">{$title}</h2>
-    <form method="post" enctype="multipart/form-data" name="edit_nota" action="{modurl modname='IWagendas' func='modifica'}">
+    <form method="post" enctype="multipart/form-data" name="edit_nota" action="{modurl modname='IWagendas' type='user' func='modifica'}">
         <table border="0" width="99%">
             <tr>
                 <td align="left" width="40%">{$date}</td>
@@ -199,7 +199,7 @@
             </tr>
         </table>
 
-        <input type="hidden" name="authid" value="{insert name='generateauthkey' module='IWagendas'}" />
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="daid" value="{$daid|safetext}" />
         <input type="hidden" name="aid" value="{$aid|safetext}" />
         <input type="hidden" name="tasca" value="{$task|safetext}" />

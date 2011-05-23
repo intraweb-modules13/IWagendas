@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Intraweb
  *
@@ -8,33 +9,32 @@
  * @package    Intraweb_Modules
  * @subpackage IWAgendas
  */
+class IWagendas_Controller_Admin extends Zikula_AbstractController {
 
-class IWagendas_Controller_Admin extends Zikula_AbstractController
-{
+    public function postInitialize() {
+        $this->view->setCaching(false);
+    }
+
     /**
      * Admin main page
      *
      * @return string List of the agendas available
      */
-    public function main()
-    {
+    public function main() {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
         // Get the info about the shared agendas
-        $agendas = ModUtil::apiFunc('IWagendas', 'user', 'getAllAgendas',
-                                     array('onlyShared' => 1));
+        $agendas = ModUtil::apiFunc('IWagendas', 'user', 'getAllAgendas', array('onlyShared' => 1));
 
         //get all groups information
         $sv = ModUtil::func('IWmain', 'user', 'genSecurityValue');
-        $groupsInfo = ModUtil::func('IWmain', 'user', 'getAllGroupsInfo',
-                                     array('sv' => $sv));
+        $groupsInfo = ModUtil::func('IWmain', 'user', 'getAllGroupsInfo', array('sv' => $sv));
 
         //get all users information
         $sv = ModUtil::func('IWmain', 'user', 'genSecurityValue');
-        $usersInfo = ModUtil::func('IWmain', 'user', 'getAllUsersInfo',
-                                    array('sv' => $sv,
-                                          'info' => 'ncc'));
+        $usersInfo = ModUtil::func('IWmain', 'user', 'getAllUsersInfo', array('sv' => $sv,
+                    'info' => 'ncc'));
 
         $agendasArray = array();
         foreach ($agendas as $agenda) {
@@ -44,8 +44,8 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
                 if ($group != '') {
                     $vals = explode('|', $group);
                     $groupsArray[] = array('id' => $group,
-                                           'groupName' => $groupsInfo[$vals[0]],
-                                           'accessType' => $vals[1]);
+                        'groupName' => $groupsInfo[$vals[0]],
+                        'accessType' => $vals[1]);
                 }
             }
             $managersArray = array();
@@ -53,42 +53,38 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             foreach ($managers as $manager) {
                 if ($manager != '') {
                     $managersArray[] = array('uid' => $manager,
-                                             'userName' => $usersInfo[$manager]);
+                        'userName' => $usersInfo[$manager]);
                 }
             }
             $agendasArray[] = array('daid' => $agenda['daid'],
-                                    'nom_agenda' => $agenda['nom_agenda'],
-                                    'descriu' => $agenda['descriu'],
-                                    'activa' => $agenda['activa'],
-                                    'groups' => $groupsArray,
-                                    'managers' => $managersArray,
-                                    'adjunts' => $agenda['adjunts'],
-                                    'protegida' => $agenda['protegida'],
-                                    'color' => $agenda['color']);
+                'nom_agenda' => $agenda['nom_agenda'],
+                'descriu' => $agenda['descriu'],
+                'activa' => $agenda['activa'],
+                'groups' => $groupsArray,
+                'managers' => $managersArray,
+                'adjunts' => $agenda['adjunts'],
+                'protegida' => $agenda['protegida'],
+                'color' => $agenda['color']);
         }
 
-        $this->view->assign('agendas', $agendasArray);
-
-        return $this->view->fetch('IWagendas_admin_main.htm');
+        return $this->view->assign('agendas', $agendasArray)
+                ->fetch('IWagendas_admin_main.htm');
     }
-    
+
     /**
      * Show the module information
      *
      * @return The module information
      */
-    public function module()
-    {
+    public function module() {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
-        $module = ModUtil::func('IWmain', 'user', 'module_info',
-                                 array('module_name' => 'IWagendas',
-                                       'type' => 'admin'));
+        $module = ModUtil::func('IWmain', 'user', 'module_info', array('module_name' => 'IWagendas',
+                    'type' => 'admin'));
 
-        $this->view->assign('module', $module);
-
-        return $this->view->fetch('IWagendas_admin_module.htm');
+        return $this->view->assign('module', $module)
+                ->fetch('IWagendas_admin_module.htm');
     }
 
     /**
@@ -98,16 +94,14 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return The agenda information
      */
-    public function getCharsContent($args)
-    {
+    public function getCharsContent($args) {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
 
         // Get field information
-        $item = ModUtil::apiFunc('IWagendas', 'user', 'getAgenda',
-                                  array('daid' => $daid));
+        $item = ModUtil::apiFunc('IWagendas', 'user', 'getAgenda', array('daid' => $daid));
 
         if ($item == false) {
             LogUtil::registerError($this->__('The agenda was not found'));
@@ -122,44 +116,42 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return The creation form
      */
-    public function newItem()
-    {
+    public function newItem() {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
         $nomcamp = array($this->__('Nota name'),
-                         $this->__('Secondary field') . ' 1',
-                         $this->__('Secondary field') . ' 2',
-                         $this->__('Secondary field') . ' 3',
-                         $this->__('Secondary field') . ' 4',
-                         $this->__('Secondary field') . ' 5');
+            $this->__('Secondary field') . ' 1',
+            $this->__('Secondary field') . ' 2',
+            $this->__('Secondary field') . ' 3',
+            $this->__('Secondary field') . ' 4',
+            $this->__('Secondary field') . ' 5');
 
         // Define the possible types of fields
         $camps0 = array(array('id' => 1,
-                              'name' => $this->__('Text')),
-                        array('id' => 2,
-                              'name' => $this->__('Text area')));
+                'name' => $this->__('Text')),
+            array('id' => 2,
+                'name' => $this->__('Text area')));
         $camps1 = array(array('id' => 1,
-                              'name' => $this->__('Text')),
-                        array('id' => 2,
-                              'name' => $this->__('Text area')),
-                        array('id' => 3,
-                              'name' => $this->__('Event author')),
-                        array('id' => 4,
-                              'name' => $this->__('Event date')),
-                        array('id' => 5,
-                              'name' => $this->__('Selection')));
+                'name' => $this->__('Text')),
+            array('id' => 2,
+                'name' => $this->__('Text area')),
+            array('id' => 3,
+                'name' => $this->__('Event author')),
+            array('id' => 4,
+                'name' => $this->__('Event date')),
+            array('id' => 5,
+                'name' => $this->__('Selection')));
 
         for ($i = 0; $i < 6; $i++) {
             $camps = ($i == 0) ? $camps0 : $camps1;
             $fielsArray[] = array('nomcamp' => $nomcamp[$i],
-                                  'camps' => $camps,
-                                  'order' => $i + 1);
+                'camps' => $camps,
+                'order' => $i + 1);
         }
 
-        $this->view->assign('fields', $fielsArray);
-
-        return $this->view->fetch('IWagendas_admin_newItem.htm');
+        return $this->view->assign('fields', $fielsArray)
+                ->fetch('IWagendas_admin_newItem.htm');
     }
 
     /**
@@ -169,14 +161,13 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return Redirect the user to main page
      */
-    public function create($args)
-    {
+    public function create($args) {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
         $nom_agenda = FormUtil::getPassedValue('nom_agenda', isset($args['nom_agenda']) ? $args['nom_agenda'] : null, 'POST');
-        $descriu    = FormUtil::getPassedValue('descriu', isset($args['descriu']) ? $args['descriu'] : null, 'POST');
-        $activa     = FormUtil::getPassedValue('activa', isset($args['activa']) ? $args['activa'] : null, 'POST');
+        $descriu = FormUtil::getPassedValue('descriu', isset($args['descriu']) ? $args['descriu'] : null, 'POST');
+        $activa = FormUtil::getPassedValue('activa', isset($args['activa']) ? $args['activa'] : null, 'POST');
 
         $c1 = FormUtil::getPassedValue('c1', isset($args['c1']) ? $args['c1'] : null, 'POST');
         $c2 = FormUtil::getPassedValue('c2', isset($args['c2']) ? $args['c2'] : null, 'POST');
@@ -197,14 +188,11 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $op5 = FormUtil::getPassedValue('op5', isset($args['op5']) ? $args['op5'] : null, 'POST');
         $op6 = FormUtil::getPassedValue('op6', isset($args['op6']) ? $args['op6'] : null, 'POST');
 
-        $adjunts   = FormUtil::getPassedValue('adjunts', isset($args['adjunts']) ? $args['adjunts'] : null, 'POST');
+        $adjunts = FormUtil::getPassedValue('adjunts', isset($args['adjunts']) ? $args['adjunts'] : null, 'POST');
         $protegida = FormUtil::getPassedValue('protegida', isset($args['protegida']) ? $args['protegida'] : null, 'POST');
-        $color     = FormUtil::getPassedValue('color', isset($args['color']) ? $args['color'] : null, 'POST');
+        $color = FormUtil::getPassedValue('color', isset($args['color']) ? $args['color'] : null, 'POST');
 
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
-        }
+        $this->checkCsrfToken();
 
         // Needed argument
         if (!isset($nom_agenda) || $nom_agenda == '') {
@@ -213,11 +201,16 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         }
 
         //if field type is different to list set list options as ''
-        if ($tc2 != 5) $op2 = '';
-        if ($tc3 != 5) $op3 = '';
-        if ($tc4 != 5) $op4 = '';
-        if ($tc5 != 5) $op5 = '';
-        if ($tc6 != 5) $op6 = '';
+        if ($tc2 != 5)
+            $op2 = '';
+        if ($tc3 != 5)
+            $op3 = '';
+        if ($tc4 != 5)
+            $op4 = '';
+        if ($tc5 != 5)
+            $op5 = '';
+        if ($tc6 != 5)
+            $op6 = '';
 
         //Check if defined agenda's field are consecutive
         for ($i = 1; $i < 7; $i++) {
@@ -234,30 +227,29 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         }
 
         //Update the agenda
-        $lid = ModUtil::apiFunc('IWagendas', 'admin', 'create',
-                                 array('nom_agenda' => $nom_agenda,
-                                       'descriu' => $descriu,
-                                       'activa' => $activa,
-                                       'c1' => $c1,
-                                       'c2' => $c2,
-                                       'c3' => $c3,
-                                       'c4' => $c4,
-                                       'c5' => $c5,
-                                       'c6' => $c6,
-                                       'op2' => $op2,
-                                       'op3' => $op3,
-                                       'op4' => $op4,
-                                       'op5' => $op5,
-                                       'op6' => $op6,
-                                       'tc1' => $tc1,
-                                       'tc2' => $tc2,
-                                       'tc3' => $tc3,
-                                       'tc4' => $tc4,
-                                       'tc5' => $tc5,
-                                       'tc6' => $tc6,
-                                       'adjunts' => $adjunts,
-                                       'protegida' => $protegida,
-                                       'color' => $color));
+        $lid = ModUtil::apiFunc('IWagendas', 'admin', 'create', array('nom_agenda' => $nom_agenda,
+                    'descriu' => $descriu,
+                    'activa' => $activa,
+                    'c1' => $c1,
+                    'c2' => $c2,
+                    'c3' => $c3,
+                    'c4' => $c4,
+                    'c5' => $c5,
+                    'c6' => $c6,
+                    'op2' => $op2,
+                    'op3' => $op3,
+                    'op4' => $op4,
+                    'op5' => $op5,
+                    'op6' => $op6,
+                    'tc1' => $tc1,
+                    'tc2' => $tc2,
+                    'tc3' => $tc3,
+                    'tc4' => $tc4,
+                    'tc5' => $tc5,
+                    'tc6' => $tc6,
+                    'adjunts' => $adjunts,
+                    'protegida' => $protegida,
+                    'color' => $color));
         if ($lid != false) {
             //success
             LogUtil::registerStatus($this->__('New agenda created'));
@@ -274,31 +266,26 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return Redirect the user to main page
      */
-    public function delete($args)
-    {
-        $daid    = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
+    public function delete($args) {
+        $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'REQUEST');
         $confirm = FormUtil::getPassedValue('confirm', isset($args['confirm']) ? $args['confirm'] : null, 'POST');
 
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
         // Get item
-        $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda',
-                                  array('daid' => $daid));
+        $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda', array('daid' => $daid));
         if ($item == false) {
             LogUtil::registerError($this->__('The agenda was not found'));
             return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
         }
 
         if (!$confirm) {
-            $this->view->assign('item', $item);
-            return $this->view->fetch('IWagendas_admin_delete.htm');
+            return $this->view->assign('item', $item)
+                    ->fetch('IWagendas_admin_delete.htm');
         }
 
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
-        }
+        $this->checkCsrfToken();
 
         if (ModUtil::apiFunc('IWagendas', 'admin', 'delete', array('daid' => $daid))) {
             // Success
@@ -315,45 +302,43 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return The creation form
      */
-    public function edit($args)
-    {
+    public function edit($args) {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'GET');
 
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
         //Get field information
-        $item = ModUtil::apiFunc('IWagendas', 'user', 'getAgenda',
-                                  array('daid' => $daid));
+        $item = ModUtil::apiFunc('IWagendas', 'user', 'getAgenda', array('daid' => $daid));
         if ($item == false) {
             LogUtil::registerError($this->__('The agenda was not found'));
             return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
         }
 
         $nomcamp = array($this->__('Nota name'),
-                         $this->__('Secondary field') . ' 1',
-                         $this->__('Secondary field') . ' 2',
-                         $this->__('Secondary field') . ' 3',
-                         $this->__('Secondary field') . ' 4',
-                         $this->__('Secondary field') . ' 5');
+            $this->__('Secondary field') . ' 1',
+            $this->__('Secondary field') . ' 2',
+            $this->__('Secondary field') . ' 3',
+            $this->__('Secondary field') . ' 4',
+            $this->__('Secondary field') . ' 5');
 
         //Define the possible types of fields
         $camps0 = array(array('id' => 1,
-                              'name' => $this->__('Text')),
-                        array('id' => 2,
-                              'name' => $this->__('Text area')));
+                'name' => $this->__('Text')),
+            array('id' => 2,
+                'name' => $this->__('Text area')));
         $camps1 = array(array('id' => 1,
-                              'name' => $this->__('Text')),
-                        array('id' => 2,
-                              'name' => $this->__('Text area')),
-                        array('id' => 3,
-                              'name' => $this->__('Event author')),
-                        array('id' => 4,
-                              'name' => $this->__('Event date')),
-                        array('id' => 5,
-                              'name' => $this->__('Selection')));
+                'name' => $this->__('Text')),
+            array('id' => 2,
+                'name' => $this->__('Text area')),
+            array('id' => 3,
+                'name' => $this->__('Event author')),
+            array('id' => 4,
+                'name' => $this->__('Event date')),
+            array('id' => 5,
+                'name' => $this->__('Selection')));
 
-        $msgUsers     = ModUtil::getVar('IWagendas', 'msgUsersDefault');
+        $msgUsers = ModUtil::getVar('IWagendas', 'msgUsersDefault');
         $msgUsersResp = ModUtil::getVar('IWagendas', 'msgUsersRespDefault');
 
         $this->view->assign('msgUsers', $msgUsers);
@@ -363,12 +348,12 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             $j = $i + 1;
             $op = (isset($item['op' . $j])) ? $item['op' . $j] : '';
             $fielsArray[] = array('nomcamp' => $nomcamp[$i],
-                                  'camps' => $camps,
-                                  'order' => $i + 1,
-                                  'value' => $item['c' . $j],
-                                  'type' => $item['tc' . $j],
-                                  'option' => $op,
-                                  );
+                'camps' => $camps,
+                'order' => $i + 1,
+                'value' => $item['c' . $j],
+                'type' => $item['tc' . $j],
+                'option' => $op,
+            );
         }
         $this->view->assign('fields', $fielsArray);
         $this->view->assign('item', $item);
@@ -383,8 +368,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return Redirect user to main admin page
      */
-    public function update($args)
-    {
+    public function update($args) {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
@@ -413,21 +397,24 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $protegida = FormUtil::getPassedValue('protegida', isset($args['protegida']) ? $args['protegida'] : null, 'POST');
         $color = FormUtil::getPassedValue('color', isset($args['color']) ? $args['color'] : null, 'POST');
 
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
-        }
+        $this->checkCsrfToken();
+
         // Needed argument
         if (!isset($nom_agenda) || $nom_agenda == '') {
             LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
             return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
         }
         //if field type is different to list set list options as ''
-        if ($tc2 != 5) $op2 = '';
-        if ($tc3 != 5) $op3 = '';
-        if ($tc4 != 5) $op4 = '';
-        if ($tc5 != 5) $op5 = '';
-        if ($tc6 != 5) $op6 = '';
+        if ($tc2 != 5)
+            $op2 = '';
+        if ($tc3 != 5)
+            $op3 = '';
+        if ($tc4 != 5)
+            $op4 = '';
+        if ($tc5 != 5)
+            $op5 = '';
+        if ($tc6 != 5)
+            $op6 = '';
 
         //Check if defined agenda's field are consecutive
         for ($i = 1; $i < 7; $i++) {
@@ -443,30 +430,29 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             }
         }
         $items = array('nom_agenda' => $nom_agenda,
-                       'descriu' => $descriu,
-                       'activa' => $activa,
-                       'c1' => $c1,
-                       'c2' => $c2,
-                       'c3' => $c3,
-                       'c4' => $c4,
-                       'c5' => $c5,
-                       'tc1' => $tc1,
-                       'tc2' => $tc2,
-                       'tc3' => $tc3,
-                       'tc4' => $tc4,
-                       'tc5' => $tc5,
-                       'tc6' => $tc6,
-                       'op2' => $op2,
-                       'op3' => $op3,
-                       'op4' => $op4,
-                       'op5' => $op5,
-                       'op6' => $op6,
-                       'adjunts' => $adjunts,
-                       'protegida' => $protegida,
-                       'color' => $color);
-        $lid = ModUtil::apiFunc('IWagendas', 'admin', 'editAgenda',
-                                 array('daid' => $daid,
-                                       'items' => $items));
+            'descriu' => $descriu,
+            'activa' => $activa,
+            'c1' => $c1,
+            'c2' => $c2,
+            'c3' => $c3,
+            'c4' => $c4,
+            'c5' => $c5,
+            'tc1' => $tc1,
+            'tc2' => $tc2,
+            'tc3' => $tc3,
+            'tc4' => $tc4,
+            'tc5' => $tc5,
+            'tc6' => $tc6,
+            'op2' => $op2,
+            'op3' => $op3,
+            'op4' => $op4,
+            'op5' => $op5,
+            'op6' => $op6,
+            'adjunts' => $adjunts,
+            'protegida' => $protegida,
+            'color' => $color);
+        $lid = ModUtil::apiFunc('IWagendas', 'admin', 'editAgenda', array('daid' => $daid,
+                    'items' => $items));
         if ($lid != false) {
             LogUtil::registerStatus($this->__('Agenda updated'));
         }
@@ -480,8 +466,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return Redirect user to main admin page
      */
-    public function addGroup($args)
-    {
+    public function addGroup($args) {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
@@ -493,19 +478,17 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $msgUsersDefault = FormUtil::getPassedValue('msgUsersDefault', isset($args['msgUsersDefault']) ? $args['msgUsersDefault'] : null, 'POST');
 
         //Get item
-        $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda',
-                                  array('daid' => $daid));
+        $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda', array('daid' => $daid));
         if ($item == false) {
             LogUtil::registerError($this->__('The agenda was not found'));
             return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
         }
         if (!$confirm || $group == 0) {
             $sv = ModUtil::func('IWmain', 'user', 'genSecurityValue');
-            $groups = ModUtil::func('IWmain', 'user', 'getAllGroups',
-                                     array('sv' => $sv,
-                                           'less' => ModUtil::getVar('IWmyrole', 'rolegroup')));
-            
-            
+            $groups = ModUtil::func('IWmain', 'user', 'getAllGroups', array('sv' => $sv,
+                        'less' => ModUtil::getVar('IWmyrole', 'rolegroup')));
+
+
             //check if iwmessages module is active
             $modid = ModUtil::getIdFromName('IWmessages');
             $modinfo = ModUtil::getInfo($modid);
@@ -516,10 +499,9 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             $this->view->assign('item', $item);
             return $this->view->fetch('IWagendas_admin_addGroup.htm');
         }
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
-        }
+
+        $this->checkCsrfToken();
+
         // Needed argument
         if (!isset($group) || !is_numeric($group) || $group == 0) {
             LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -533,9 +515,8 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $groupString .= '$' . $group . '|' . $accessType . '$';
         $items = array('grup' => $groupString);
         //add the group in database and send automatic message if it is necessary
-        if (ModUtil::apiFunc('IWagendas', 'admin', 'editAgenda',
-                              array('daid' => $daid,
-                                    'items' => $items))) {
+        if (ModUtil::apiFunc('IWagendas', 'admin', 'editAgenda', array('daid' => $daid,
+                    'items' => $items))) {
             if ($msgUsersDefault) {
                 ModUtil::setVar('IWagendas', 'msgUsersDefault', $msgUsers);
             }
@@ -552,10 +533,9 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
                     $members = ModUtil::func('IWmain', 'user', 'getMembersGroup', array('sv' => $sv,
                                 'gid' => $group));
                     foreach ($members as $member) {
-                        ModUtil::apiFunc('IWmessages', 'user', 'create',
-                                          array('to_userid' => $member['id'],
-                                                'subject' => $this->__('Agendas module - Automatic message'),
-                                                'message' => $msgUsers));
+                        ModUtil::apiFunc('IWmessages', 'user', 'create', array('to_userid' => $member['id'],
+                            'subject' => $this->__('Agendas module - Automatic message'),
+                            'message' => $msgUsers));
                     }
                 }
             }
@@ -571,8 +551,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return Redirect user to main admin page
      */
-    public function addManager($args)
-    {
+    public function addManager($args) {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
@@ -583,8 +562,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $msgUsersRespDefault = FormUtil::getPassedValue('msgUsersRespDefault', isset($args['msgUsersRespDefault']) ? $args['msgUsersRespDefault'] : null, 'POST');
 
         //Get item
-        $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda',
-                                  array('daid' => $daid));
+        $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda', array('daid' => $daid));
         if ($item == false) {
             LogUtil::registerError($this->__('The agenda was not found'));
             return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
@@ -592,16 +570,14 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $confirm = (!isset($uid) || !is_numeric($uid) || $uid == 0) ? 0 : 1;
         if (!$confirm) {
             $sv = ModUtil::func('IWmain', 'user', 'genSecurityValue');
-            $groups = ModUtil::func('IWmain', 'user', 'getAllGroups',
-                                     array('sv' => $sv,
-                                           'plus' => $this->__('Choose a group...'),
-                                           'less' => ModUtil::getVar('IWmyrole', 'rolegroup')));
+            $groups = ModUtil::func('IWmain', 'user', 'getAllGroups', array('sv' => $sv,
+                        'plus' => $this->__('Choose a group...'),
+                        'less' => ModUtil::getVar('IWmyrole', 'rolegroup')));
             $sv = ModUtil::func('IWmain', 'user', 'genSecurityValue');
-            $groupMembers = ModUtil::func('IWmain', 'user', 'getMembersGroup',
-                                           array('sv' => $sv,
-                                                 'gid' => $group));
-            
-            
+            $groupMembers = ModUtil::func('IWmain', 'user', 'getMembersGroup', array('sv' => $sv,
+                        'gid' => $group));
+
+
             //check if iwmessages module is active
             $modid = ModUtil::getIdFromName('IWmessages');
             $modinfo = ModUtil::getInfo($modid);
@@ -614,10 +590,9 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             $this->view->assign('item', $item);
             return $this->view->fetch('IWagendas_admin_addManager.htm');
         }
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
-        }
+
+        $this->checkCsrfToken();
+
         // Needed argument
         if (!isset($uid) || !is_numeric($uid) || $uid == 0) {
             LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -627,9 +602,8 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $respString .= '$' . $uid . '$';
         $items = array('resp' => $respString);
         //add the group in database and send automatic message if it is necessary
-        if (ModUtil::apiFunc('IWagendas', 'admin', 'editAgenda',
-                              array('daid' => $daid,
-                                    'items' => $items))) {
+        if (ModUtil::apiFunc('IWagendas', 'admin', 'editAgenda', array('daid' => $daid,
+                    'items' => $items))) {
             if ($msgUsersRespDefault) {
                 ModUtil::setVar('IWagendas', 'msgUsersRespDefault', $msgUsersResp);
             }
@@ -641,10 +615,9 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             if ($modinfo['state'] == 3) {
                 //Send a private mail to users with access to the agenda
                 if ($msgUsersResp != '' && $item['activa']) {
-                    ModUtil::apiFunc('IWmessages', 'user', 'create',
-                                      array('to_userid' => $uid,
-                                            'subject' => $this->__('Agendas module - Automatic message'),
-                                            'message' => $msgUsersResp));
+                    ModUtil::apiFunc('IWmessages', 'user', 'create', array('to_userid' => $uid,
+                        'subject' => $this->__('Agendas module - Automatic message'),
+                        'message' => $msgUsersResp));
                 }
             }
         }
@@ -659,8 +632,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return Redirect user to main admin page
      */
-    public function deleteGroup($args)
-    {
+    public function deleteGroup($args) {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
@@ -669,8 +641,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $id = FormUtil::getPassedValue('id', isset($args['id']) ? $args['id'] : null, 'REQUEST');
 
         //Get item
-        $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda',
-                                  array('daid' => $daid));
+        $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda', array('daid' => $daid));
         if ($item == false) {
             LogUtil::registerError($this->__('The agenda was not found'));
             return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
@@ -680,20 +651,18 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             $vals = explode('|', $id);
             //get all groups information
             $sv = ModUtil::func('IWmain', 'user', 'genSecurityValue');
-            $groupsInfo = ModUtil::func('IWmain', 'user', 'getAllGroupsInfo',
-                                         array('sv' => $sv));
+            $groupsInfo = ModUtil::func('IWmain', 'user', 'getAllGroupsInfo', array('sv' => $sv));
             $groupName = $groupsInfo[$vals[0]];
-            
-            
+
+
             $this->view->assign('groupName', $groupName);
             $this->view->assign('item', $item);
             $this->view->assign('id', $id);
             return $this->view->fetch('IWagendas_admin_deleteGroup.htm');
         }
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
-        }
+
+        $this->checkCsrfToken();
+
         // Needed argument
         if (!isset($id) || $id == '') {
             LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -701,9 +670,8 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         }
         $groupString = str_replace('$' . $id . '$', '', $item['grup']);
         $items = array('grup' => $groupString);
-        if (ModUtil::apiFunc('IWagendas', 'admin', 'editAgenda',
-                              array('daid' => $daid,
-                                    'items' => $items))) {
+        if (ModUtil::apiFunc('IWagendas', 'admin', 'editAgenda', array('daid' => $daid,
+                    'items' => $items))) {
             //Success
             LogUtil::registerStatus($this->__('A group has been deleted'));
         }
@@ -717,8 +685,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return Redirect user to main admin page
      */
-    public function deleteManager($args)
-    {
+    public function deleteManager($args) {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
@@ -727,27 +694,24 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $id = FormUtil::getPassedValue('id', isset($args['id']) ? $args['id'] : null, 'REQUEST');
 
         //Get item
-        $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda',
-                                  array('daid' => $daid));
+        $item = ModUtil::apiFunc('IWagendas', 'user', 'getagenda', array('daid' => $daid));
         if ($item == false) {
             LogUtil::registerError($this->__('The agenda was not found'));
             return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
         }
         if (!$confirm) {
             $sv = ModUtil::func('IWmain', 'user', 'genSecurityValue');
-            $userName = ModUtil::func('IWmain', 'user', 'getUserInfo',
-                                       array('sv' => $sv,
-                                             'uid' => $id,
-                                             'info' => 'ncc'));
+            $userName = ModUtil::func('IWmain', 'user', 'getUserInfo', array('sv' => $sv,
+                        'uid' => $id,
+                        'info' => 'ncc'));
             $this->view->assign('userName', $userName);
             $this->view->assign('item', $item);
             $this->view->assign('id', $id);
             return $this->view->fetch('IWagendas_admin_deleteManager.htm');
         }
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
-        }
+
+        $this->checkCsrfToken();
+
         // Needed argument
         if (!isset($id) || $id == '') {
             LogUtil::registerError($this->__('Error! Could not do what you wanted. Please check your input.'));
@@ -755,9 +719,8 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         }
         $respString = str_replace('$' . $id . '$', '', $item['resp']);
         $items = array('resp' => $respString);
-        if (ModUtil::apiFunc('IWagendas', 'admin', 'editAgenda',
-                              array('daid' => $daid,
-                                    'items' => $items))) {
+        if (ModUtil::apiFunc('IWagendas', 'admin', 'editAgenda', array('daid' => $daid,
+                    'items' => $items))) {
             //Success
             LogUtil::registerStatus($this->__('A manager has been deleted'));
         }
@@ -770,61 +733,60 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return Page settings
      */
-    public function configura()
-    {
+    public function configura() {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
         //memoritzem en un array els noms dels mesos de l'any
         $nom_mes = array($this->__('January'),
-                         $this->__('February'),
-                         $this->__('March'),
-                         $this->__('April'),
-                         $this->__('May'),
-                         $this->__('June'),
-                         $this->__('July'),
-                         $this->__('August'),
-                         $this->__('September'),
-                         $this->__('October'),
-                         $this->__('November'),
-                         $this->__('December'));
+            $this->__('February'),
+            $this->__('March'),
+            $this->__('April'),
+            $this->__('May'),
+            $this->__('June'),
+            $this->__('July'),
+            $this->__('August'),
+            $this->__('September'),
+            $this->__('October'),
+            $this->__('November'),
+            $this->__('December'));
         //Memoritzem un array amb els dies de la setmana
         $day_names_abbr = array($this->__('Mo'),
-                                $this->__('Tu'),
-                                $this->__('We'),
-                                $this->__('Th'),
-                                $this->__('Fr'),
-                                $this->__('Sa'),
-                                $this->__('Su'));
+            $this->__('Tu'),
+            $this->__('We'),
+            $this->__('Th'),
+            $this->__('Fr'),
+            $this->__('Sa'),
+            $this->__('Su'));
         //Set mounhts and colours configuration into arrays
         $nom_mes_article = array($this->__('January of'),
-                                 $this->__('February of'),
-                                 $this->__('March of'),
-                                 $this->__('April of'),
-                                 $this->__('May of'),
-                                 $this->__('June of'),
-                                 $this->__('July of'),
-                                 $this->__('August of'),
-                                 $this->__('September of'),
-                                 $this->__('October of'),
-                                 $this->__('November of'),
-                                 $this->__('December of'));
+            $this->__('February of'),
+            $this->__('March of'),
+            $this->__('April of'),
+            $this->__('May of'),
+            $this->__('June of'),
+            $this->__('July of'),
+            $this->__('August of'),
+            $this->__('September of'),
+            $this->__('October of'),
+            $this->__('November of'),
+            $this->__('December of'));
         $confcolors = array($this->__('Title background'),
-                            $this->__('Month link background'),
-                            $this->__('Header background'),
-                            $this->__('Header text'),
-                            $this->__('Table background'),
-                            $this->__('Days link'),
-                            $this->__('Bank holidays link'),
-                            $this->__('Table border'),
-                            $this->__('Bank holidays background'),
-                            $this->__('Working days background'),
-                            $this->__('Present day background'),
-                            $this->__('New events background'),
-                            $this->__('Seen events background'),
-                            $this->__('Text background'),
-                            $this->__('Completed background'),
-                            $this->__('Text'));
+            $this->__('Month link background'),
+            $this->__('Header background'),
+            $this->__('Header text'),
+            $this->__('Table background'),
+            $this->__('Days link'),
+            $this->__('Bank holidays link'),
+            $this->__('Table border'),
+            $this->__('Bank holidays background'),
+            $this->__('Working days background'),
+            $this->__('Present day background'),
+            $this->__('New events background'),
+            $this->__('Seen events background'),
+            $this->__('Text background'),
+            $this->__('Completed background'),
+            $this->__('Text'));
         //get the configuration dates
         $inicicurs = ModUtil::getVar('IWagendas', 'inicicurs');
         $calendariescolar = ModUtil::getVar('IWagendas', 'calendariescolar');
@@ -839,19 +801,21 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         $urladjunts = ModUtil::getVar('IWagendas', 'urladjunts');
         $allowGCalendar = ModUtil::getVar('IWagendas', 'allowGCalendar');
         $zendGdataFuncAvailable = ModUtil::func('IWagendas', 'user', 'getGdataFunctionsAvailability');
-        if ($vista == -1) $vista = 0;
+        if ($vista == -1)
+            $vista = 0;
         //Creem matrius per a les diferents dades de configuraciï¿œ
         $festiussempre = explode('$$', substr(ModUtil::getVar('IWagendas', 'festiussempre'), 0, strlen(ModUtil::getVar('IWagendas', 'festiussempre')) - 1));
         array_shift($festiussempre);
         $festiussempreArray = array();
         foreach ($festiussempre as $festiu) {
             $dia = substr($festiu, 0, 2);
-            if (substr($dia, 0, 1) == '0') $dia = substr($dia, 1, 1);
+            if (substr($dia, 0, 1) == '0')
+                $dia = substr($dia, 1, 1);
             $mes = $nom_mes_article[substr($festiu, 2, 2) - 1];
             $festiussempreArray[] = array('date' => $dia . ' ' . substr($mes, 0, strlen($mes) - 3),
-                                          'label' => substr($festiu, 5),
-                                          'optionText' => substr($festiu, 0, 2) . substr($festiu, 2, 2),
-                                          'festiu' => $festiu);
+                'label' => substr($festiu, 5),
+                'optionText' => substr($festiu, 0, 2) . substr($festiu, 2, 2),
+                'festiu' => $festiu);
         }
         $altresfestius = explode('$$', substr(ModUtil::getVar('IWagendas', 'altresfestius'), 0, strlen(ModUtil::getVar('IWagendas', 'altresfestius')) - 1));
         array_shift($altresfestius);
@@ -863,9 +827,9 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             }
             $any = substr($altrefestiu, 4, 4);
             $altresfestiusArray[] = array('date' => $dia . ' ' . $nom_mes_article[substr($altrefestiu, 2, 2) - 1] . ' ' . $any,
-                                          'label' => substr($altrefestiu, 9),
-                                          'optionText' => substr($altrefestiu, 0, 2) . substr($altrefestiu, 2, 2) . $any,
-                                          'festiu' => $altrefestiu);
+                'label' => substr($altrefestiu, 9),
+                'optionText' => substr($altrefestiu, 0, 2) . substr($altrefestiu, 2, 2) . $any,
+                'festiu' => $altrefestiu);
         }
         $informacions = explode('$$', substr(ModUtil::getVar('IWagendas', 'informacions'), 0, strlen(ModUtil::getVar('IWagendas', 'informacions')) - 1));
         array_shift($informacions);
@@ -877,9 +841,9 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             }
             $any = substr($informacio, 4, 4);
             $informacionsArray[] = array('date' => $dia . ' ' . $nom_mes_article[substr($informacio, 2, 2) - 1] . ' ' . $any,
-                                         'label' => substr($informacio, 9),
-                                         'optionText' => $dia . substr($informacio, 2, 2) . $any,
-                                         'festiu' => $informacio);
+                'label' => substr($informacio, 9),
+                'optionText' => $dia . substr($informacio, 2, 2) . $any,
+                'festiu' => $informacio);
         }
         $periodes = explode('$$', substr(ModUtil::getVar('IWagendas', 'periodes'), 0, strlen(ModUtil::getVar('IWagendas', 'periodes')) - 1));
         array_shift($periodes);
@@ -898,11 +862,11 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             $any = substr($periode, 12, 4);
             $end = $dia . ' ' . $nom_mes_article[substr($periode, 10, 2) - 1] . ' ' . $any;
             $periodesArray[] = array('init' => $init,
-                                     'end' => $end,
-                                     'label' => substr($periode, 17, -7),
-                                     'color' => substr($periode, -7),
-                                     'optionText' => substr($periode, 0, 2) . substr($periode, 2, 2) . substr($periode, 4, 4) . substr($periode, 8, 2) . substr($periode, 10, 2) . substr($periode, 12, 4),
-                                     'festiu' => str_replace('#', '$', $periode));
+                'end' => $end,
+                'label' => substr($periode, 17, -7),
+                'color' => substr($periode, -7),
+                'optionText' => substr($periode, 0, 2) . substr($periode, 2, 2) . substr($periode, 4, 4) . substr($periode, 8, 2) . substr($periode, 10, 2) . substr($periode, 12, 4),
+                'festiu' => str_replace('#', '$', $periode));
         }
         $colors = explode('|', $colorsconf);
         // Get the month and the year
@@ -935,8 +899,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             $days[$i]['bgcolor'] = $colors[9]; // Default color (background color of the table)
             $days[$i]['label'] = $this->__('There are no events on this date');
             // Check whether it's a non-working day
-            $festiu = ModUtil::func('IWagendas', 'user', 'festiu',
-                                     array('dia' => $i, 'mes' => $month, 'any' => $year));
+            $festiu = ModUtil::func('IWagendas', 'user', 'festiu', array('dia' => $i, 'mes' => $month, 'any' => $year));
             // Change the color and the label if necessary
             if ($festiu['festiu']) {
                 $days[$i]['bgcolor'] = $colors[8];
@@ -955,18 +918,19 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
                 $days[$i]['bgcolor'] = $colors[10];
             }
             // Check whether there's any info associated to this day
-            $information = ModUtil::func('IWagendas', 'user', 'info',
-                                          array('dia' => $i,
-                                                'mes' => $month,
-                                                'any' => $year));
-            if ($information != '') $days[$i]['info'] = $information;
+            $information = ModUtil::func('IWagendas', 'user', 'info', array('dia' => $i,
+                        'mes' => $month,
+                        'any' => $year));
+            if ($information != '')
+                $days[$i]['info'] = $information;
         }
         $directoriroot = ModUtil::getVar('IWmain', 'documentRoot');
         $noWriteable = false;
         if (!file_exists($directoriroot . '/' . $urladjunts) || $urladjunts == '') {
             $this->view->assign('noFolder', true);
         } else {
-            if (!is_writeable($directoriroot . '/' . $urladjunts)) $noWriteable =  true;
+            if (!is_writeable($directoriroot . '/' . $urladjunts))
+                $noWriteable = true;
         }
         $multizk = (isset($GLOBALS['PNConfig']['Multisites']['multi']) && $GLOBALS['PNConfig']['Multisites']['multi'] == 1) ? 1 : 0;
         $this->view->assign('multizk', $multizk);
@@ -1013,15 +977,11 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return Redirect user to configuration page
      */
-    public function conf_modifica($args)
-    {
+    public function conf_modifica($args) {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'main'));
-        }
+        $this->checkCsrfToken();
 
         $inici = FormUtil::getPassedValue('inici', isset($args['inici']) ? $args['inici'] : null, 'POST');
         $ce = FormUtil::getPassedValue('ce', isset($args['ce']) ? $args['ce'] : null, 'POST');
@@ -1054,7 +1014,8 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         ModUtil::setVar('IWagendas', 'comentaris', $comentaris);
         ModUtil::setVar('IWagendas', 'llegenda', $llegenda);
         ModUtil::setVar('IWagendas', 'infos', $infos);
-        if (!isset($vista)) $vista = -1;
+        if (!isset($vista))
+            $vista = -1;
         ModUtil::setVar('IWagendas', 'vista', $vista);
         ModUtil::setVar('IWagendas', 'colors', $posa_colors);
         ModUtil::setVar('IWagendas', 'maxnotes', $maxnotes);
@@ -1074,8 +1035,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return Redirect user to form page
      */
-    public function nouallista($args)
-    {
+    public function nouallista($args) {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
@@ -1135,34 +1095,34 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
         }
         //Creem un array preparat per un MultiSelect amb els noms dels mesos
         $mesos_MS = array(array('id' => 1,
-                                'name' => $this->__('January')),
-                          array('id' => 2,
-                                'name' => $this->__('February')),
-                          array('id' => 3,
-                                'name' => $this->__('March')),
-                          array('id' => 4,
-                                'name' => $this->__('April')),
-                          array('id' => 5,
-                                'name' => $this->__('May')),
-                          array('id' => 6,
-                                'name' => $this->__('June')),
-                          array('id' => 7,
-                                'name' => $this->__('July')),
-                          array('id' => 8,
-                                'name' => $this->__('August')),
-                          array('id' => 9,
-                                'name' => $this->__('September')),
-                          array('id' => 10,
-                                'name' => $this->__('October')),
-                          array('id' => 11,
-                                'name' => $this->__('November')),
-                          array('id' => 12,
-                                'name' => $this->__('December')));
+                'name' => $this->__('January')),
+            array('id' => 2,
+                'name' => $this->__('February')),
+            array('id' => 3,
+                'name' => $this->__('March')),
+            array('id' => 4,
+                'name' => $this->__('April')),
+            array('id' => 5,
+                'name' => $this->__('May')),
+            array('id' => 6,
+                'name' => $this->__('June')),
+            array('id' => 7,
+                'name' => $this->__('July')),
+            array('id' => 8,
+                'name' => $this->__('August')),
+            array('id' => 9,
+                'name' => $this->__('September')),
+            array('id' => 10,
+                'name' => $this->__('October')),
+            array('id' => 11,
+                'name' => $this->__('November')),
+            array('id' => 12,
+                'name' => $this->__('December')));
         //Omplim un multiselect amb els anys disponibles. Sï¿œn l'any donat com d'inici del curs i l'any segï¿œent
         $anys_MS[] = array('id' => ModUtil::getVar('IWagendas', 'inicicurs'),
-                           'name' => ModUtil::getVar('IWagendas', 'inicicurs'));
+            'name' => ModUtil::getVar('IWagendas', 'inicicurs'));
         $anys_MS[] = array('id' => ModUtil::getVar('IWagendas', 'inicicurs') + 1,
-                           'name' => ModUtil::getVar('IWagendas', 'inicicurs') + 1);
+            'name' => ModUtil::getVar('IWagendas', 'inicicurs') + 1);
         switch ($index) {
             case 1:
                 $title = $this->__('Create a new bank holiday repeated every year');
@@ -1207,8 +1167,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return Redirect user to configuration page
      */
-    public function modifica_llistes($args)
-    {
+    public function modifica_llistes($args) {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
@@ -1251,10 +1210,9 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             }
             $dada = '';
         }
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('IWagendas', 'admin', 'configura'));
-        }
+
+        $this->checkCsrfToken();
+
         //Check needed arguments
         if (empty($text)) {
             LogUtil::registerError($this->__('Label text is empty'));
@@ -1321,10 +1279,14 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
             }
         }
         //preparem les dates per posar-les en les variable
-        if (strlen($dia1) == 1) $dia1 = '0' . $dia1;
-        if (strlen($mes1) == 1) $mes1 = '0' . $mes1;
-        if (strlen($dia2) == 1) $dia2 = '0' . $dia2;
-        if (strlen($mes2) == 1) $mes2 = '0' . $mes2;
+        if (strlen($dia1) == 1)
+            $dia1 = '0' . $dia1;
+        if (strlen($mes1) == 1)
+            $mes1 = '0' . $mes1;
+        if (strlen($dia2) == 1)
+            $dia2 = '0' . $dia2;
+        if (strlen($mes2) == 1)
+            $mes2 = '0' . $mes2;
         //Modifiquem la variable del mï¿œdul segons convingui depenent de l'ï¿œndex enviat
         switch ($index) {
             case 1: //Un festiu sempre
@@ -1417,8 +1379,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
      *
      * @return Redirect user to configuration page
      */
-    public function esborra($args)
-    {
+    public function esborra($args) {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
 
@@ -1514,4 +1475,5 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController
 
         return System::redirect(ModUtil::url('IWagendas', 'admin', 'configura'));
     }
+
 }
