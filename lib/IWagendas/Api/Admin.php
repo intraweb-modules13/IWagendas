@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Intraweb
  *
@@ -8,9 +9,8 @@
  * @package    Intraweb_Modules
  * @subpackage IWAgendas
  */
+class IWagendas_Api_Admin extends Zikula_AbstractApi {
 
-class IWagendas_Api_Admin extends Zikula_AbstractApi
-{
     /**
      * Update the agenda information in the database
      *
@@ -18,19 +18,16 @@ class IWagendas_Api_Admin extends Zikula_AbstractApi
      *
      * @return True if success and false otherwise
      */
-    public function editAgenda($args)
-    {
+    public function editAgenda($args) {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $items = FormUtil::getPassedValue('items', isset($args['items']) ? $args['items'] : null, 'POST');
         $sv = FormUtil::getPassedValue('sv', isset($args['sv']) ? $args['sv'] : null, 'POST');
         // Get agenda information
-        $item = ModUtil::apiFunc('IWagendas', 'user', 'getAgenda',
-                                  array('daid' => $daid));
+        $item = ModUtil::apiFunc('IWagendas', 'user', 'getAgenda', array('daid' => $daid));
         if ($item == false) {
             return LogUtil::registerError($this->__('Agenda not found'));
         }
-        if (!ModUtil::func('IWmain', 'user', 'checkSecurityValue',
-                            array('sv' => $sv)) || !SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
+        if (!ModUtil::func('IWmain', 'user', 'checkSecurityValue', array('sv' => $sv)) || !SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ)) {
             // Security check
             $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
         }
@@ -54,8 +51,7 @@ class IWagendas_Api_Admin extends Zikula_AbstractApi
      *
      * @return True if success and false otherwise
      */
-    public function create($args)
-    {
+    public function create($args) {
         $nom_agenda = FormUtil::getPassedValue('nom_agenda', isset($args['nom_agenda']) ? $args['nom_agenda'] : null, 'POST');
         $descriu = FormUtil::getPassedValue('descriu', isset($args['descriu']) ? $args['descriu'] : null, 'POST');
         $c1 = FormUtil::getPassedValue('c1', isset($args['c1']) ? $args['c1'] : null, 'POST');
@@ -84,8 +80,7 @@ class IWagendas_Api_Admin extends Zikula_AbstractApi
         $gColor = FormUtil::getPassedValue('gColor', isset($args['gColor']) ? $args['gColor'] : '', 'POST');
         $resp = FormUtil::getPassedValue('resp', isset($args['resp']) ? $args['resp'] : '', 'POST');
         $sv = FormUtil::getPassedValue('sv', isset($args['sv']) ? $args['sv'] : null, 'POST');
-        if (!ModUtil::func('IWmain', 'user', 'checkSecurityValue',
-                            array('sv' => $sv)) || !SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ) || $gCalendarId == '') {
+        if (!ModUtil::func('IWmain', 'user', 'checkSecurityValue', array('sv' => $sv)) || !SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ) || $gCalendarId == '') {
             // Security check
             $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
         }
@@ -96,34 +91,35 @@ class IWagendas_Api_Admin extends Zikula_AbstractApi
         }
 
         // optional arguments
-        if (!isset($descriu)) $descriu = '';
+        if (!isset($descriu))
+            $descriu = '';
         $item = array('nom_agenda' => $nom_agenda,
-                      'descriu' => $descriu,
-                      'c1' => $c1,
-                      'c2' => $c2,
-                      'c3' => $c3,
-                      'c4' => $c4,
-                      'c5' => $c5,
-                      'c6' => $c6,
-                      'tc1' => $tc1,
-                      'tc2' => $tc2,
-                      'tc3' => $tc3,
-                      'tc4' => $tc4,
-                      'tc5' => $tc5,
-                      'tc6' => $tc6,
-                      'op2' => $op2,
-                      'op3' => $op3,
-                      'op4' => $op4,
-                      'op5' => $op5,
-                      'op6' => $op6,
-                      'activa' => $activa,
-                      'adjunts' => $adjunts,
-                      'protegida' => $protegida,
-                      'color' => $color,
-                      'gCalendarId' => $gCalendarId,
-                      'gAccessLevel' => $gAccessLevel,
-                      'gColor' => $gColor,
-                      'resp' => $resp);
+            'descriu' => $descriu,
+            'c1' => $c1,
+            'c2' => $c2,
+            'c3' => $c3,
+            'c4' => $c4,
+            'c5' => $c5,
+            'c6' => $c6,
+            'tc1' => $tc1,
+            'tc2' => $tc2,
+            'tc3' => $tc3,
+            'tc4' => $tc4,
+            'tc5' => $tc5,
+            'tc6' => $tc6,
+            'op2' => $op2,
+            'op3' => $op3,
+            'op4' => $op4,
+            'op5' => $op5,
+            'op6' => $op6,
+            'activa' => $activa,
+            'adjunts' => $adjunts,
+            'protegida' => $protegida,
+            'color' => $color,
+            'gCalendarId' => $gCalendarId,
+            'gAccessLevel' => $gAccessLevel,
+            'gColor' => $gColor,
+            'resp' => $resp);
         if (!DBUtil::insertObject($item, 'IWagendas_definition', 'daid')) {
             return LogUtil::registerError($this->__('Error! Creation attempt failed.'));
         }
@@ -138,18 +134,15 @@ class IWagendas_Api_Admin extends Zikula_AbstractApi
      *
      * @return True if success and false otherwise
      */
-    public function delete($args)
-    {
+    public function delete($args) {
         $daid = FormUtil::getPassedValue('daid', isset($args['daid']) ? $args['daid'] : null, 'POST');
         $sv = FormUtil::getPassedValue('sv', isset($args['sv']) ? $args['sv'] : null, 'POST');
         //Get form information
-        $item = ModUtil::apiFunc('IWagendas', 'user', 'getAgenda',
-                                  array('daid' => $daid));
+        $item = ModUtil::apiFunc('IWagendas', 'user', 'getAgenda', array('daid' => $daid));
         if ($item == false) {
             LogUtil::registerError($this->__('Agenda not found'));
         }
-        if (!ModUtil::func('IWmain', 'user', 'checkSecurityValue',
-                            array('sv' => $sv)) || !SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ) || $item['resp'] != '$$' . UserUtil::getVar('uid') . '$') {
+        if (!ModUtil::func('IWmain', 'user', 'checkSecurityValue', array('sv' => $sv)) || !SecurityUtil::checkPermission('IWagendas::', "::", ACCESS_READ) || $item['resp'] != '$$' . UserUtil::getVar('uid') . '$') {
             // Security check
             $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN));
         }
@@ -178,17 +171,15 @@ class IWagendas_Api_Admin extends Zikula_AbstractApi
         }
         return true;
     }
-    
-    
-    
-        public function getlinks($args) {
+
+    public function getlinks($args) {
         $links = array();
         if (SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('IWagendas', 'admin', 'newItem'), 'text' => $this->__('Add a new agenda'), 'id' => 'iwforums_newItem', 'class' => 'z-icon-es-new');
-            $links[] = array('url' => ModUtil::url('IWagendas', 'admin', 'main'), 'text' => $this->__('Show existing agendas'), 'id' => 'iwforums_main', 'class' => 'z-icon-es-view');
-            $links[] = array('url' => ModUtil::url('IWagendas', 'admin', 'configura'), 'text' => $this->__('Module configuration'), 'id' => 'iwforums_conf', 'class' => 'z-icon-es-config');
+            $links[] = array('url' => ModUtil::url('IWagendas', 'admin', 'newItem'), 'text' => $this->__('Add a new agenda'), 'id' => 'iwagendas_newItem', 'class' => 'z-icon-es-new');
+            $links[] = array('url' => ModUtil::url('IWagendas', 'admin', 'main'), 'text' => $this->__('Show existing agendas'), 'id' => 'iwagendas_main', 'class' => 'z-icon-es-view');
+            $links[] = array('url' => ModUtil::url('IWagendas', 'admin', 'configura'), 'text' => $this->__('Module configuration'), 'id' => 'iwagendas_conf', 'class' => 'z-icon-es-config');
         }
         return $links;
-    } 
-    
+    }
+
 }
