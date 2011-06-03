@@ -96,7 +96,13 @@ class IWagendas_Installer extends Zikula_AbstractInstaller {
         // Deletion successfull
         return true;
     }
-
+     
+    /**
+     * Update the IWagendas module
+     * @author Albert Pérez Monfort (aperezm@xtec.cat)
+     * @author Jaume Fernàndez Valiente (jfern343@xtec.cat)
+     * @return bool true if successful, false otherwise
+     */
     public function upgrade($oldversion) {
 
         $prefix = $GLOBALS['ZConfig']['System']['prefix'];
@@ -120,7 +126,7 @@ class IWagendas_Installer extends Zikula_AbstractInstaller {
             return false;
         }
 
-
+        
         // Update module_vars table
         // Update the name (keeps old var value)
         $c = "UPDATE {$prefix}_module_vars SET z_modname = 'IWnoteboard' WHERE z_bkey = 'iw_noteboard'";
