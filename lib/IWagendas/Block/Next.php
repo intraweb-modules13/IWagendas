@@ -55,7 +55,7 @@ class IWagendas_Block_Next extends Zikula_Controller_AbstractBlock
         }
 
         // Get the view object
-        $view = & new view('IWagendas');
+        $view = Zikula_View::getInstance('IWagendas', false);
 
         // Get the number of days in which the future events will be shown
         $days = $blockinfo['url'];
