@@ -129,7 +129,7 @@ class IWagendas_Installer extends Zikula_AbstractInstaller {
         
         // Update module_vars table
         // Update the name (keeps old var value)
-        $c = "UPDATE {$prefix}_module_vars SET z_modname = 'IWnoteboard' WHERE z_bkey = 'iw_noteboard'";
+        $c = "UPDATE {$prefix}_module_vars SET z_modname = 'IWagendas' WHERE z_bkey = 'iw_agendas'";
         if (!DBUtil::executeSQL($c)) {
             return false;
         }
