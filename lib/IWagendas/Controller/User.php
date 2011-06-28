@@ -3753,6 +3753,8 @@ class IWagendas_Controller_User extends Zikula_AbstractController {
                 $days[$i]['label'] = ModUtil::func('IWagendas', 'user', 'prepara_etiqueta', array('text' => $periode['etiqueta'])) . '<br /><br />';
             } else {
                 $days[$i]['bgcolor'] = $colors[3]; // Default color (background color of the table)
+                $days[$i]['color'] = '';
+                $days[$i]['label'] = '';
             }
             // Check whether it's a non-working day
             $festiu = ModUtil::func('IWagendas', 'user', 'festiu', array('dia' => $i,
