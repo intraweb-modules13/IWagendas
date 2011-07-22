@@ -3752,7 +3752,7 @@ class IWagendas_Controller_User extends Zikula_AbstractController {
                 $days[$i]['color'] = $colors[5];
                 $days[$i]['label'] = ModUtil::func('IWagendas', 'user', 'prepara_etiqueta', array('text' => $periode['etiqueta'])) . '<br /><br />';
             } else {
-                $days[$i]['bgcolor'] = $colors[3]; // Default color (background color of the table)
+                $days[$i]['bgcolor'] = $colors[9]; // Default color (background color of the table)
                 $days[$i]['color'] = '';
                 $days[$i]['label'] = '';
             }
