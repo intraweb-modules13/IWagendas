@@ -437,6 +437,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController {
             'c3' => $c3,
             'c4' => $c4,
             'c5' => $c5,
+            'c6' => $c6,
             'tc1' => $tc1,
             'tc2' => $tc2,
             'tc3' => $tc3,
