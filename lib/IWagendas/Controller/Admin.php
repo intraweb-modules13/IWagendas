@@ -68,7 +68,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController {
         }
 
         return $this->view->assign('agendas', $agendasArray)
-                ->fetch('IWagendas_admin_main.htm');
+                        ->fetch('IWagendas_admin_main.htm');
     }
 
     /**
@@ -84,7 +84,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController {
                     'type' => 'admin'));
 
         return $this->view->assign('module', $module)
-                ->fetch('IWagendas_admin_module.htm');
+                        ->fetch('IWagendas_admin_module.htm');
     }
 
     /**
@@ -151,7 +151,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController {
         }
 
         return $this->view->assign('fields', $fielsArray)
-                ->fetch('IWagendas_admin_newItem.htm');
+                        ->fetch('IWagendas_admin_newItem.htm');
     }
 
     /**
@@ -282,7 +282,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController {
 
         if (!$confirm) {
             return $this->view->assign('item', $item)
-                    ->fetch('IWagendas_admin_delete.htm');
+                            ->fetch('IWagendas_admin_delete.htm');
         }
 
         $this->checkCsrfToken();
@@ -927,8 +927,9 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController {
         }
         $directoriroot = ModUtil::getVar('IWmain', 'documentRoot');
         $noWriteable = false;
+        $noFolder = false;
         if (!file_exists($directoriroot . '/' . $urladjunts) || $urladjunts == '') {
-            $this->view->assign('noFolder', true);
+            $noFolder = true;
         } else {
             if (!is_writeable($directoriroot . '/' . $urladjunts))
                 $noWriteable = true;
@@ -945,6 +946,7 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController {
         $this->view->assign('altresfestius', $altresfestiusArray);
         $this->view->assign('confcolors', $confcolors);
         $this->view->assign('colors', $colors);
+        $this->view->assign('noFolder', $noFolder);
         $this->view->assign('noWriteable', $noWriteable);
         $this->view->assign('month_name', $nom_mes[(int) date('m') - 1]);
         $this->view->assign('year', date('Y'));
@@ -1010,20 +1012,21 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController {
             return System::redirect(ModUtil::url('IWagendas', 'admin', 'main'));
         }
         //Set the values of the module vars
-        ModUtil::setVar('IWagendas', 'inicicurs', $inici);
-        ModUtil::setVar('IWagendas', 'calendariescolar', $ce);
-        ModUtil::setVar('IWagendas', 'comentaris', $comentaris);
-        ModUtil::setVar('IWagendas', 'llegenda', $llegenda);
-        ModUtil::setVar('IWagendas', 'infos', $infos);
         if (!isset($vista))
             $vista = -1;
-        ModUtil::setVar('IWagendas', 'vista', $vista);
-        ModUtil::setVar('IWagendas', 'colors', $posa_colors);
-        ModUtil::setVar('IWagendas', 'maxnotes', $maxnotes);
-        ModUtil::setVar('IWagendas', 'adjuntspersonals', $adjuntspersonals);
-        ModUtil::setVar('IWagendas', 'caducadies', $caducadies);
-        ModUtil::setVar('IWagendas', 'urladjunts', $urladjunts);
-        ModUtil::setVar('IWagendas', 'allowGCalendar', $allowGCalendar);
+        $this->setVar('inicicurs', $inici)
+                ->setVar('calendariescolar', $ce)
+                ->setVar('comentaris', $comentaris)
+                ->setVar('llegenda', $llegenda)
+                ->setVar('infos', $infos)
+                ->setVar('vista', $vista)
+                ->setVar('colors', $posa_colors)
+                ->setVar('maxnotes', $maxnotes)
+                ->setVar('adjuntspersonals', $adjuntspersonals)
+                ->setVar('caducadies', $caducadies)
+                ->setVar('urladjunts', $urladjunts)
+                ->setVar('allowGCalendar', $allowGCalendar);
+
         LogUtil::registerStatus($this->__('Agenda configuration updated'));
 
         return System::redirect(ModUtil::url('IWagendas', 'admin', 'configura'));
@@ -1142,23 +1145,22 @@ class IWagendas_Controller_Admin extends Zikula_AbstractController {
                 $title1 = $this->__('Date to show the information icon');
                 break;
         }
-        $this->view->assign('title', $title);
-        $this->view->assign('title1', $title1);
-        $this->view->assign('index', $index);
-        $this->view->assign('dada', $dada);
-        $this->view->assign('dies_MS', $dies_MS);
-        $this->view->assign('mesos_MS', $mesos_MS);
-        $this->view->assign('anys_MS', $anys_MS);
-        $this->view->assign('dia1', $dia1);
-        $this->view->assign('dia2', $dia2);
-        $this->view->assign('mes1', $mes1);
-        $this->view->assign('mes2', $mes2);
-        $this->view->assign('any1', $any1);
-        $this->view->assign('any2', $any2);
-        $this->view->assign('text', $text);
-        $this->view->assign('color', $color);
-
-        return $this->view->fetch('IWagendas_admin_newElement.htm');
+        return $this->view->assign('title', $title)
+                        ->assign('title1', $title1)
+                        ->assign('index', $index)
+                        ->assign('dada', $dada)
+                        ->assign('dies_MS', $dies_MS)
+                        ->assign('mesos_MS', $mesos_MS)
+                        ->assign('anys_MS', $anys_MS)
+                        ->assign('dia1', $dia1)
+                        ->assign('dia2', $dia2)
+                        ->assign('mes1', $mes1)
+                        ->assign('mes2', $mes2)
+                        ->assign('any1', $any1)
+                        ->assign('any2', $any2)
+                        ->assign('text', $text)
+                        ->assign('color', $color)
+                        ->fetch('IWagendas_admin_newElement.htm');
     }
 
     /**

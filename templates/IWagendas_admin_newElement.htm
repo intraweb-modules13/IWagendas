@@ -20,9 +20,8 @@
 {include file="IWagendas_admin_menu.htm"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">
-        {img modname='core' src='package_settings.png' set='icons/large'}
+        {img modname='core' src='configure.png' set='icons/large'}
     </div>
-    <div style="height:20px;">&nbsp;</div>
     <h2>{$title}</h2>
     <form id="periode" class="z-form" action="{modurl modname="IWagendas" type="admin" func="modifica_llistes"}" method="post" enctype="application/x-www-form-urlencoded">
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
