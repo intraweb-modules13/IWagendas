@@ -113,7 +113,7 @@
                             {if isset($canAdd) && $canAdd}
                             <a href="{modurl modname='IWagendas' type='user' func='nova' mes=$month any=$year dia=$smarty.section.day.index tasca=0 daid=$gdaid odaid=$daid}">
                                 <span style="vertical-align:middle; float: right;">
-                                    {img modname='IWagendas' src='add.gif' set='images' __alt="Insert a new event"  __title="Insert a new event" }
+                                    {img modname='IWagendas' src='add.gif' __alt="Insert a new event"  __title="Insert a new event" }
                                 </span>
                             </a>
                             {/if}
@@ -137,7 +137,7 @@
             <tr>
                 {if isset($dia)}
                 <td colspan="4" style="text-align:center;">
-                    <a href="{modurl modname='IWagendas' type='user' func='main' mes=$mes any=$any daid=$daid dia=$dia-1}">{img modname='IWagendas' src='mesmenys.gif' set='images'   __alt="Previous day" __title="Previous day"}</a> {$dayName}, {$dia} {$monthName} {$any} <a href="{modurl modname='IWagendas' type='user' func='main' mes=$mes any=$any daid=$daid dia=$dia+1}">{img modname='IWagendas' src='mesmes.gif' set='images'   __alt="Next day" __title="Next day"}</a>
+                    <a href="{modurl modname='IWagendas' type='user' func='main' mes=$mes any=$any daid=$daid dia=$dia-1}">{img modname='IWagendas' src='mesmenys.gif' __alt="Previous day" __title="Previous day"}</a> {$dayName}, {$dia} {$monthName} {$any} <a href="{modurl modname='IWagendas' type='user' func='main' mes=$mes any=$any daid=$daid dia=$dia+1}">{img modname='IWagendas' src='mesmes.gif'  __alt="Next day" __title="Next day"}</a>
                     {else}
                 <td colspan="4">
                     {$message}
@@ -160,7 +160,7 @@
                 {/if}
                 <td valign="top" style="padding: 2px; border-bottom:2px solid #DDDDDD; background:#{$row.bgcolor}; color:#{$row.linkcolor}; width: 90px;">
                     <span style="background:#{$row.hourcolor};">{$row.hour}</span>
-                    {if isset($row.gCalendar) && $row.gCalendar}&nbsp;<span style="vertical-align:middle;">{img modname='IWagendas' src='gIcon.gif' set='images'}</span>{/if}
+                    {if isset($row.gCalendar) && $row.gCalendar}&nbsp;<span style="vertical-align:middle;">{img modname='IWagendas' src='gIcon.gif'}</span>{/if}
                     {if $row.modified eq 1 && $daid eq 0 && $row.daid neq 0 && $userid neq ''}
                     <br /><strong>{gt text="Agenda updated"}</strong>
                     {/if}
@@ -210,7 +210,7 @@
                        <span style="background-color: {$agenda.color};">&nbsp;&nbsp;&nbsp;</span>
                 {/if}
                 {if $agenda.gCalendar}
-                <span style="vertical-align:middle;">{img modname='IWagendas' src='gIcon.gif' set='images'}</span>
+                <span style="vertical-align:middle;">{img modname='IWagendas' src='gIcon.gif'}</span>
                 {/if}
                 <a href="javascript:changeMonth({$mes},{$any},{$agenda.daid})" title="{$agenda.fullName}">
                     <span {if $daid eq $agenda.daid}style="border: 1px solid #000; background-color:lightyellow; padding:0px 10px 0px 2px;"{else}style="padding:1px;"{/if}>{$agenda.nom_agenda}</span>

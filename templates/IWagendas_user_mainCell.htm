@@ -1,7 +1,7 @@
 {userloggedin assign=userid}
 <div {if $userid neq ''}style="border: 2px solid {if isset($days[day][events_day].gColor)}{$days[day][events_day].gColor}{else}{$days[day][events_day].agenda.color}{/if}; margin: 3px;"{/if} id="note_{$days[day][events_day].aid}">
     <div style="margin:2px;">
-        <span style="background:#{$days[day][events_day].hourcolor}; color:#{$colors[5]};">{$days[day][events_day].hour}</span>{if isset($days[day][events_day].gCalendar) && $days[day][events_day].gCalendar}&nbsp;<span style="vertical-align:middle;">{img modname='IWagendas' src='gIcon.gif' set='images'}</span>{/if}
+        <span style="background:#{$days[day][events_day].hourcolor}; color:#{$colors[5]};">{$days[day][events_day].hour}</span>{if isset($days[day][events_day].gCalendar) && $days[day][events_day].gCalendar}&nbsp;<span style="vertical-align:middle;">{img modname='IWagendas' src='gIcon.gif'}</span>{/if}
     </div>
     <div style="margin:2px;">
         <span id="noteText_{$days[day][events_day].aid}" style="background:#{$days[day][events_day].bgcolortext}; color:#{$colors[15]};">{$days[day][events_day].text}</span>

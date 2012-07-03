@@ -161,7 +161,7 @@
                 <!---needed for gCalendar--->
                 {if isset($gCalendar) && $gCalendar == 1 && $daid > 0}
                 <tr>
-                    <td align="left" width="40%">{gt text="Finish date"}&nbsp;<span style="vertical-align:middle;">{img modname='IWagendas' src='gIcon.gif' set='images'}</span></td>
+                    <td align="left" width="40%">{gt text="Finish date"}&nbsp;<span style="vertical-align:middle;">{img modname='IWagendas' src='gIcon.gif'}</span></td>
                     <td align="left" width="60%">
                         <select name="diatriat1" id="diatriat1">
                             {section name=day loop=$dies_MS}
@@ -181,7 +181,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td align="left">{gt text="Finish time"}&nbsp;<span style="vertical-align:middle;">{img modname='IWagendas' src='gIcon.gif' set='images'}</span></td>
+                    <td align="left">{gt text="Finish time"}&nbsp;<span style="vertical-align:middle;">{img modname='IWagendas' src='gIcon.gif'}</span></td>
                     <td align="left">
                         <select name="horatriada1" id="horatriada1" onchange="treumarca()">
                             {section name=hour loop=$hores_MS}

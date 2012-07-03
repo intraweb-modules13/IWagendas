@@ -4,13 +4,13 @@
     <tr>
         <td align="center" bgcolor="#{$colors[0]}" colspan="7">
             <a href="javascript:calendarBlockMonth({$previous_month},{$year})">
-                {img modname='IWagendas' src='mesmenys.gif' set='images'   __alt="Previous month" __title="Previous month"}
+                {img modname='IWagendas' src='mesmenys.gif' __alt="Previous month" __title="Previous month"}
             </a>
             <a href="{modurl modname='IWagendas' type='user' func='main' mes=$month any=$year}" style="color:#{$colors[1]}">
                 <strong>{$month_name}&nbsp;{$year}</strong>
             </a>
             <a href="javascript:calendarBlockMonth({$next_month},{$year})">
-                {img modname='IWagendas' src='mesmes.gif' set='images' __alt="Next month" __title="Next month"}
+                {img modname='IWagendas' src='mesmes.gif' __alt="Next month" __title="Next month"}
             </a>
         </td>
     </tr>
@@ -36,7 +36,7 @@
             {if isset($v_day.info)} {* Show icon information if present. Implies full change of the cell *}
                 <td style="width:14.27%; background:#{$v_day.bgcolor}; text-align:center;" onmouseout="nd();" onmouseover="overlib('{$v_day.label}{$v_day.content}<br /><img src=\'modules/IWagendas/images/info.gif\' width=\'14\' height=\'14\' alt=\'info\' />&nbsp;{$v_day.info}', CAPTION, '{$v_day.caption}', BGCOLOR, '#316ac5', TIMEOUT, 100000, DELAY, 200, WIDTH, 200)">
                     <span style="color:#{$v_day.color};"><a href="{modurl modname='IWagendas' type='user' func='main' mes=$month any=$year daid=0 dia=$smarty.foreach.day_loop.iteration}">{$smarty.foreach.day_loop.iteration}{if $v_day.haveContent}*{/if}</a></span>
-                    <br />{img modname='IWagendas' src='info.gif' set='images'}
+                    <br />{img modname='IWagendas' src='info.gif'}
                 </td>
             {else}
                 <td style="width:14.27%; background:#{$v_day.bgcolor}; text-align:center;" onmouseout="nd();" onmouseover="overlib('{$v_day.label}{$v_day.content}', CAPTION, '{$v_day.caption}', BGCOLOR, '#316ac5', TIMEOUT, 100000, DELAY, 200, WIDTH, 200)">
