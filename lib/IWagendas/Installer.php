@@ -104,38 +104,19 @@ class IWagendas_Installer extends Zikula_AbstractInstaller {
      * @return bool true if successful, false otherwise
      */
     public function upgrade($oldversion) {
-
-        $prefix = $GLOBALS['ZConfig']['System']['prefix'];
-
-        //Rename tables
-        if (!DBUtil::renameTable('iw_agendas', 'IWagendas'))
-            return false;
-        if (!DBUtil::renameTable('iw_agendas_def', 'IWagendas_definition'))
-            return false;
-        if (!DBUtil::renameTable('iw_agendas_subs', 'IWagendas_subs'))
-            return false;
-
         // Update z_blocs table
-        $c = "UPDATE {$prefix}_blocks SET z_bkey = 'Calendar' WHERE z_bkey = 'calendar'";
+        $c = "UPDATE blocks SET bkey = 'Calendar' WHERE bkey = 'calendar'";
         if (!DBUtil::executeSQL($c)) {
             return false;
         }
 
-        $c = "UPDATE {$prefix}_blocks SET z_bkey = 'Next' WHERE z_bkey = 'next'";
+        $c = "UPDATE blocks SET bkey = 'Next' WHERE bkey = 'next'";
         if (!DBUtil::executeSQL($c)) {
             return false;
         }
-
-        
-        // Update module_vars table
-        // Update the name (keeps old var value)
-        $c = "UPDATE {$prefix}_module_vars SET z_modname = 'IWagendas' WHERE z_bkey = 'iw_agendas'";
-        if (!DBUtil::executeSQL($c)) {
-            return false;
-        }
-
+    
         //Array de noms
-        $oldVarsNames = DBUtil::selectFieldArray("module_vars", 'name', "`z_modname` = 'IWforms'", '', false, '');
+        $oldVarsNames = DBUtil::selectFieldArray('module_vars', 'name', "`modname` = 'IWagendas'", '', false, '');
 
         $newVarsNames = Array('inicicurs', 'calendariescolar', 'comentaris', 'festiussempre', 'altresfestius',
             'informacions', 'periodes', 'llegenda', 'infos', 'vista', 'colors', 'maxnotes', 'adjuntspersonals',
