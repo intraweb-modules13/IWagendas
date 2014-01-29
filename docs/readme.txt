@@ -28,7 +28,6 @@ The attached files must to be updated to the server, so a folder with written pe
 //************************
 Locate the files of the modules IWmain and IWagendas into the modules directory, install and active them following the usual methods used in Zikula modules:
 
-    - Regenerate modules list
     - Initialize modules or upgrade IWmain
     - Active modules
 
@@ -36,3 +35,4 @@ Locate the files of the modules IWmain and IWagendas into the modules directory,
 // Module configuration
 //************************
 After the module installation it is necessary to define the colours for the calendar periods and the holidays.
+
