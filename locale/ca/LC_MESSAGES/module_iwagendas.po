@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Zikula 1.2.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-29 12:41+0100\n"
-"PO-Revision-Date: 2012-01-20 14:50+0100\n"
-"Last-Translator: intraweb <intraweb@xtec.cat>\n"
+"PO-Revision-Date: 2014-03-03 11:33+0100\n"
+"Last-Translator: jmeler <jmeler@xtec.cat>\n"
 "Language-Team: Intraweb <intraweb@xtec.cat>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1321,8 +1321,8 @@ msgid "IWagendas"
 msgstr "IWagendas"
 
 #: pnversion.php:11
-msgid "Allow create and use shared agendas"
-msgstr "Permet crear i fer ús d'agendes compartides"
+msgid "Allow create and use shared agendas."
+msgstr "Permet crear i fer ús d'agendes compartides."
 
 #: pnversion.php:12
 #: pntemplates/IWagendas_admin_main.htm:14
