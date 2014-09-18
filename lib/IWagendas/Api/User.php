@@ -780,9 +780,6 @@ class IWagendas_Api_User extends Zikula_AbstractApi
         if (!DBUtil::deleteObjectByID('IWagendas', $aid, 'aid')) {
             return LogUtil::registerError($this->__('Error! Sorry! Deletion attempt failed.'));
         }
-        // Let any hooks know that we have deleted an item
-        ModUtil::callHooks('item', 'delete', $args['aid'],
-                            array('module' => 'IWagendas'));
         // The item has been deleted, so we clear all cached pages of this item.
         $view = Zikula_View::getInstance('IWagendas');
         $view->clear_cache(null, $nid);
