@@ -563,7 +563,7 @@ class IWagendas_Controller_User extends Zikula_AbstractController {
             $imatge = ($daid != 0) ? 'amaga.gif' : 'completa.gif';
             $marcar = ($daid != 0) ? $this->__('Hide') : $this->__('Mark as completed');
         }
-        if (isset($agenda['gAccessLevel']) && strpos($agenda['gAccessLevel'], '$owne|' . $user . '$' !== false ||
+        if ((isset($agenda['gAccessLevel']) && (strpos($agenda['gAccessLevel'], '$owne|' . $user . '$') !== false) ||
                         $agenda['gAccessLevel'] == '') && ($accessLevel == 4 ||
                 ($accessLevel == 3 && $note['usuari'] == $user)) && ($note['daid'] == 0 || $daid > 0)) {
             $icons = "<a href=index.php?module=IWagendas&amp;func=editar&amp;mes=" . $mes . "&amp;any=" . $any . "&amp;aid=" . $note['aid'] . "&amp;daid=" . $note['daid'] . " title='" . $this->__('Edit') . "'><img src=\"modules/IWagendas/images/editar.gif\" alt='" . $this->__('Edit') . "'></a>";
