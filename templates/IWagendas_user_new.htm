@@ -231,14 +231,14 @@
                         <input type="checkbox" name="protegida" id="protegida" value="1" />
                     </td>
                 </tr>
-                {section name=field loop=$fields}
-                {if (isset($fields[field].order) && $fields[field].order != 5 && $fields[field].order != 2) || (isset($gCalendar) && $gCalendar != 1)}
+                {foreach item=field from=$fields}
+                {if isset($field.order) || (isset($gCalendar) && $gCalendar != 1)}
                 <tr>
-                    <td align="left" style="vertical-align:top;">{$fields[field].desc}</td>
-                    <td align="left" style="vertical-align:top;">{$fields[field].value}</td>
+                    <td align="left" style="vertical-align:top;">{$field.desc}</td>
+                    <td align="left" style="vertical-align:top;">{$field.value}</td>
                 </tr>
                 {/if}
-                {/section}
+                {/foreach}
                 {if $attachpermitted}
                 <tr>
                     <td align="left">{gt text="Attached file"}<br/>{gt text="Allowed extensions - "}&nbsp;{$extensions}</td>
