@@ -237,7 +237,7 @@ class IWagendas_Controller_User extends Zikula_AbstractController {
                     // If it's a non-working day
                     if ($festiu['etiqueta'] != "") {
                         $festiu['etiqueta'] = ModUtil::func('IWagendas', 'user', 'prepara_etiqueta', array('text' => $festiu['etiqueta']));
-                        $days[$i]['popup'] = " onmouseout=\"nd();\" onmouseover=\"overlib(<div style=\'padding:5px;\'>'" . $festiu['etiqueta'] . "</div>',CAPTION,'<div style=\'padding:5px;\'>" . $nom_dia[date("w", mktime(0, 0, 0, $mes, $i, $any))] . " " . $i . "/" . $mes . "/" . $any . "</div>',BGCOLOR,'#316ac5',TIMEOUT,100000,DELAY,200,WIDTH,200)\")";
+                        $days[$i]['popup'] = " onmouseout=\"nd();\" onmouseover=\"overlib(<div style=\'padding:5px;\'>'" . $festiu['etiqueta'] . "</div>',CAPTION,'<div style=\'padding:5px;\'>" . $nom_dia[date("w", mktime(0, 0, 0, $mes, $i, $any))] . " " . $i . "/" . $mes . "/" . $any . "</div>',BGCOLOR,'#316ac5',TIMEOUT,100000,DELAY,200,WIDTH,200)\"";
                     }else
                         $days[$i]['popup'] = "";
                     //get the notes for the current day from eventsArray
@@ -566,7 +566,7 @@ class IWagendas_Controller_User extends Zikula_AbstractController {
         if ((isset($agenda['gAccessLevel']) && (strpos($agenda['gAccessLevel'], '$owne|' . $user . '$') !== false) ||
                         $agenda['gAccessLevel'] == '') && ($accessLevel == 4 ||
                 ($accessLevel == 3 && $note['usuari'] == $user)) && ($note['daid'] == 0 || $daid > 0)) {
-            $icons = "<a href=index.php?module=IWagendas&amp;func=editar&amp;mes=" . $mes . "&amp;any=" . $any . "&amp;aid=" . $note['aid'] . "&amp;daid=" . $note['daid'] . " title='" . $this->__('Edit') . "'><img src=\"modules/IWagendas/images/editar.gif\" alt='" . $this->__('Edit') . "'></a>";
+            $icons = "<a href=\"index.php?module=IWagendas&amp;func=editar&amp;mes=" . $mes . "&amp;any=" . $any . "&amp;aid=" . $note['aid'] . "&amp;daid=" . $note['daid'] . "\" title='" . $this->__('Edit') . "'><img src=\"modules/IWagendas/images/editar.gif\" alt='" . $this->__('Edit') . "' /></a>";
         }
         if ((isset($agenda['gAccessLevel']) && strpos($agenda['gAccessLevel'], '$owne|' . $user . '$') !== false || isset($agenda['gAccessLevel']) && $agenda['gAccessLevel'] == '' || $daid == 0) && ($accessLevel == 4 || ($accessLevel == 3 && $note['usuari'] == $user) || ($daid == 0 && $user != '-1'))) {
             $icons .= ( $note['rid'] > 0) ? "<a href=index.php?module=IWagendas&amp;func=esborra&amp;mes=" . $mes . "&amp;any=" . $any . "&amp;aid=" . $note['aid'] . "&amp;daid=" . $daid . " title='" . $this->__('Delete') . "'><img src=\"modules/IWagendas/images/del.gif\" alt='" . $this->__('Delete') . "'></a>" : "<a href=\"javascript:deleteNote(" . $note['aid'] . "," . $daid . ")\" title='" . $this->__('Delete') . "' ><img src=\"modules/" . ModUtil::getName() . "/images/del.gif\" alt='" . $this->__('Delete') . "'></a>";

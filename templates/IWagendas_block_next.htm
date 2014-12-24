@@ -13,7 +13,7 @@
 
     {{foreach item=event from=$events name=oneEvent}}
     var id={{$smarty.foreach.oneEvent.index}}
-    scrollercontent[id]='{{if !empty($event.date)}}{{$event.date}} (<strong>{{$event.title}}</strong>)<br />{{/if}}{{$event.datafield}}{{if $event.deleted}} (<strong>{{gt text="Deleted" domain="module_IWagendas"}}</strong>){{/if}}{{if $event.modified}} (<strong>{{gt text="Agenda updated" domain="module_IWagendas"}}</strong>){{/if}}'
+    scrollercontent[id]='{{if !empty($event.date)}}{{$event.date}} (<strong>{{$event.title}}</strong>)<br />{{/if}}{{$event.datafield}}{{if $event.deleted}} (<strong>{{gt text="Deleted" domain="module_IWagendas"}}</strong>){{/if}}{{if $event.modified}} (<strong>{{gt text="Agenda updated"}}</strong>){{/if}}'
     {{/foreach}}
 
     ////NO need to edit beyond here/////////////
