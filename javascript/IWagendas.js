@@ -218,26 +218,8 @@ function completeNote_response(a) {
     $('noteText_'+b.aid).style.background=b.bgcolor;
 }
 
-function changeMonth(a,aa,aaa) {
-    var b={
-        mes:a,
-        any:aa,
-        daid:aaa
-    };    
-    var c=new Zikula.Ajax.Request(Zikula.Config.baseURL+"ajax.php?module=IWagendas&func=changeMonth",{
-        parameters: b,
-        onComplete: changeMonth_response,
-        onFailure: failure
-    });
-}
-
-function changeMonth_response(a) {
-    if(!a.isSuccess()){
-        Zikula.showajaxerror(a.getMessage());
-        return
-    }
-    var b=a.getData();
-    $("userCalendarContainer").update(b.content);
+function changeMonth(month, year, daid) {
+    window.location = "index.php?module=IWAgendas&mes=" + month + "&any=" + year + "&daid=" + daid;
 }
 
 function subs(a,aa,aaa) {

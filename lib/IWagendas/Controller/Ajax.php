@@ -314,37 +314,6 @@ class IWagendas_Controller_Ajax extends Zikula_Controller_AbstractAjax {
     }
 
     /**
-     * Change the month information in calendar
-     *
-     * @param array $args Month, year and agenda identity
-     *
-     * @return The new month information
-     */
-    public function changeMonth($args) {
-        if (!SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ)) {
-            throw new Zikula_Exception_Fatal($this->__('Sorry! No authorization to access this module.'));
-        }
-
-        $daid = $this->request->getPost()->get('daid', '');
-
-        $mes = $this->request->getPost()->get('mes', '');
-        if (!$mes) {
-            throw new Zikula_Exception_Fatal($this->__('no month defined'));
-        }
-
-        $any = $this->request->getPost()->get('any', '');
-        if (!$any) {
-            throw new Zikula_Exception_Fatal($this->__('no year defined'));
-        }
-
-        $content = ModUtil::func('IWagendas', 'user', 'main', array('mes' => $mes,
-                    'any' => $any,
-                    'daid' => $daid));
-        return new Zikula_Response_Ajax(array('content' => $content,
-                ));
-    }
-
-    /**
      * Subscribe an user to an agenda
      *
      * @param array $args Month, year and agenda identity

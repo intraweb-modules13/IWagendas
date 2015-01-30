@@ -53,9 +53,9 @@
                 <td colspan="7" style="background:#{$colors[0]}; color:#{$colors[1]}; border:none; padding:5px;">
                     <span style="float: left;">
                         {if $mes eq 1}
-                        <a href="javascript:changeMonth(12,{$any-1},{$daid})">{img modname=IWagendas src=mesmenys.gif __alt="Previous month"  __title="Previous month" }</a>
+                        <a href="index.php?module=IWAgendas&mes=12&any={$any-1}&daid={$daid}">{img modname=IWagendas src=mesmenys.gif __alt="Previous month"  __title="Previous month" }</a>
                         {else}
-                        <a href="javascript:changeMonth({$mes-1},{$any},{$daid})">{img modname=IWagendas src=mesmenys.gif __alt="Previous month"  __title="Previous month" }</a>
+                        <a href="index.php?module=IWAgendas&mes={$mes-1}&any={$any}&daid={$daid}">{img modname=IWagendas src=mesmenys.gif __alt="Previous month"  __title="Previous month" }</a>
                         {/if}
                         <select name="mes" id="month" onchange="javascript:changeMonth(this.value,{$any},{$daid})">
                             {section name=month loop=$months}
@@ -68,12 +68,12 @@
                             {/section}
                         </select>
                         {if $mes eq 12}
-                        <a href="javascript:changeMonth(1,{$any+1},{$daid})">{img modname=IWagendas src=mesmes.gif __alt="Next month"  __title="Next month" }</a>
+                        <a href="index.php?module=IWAgendas&mes=1&any={$any+1}&daid={$daid}">{img modname=IWagendas src=mesmes.gif __alt="Next month"  __title="Next month" }</a>
                         {else}
-                        <a href="javascript:changeMonth({$mes+1},{$any},{$daid})">{img modname=IWagendas src=mesmes.gif __alt="Next month"  __title="Next month" }</a>
+                        <a href="index.php?module=IWAgendas&mes={$mes+1}&any={$any}&daid={$daid}">{img modname=IWagendas src=mesmes.gif __alt="Next month"  __title="Next month" }</a>
                         {/if}
                         {if $mes neq $today.month || $any neq $today.year}
-                        <a href="javascript:changeMonth({$today.month},{$today.year},{$daid})">{gt text="Today"}</a>
+                        <a href="index.php?module=IWAgendas&mes={$today.month}&any={$today.year}&daid={$daid}">{gt text="Today"}</a>
                         {/if}
                     </span>
                     {if $agendas|@count gt 0 && $userid neq ''}
@@ -212,7 +212,7 @@
                 {if $agenda.gCalendar}
                 <span style="vertical-align:middle;">{img modname='IWagendas' src='gIcon.gif'}</span>
                 {/if}
-                <a href="javascript:changeMonth({$mes},{$any},{$agenda.daid})" title="{$agenda.fullName}">
+                <a href="index.php?module=IWAgendas&mes={$mes}&any={$any}&daid={$agenda.daid}" title="{$agenda.fullName}">
                     <span {if $daid eq $agenda.daid}style="border: 1px solid #000; background-color:lightyellow; padding:0px 10px 0px 2px;"{else}style="padding:1px;"{/if}>{$agenda.nom_agenda}</span>
                 </a>
             </div>
