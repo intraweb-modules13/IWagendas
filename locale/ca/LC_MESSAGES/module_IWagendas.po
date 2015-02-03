@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Zikula 1.2.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-29 12:41+0100\n"
-"PO-Revision-Date: 2015-02-02 16:43+0100\n"
+"PO-Revision-Date: 2015-02-03 10:31+0100\n"
 "Last-Translator: Toni Ginard <toni.ginard@gmail.com>\n"
 "Language-Team: Intraweb <intraweb@xtec.cat>\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgid "There are no events in the agenda for the next "
 msgstr "No tens anotacions a l&acute;agenda per als propers"
 
 #: pnblocks/next.php:119 pntemplates/IWagendas_block_next.htm:99
-msgid " days"
+msgid "days"
 msgstr "dies"
 
 #: pnblocks/next.php:161
