@@ -3702,7 +3702,7 @@ class IWagendas_Controller_User extends Zikula_AbstractController {
                     $agenda = ($eventsArray[$pos]['daid'] > 0) ? $agendas[$eventsArray[$pos]['daid']] : '';
                     $agendaText = (isset($agenda['nom_agenda']) && $agenda['nom_agenda'] != '') ? " <span style=\'background-color:" . $agenda['color'] . "; border: 1px solid #000\'>" : '';
                     $days[$i]['content'] .= "<div style=\'float: left;\'><strong>" . $tipus . '</strong> &nbsp;</div><div>' . $eventsArray[$pos]['c1'] . $agendaText;
-                    if (UserUtil::isLoggedIn() && $agenda['nom_agenda'] != '')
+                    if (UserUtil::isLoggedIn() && isset($agenda['nom_agenda']) && $agenda['nom_agenda'] != '')
                         $days[$i]['content'] .= ' <font size="-2">(<strong>' . $agenda['nom_agenda'] . '</strong>)</font>';
                     $days[$i]['content'] .= '</span><div>';
                     $pos++;
