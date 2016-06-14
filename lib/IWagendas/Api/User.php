@@ -226,10 +226,13 @@ class IWagendas_Api_User extends Zikula_AbstractApi
                 return LogUtil::registerError($this->__('Error! Creation attempt failed.'));
             }
         } else {
-            $item = array('llistat' => $vista);
-            $where = "$c[daid]=$daid AND $c[uid]=$uid";
-            if (!DBUTil::updateObject($item, 'IWagendas_subs', $where)) {
-                return LogUtil::registerError($this->__('Error! Update attempt failed.'));
+            // Allow read only access
+            if (ModUtil::getVar('IWmain', 'readonly') != 1) {
+                $item = array('llistat' => $vista);
+                $where = "$c[daid]=$daid AND $c[uid]=$uid";
+                if (!DBUtil::updateObject($item, 'IWagendas_subs', $where)) {
+                    return LogUtil::registerError($this->__('Error! Update attempt failed.'));
+                }
             }
         }
         return true;
@@ -421,14 +424,19 @@ class IWagendas_Api_User extends Zikula_AbstractApi
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('IWagendas::', '::', ACCESS_READ));
 
-        $pntable = DBUtil::getTables();
-        $c = $pntable['IWagendas_subs_column'];
-        $uid = UserUtil::getVar('uid');
-        $item = array('donadabaixa' => -1);
-        $where = "$c[donadabaixa]=-2 AND $c[uid]=$uid";
-        if (!DBUTil::updateObject($item, 'IWagendas_subs', $where)) {
-            return LogUtil::registerError($this->__('Error! Update attempt failed.'));
+        // Allow read only access
+        if (ModUtil::getVar('IWmain', 'readonly') != 1) {
+            $pntable = DBUtil::getTables();
+            $c = $pntable['IWagendas_subs_column'];
+            $uid = UserUtil::getVar('uid');
+            $item = array('donadabaixa' => -1);
+            $where = "$c[donadabaixa]=-2 AND $c[uid]=$uid";
+
+            if (!DBUtil::updateObject($item, 'IWagendas_subs', $where)) {
+                return LogUtil::registerError($this->__('Error! Update attempt failed.'));
+            }
         }
+
         return true;
     }
 
